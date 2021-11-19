@@ -114,6 +114,7 @@
 
 .sidebar .dropdown-toggle::after {
     float: right;
+    margin-top: 10px;
 }
 
 .sidebar .nav-item a.nav-link:hover {
