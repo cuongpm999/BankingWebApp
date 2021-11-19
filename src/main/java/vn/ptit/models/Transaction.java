@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Transaction {
 	private int id;
+	private String type;
 	private Date dateCreate;
 	private double money;
 	private double afterBalanceDeposit;
@@ -111,6 +112,14 @@ public class Transaction {
 
 	public void setDepositAccount(DepositAccount depositAccount) {
 		this.depositAccount = depositAccount;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }
