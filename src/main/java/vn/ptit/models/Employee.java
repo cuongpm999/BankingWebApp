@@ -15,6 +15,24 @@ public class Employee {
 	private String position;
 	private Account account;
 	private List<Salary> salaries = new ArrayList<>();
+	
+	public Employee() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Employee(String idCard, String fullName, Date dateOfBirth, String address, int level, int seniority,
+			String position, Account account, List<Salary> salaries) {
+		super();
+		this.idCard = idCard;
+		this.fullName = fullName;
+		this.dateOfBirth = dateOfBirth;
+		this.address = address;
+		this.level = level;
+		this.seniority = seniority;
+		this.position = position;
+		this.account = account;
+		this.salaries = salaries;
+	}
 
 	public int getId() {
 		return id;

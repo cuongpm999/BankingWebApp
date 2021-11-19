@@ -15,7 +15,7 @@ public class Transaction {
 	private DepositAccount depositAccount;
 
 	public Transaction() {
-		super();
+		
 	}
 
 	public Transaction(Date dateCreate, double money, double afterBalanceDeposit, double afterBalanceCredit,

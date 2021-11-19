@@ -5,7 +5,6 @@ import java.util.Date;
 public class CreatedBankAccount {
 	private int id;
 	private Date dateCreate;
-
 	private BankAccount bankAccount;
 	private Employee employee;
 	private Customer customer;

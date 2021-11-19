@@ -8,6 +8,18 @@ public class Salary {
 	private double bonusSalary;
 	private Date dateStart;
 	private Date dateEnd;
+	
+	public Salary() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Salary(double basicSalary, double bonusSalary, Date dateStart, Date dateEnd) {
+		super();
+		this.basicSalary = basicSalary;
+		this.bonusSalary = bonusSalary;
+		this.dateStart = dateStart;
+		this.dateEnd = dateEnd;
+	}
 
 	public int getId() {
 		return id;

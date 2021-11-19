@@ -10,7 +10,7 @@ public class Customer {
 	private String address;
 
 	public Customer() {
-		super();
+		
 	}
 
 	public Customer(String fullName, String idCard, Date dateOfBirth, String address) {

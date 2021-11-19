@@ -4,6 +4,16 @@ public class Account {
 	private int id;
 	private String username;
 	private String password;
+	
+	public Account() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Account(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
 
 	public int getId() {
 		return id;
