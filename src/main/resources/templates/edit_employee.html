@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+
+		<div class="page-container">
+
+			<div th:insert="includes.html :: header"></div>
+
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+
+							<div class="card-body">
+								<div class="panel-body">
+									<form action="/admin/manage/employee/edit"
+										th:object="${employee}" method="post">
+										<input type="hidden" th:field="*{id}" />
+										<input type="hidden" th:field="*{account.id}" />
+
+										<div class="form-group">
+											<label class="required">CMT:</label> <input
+												th:field="*{idCard}" class="form-control" placeholder="Cmt" />
+										</div>
+										<div class="form-group">
+											<label>Họ và tên:</label> <input th:field="*{fullName}"
+												class="form-control" placeholder="Họ và tên" />
+										</div>
+										<div class="form-group">
+											<label>Ngày sinh:</label> <input type="date" name="dob"
+												class="form-control" placeholder="Ngày sinh"
+												th:value="${#dates.format(employee.dateOfBirth, 'yyyy-MM-dd')}" />
+										</div>
+										<div class="form-group">
+											<label>Địa chỉ:</label> <input th:field="*{address}"
+												class="form-control" placeholder="Địa chỉ" />
+										</div>
+										<div class="form-group">
+											<label>Bậc nghề:</label> <input th:field="*{level}"
+												class="form-control" placeholder="Bậc nghề" />
+										</div>
+										<div class="form-group">
+											<label>Thâm niên:</label> <input th:field="*{seniority}"
+												class="form-control" placeholder="Thâm niên" />
+										</div>
+										<div class="form-group">
+											<label>Vị trí:</label> <select th:field="*{position}"
+												class="form-control">
+												<option value="ROLE_MANAGE">Manage</option>
+												<option value="ROLE_ADMIN">Admin</option>
+												<option value="ROLE_STAFF">Staff</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label>Tên tài khoản:</label> <input
+												th:field="*{account.username}" class="form-control"
+												placeholder="Tên tài khoản" readonly="true"/>
+										</div>
+										<div class="form-group">
+											<label>Mật khẩu:</label> <input type="password"
+												th:value="*{account.password}" name="password_"
+												class="form-control" placeholder="Mật khẩu" />
+										</div>
+										<button type="submit" class="btn btn-success">
+											<i class="fas fa-download"></i> Save
+										</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div th:insert="includes.html :: footer"></div>
+
+		</div>
+	</div>
+
+</body>
+
+</html>
