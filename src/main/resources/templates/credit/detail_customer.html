@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/home.js}"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+
+		<div class="page-container">
+
+			<div th:insert="includes.html :: header"></div>
+
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+							<div class="customer-infor" style="width: 500px">
+								<table class="table">
+									<tbody>
+										<tr>
+											<td>CMT</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${customer.idCard}"></td>
+										</tr>
+										<tr>
+											<td>Họ và tên</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${customer.fullName}"></td>
+										</tr>
+										<tr>
+											<td>Ngày sinh</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#dates.format(customer.dateOfBirth, 'dd/MM/yyyy')}"></td>
+										</tr>
+										<tr>
+											<td>Địa chỉ</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${customer.address}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<h1 class="my-3"></h1>
+
+							<table class="table">
+								<thead class="thead-light">
+									<tr>
+										<th>Mã số tài khoản</th>
+										<th>Loại tài khoản</th>
+										<th>Số nợ</th>
+										<th>Hạn mức tín dụng</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="myTable">
+									<tr th:each="creditAccount : ${creditAccounts}">
+										<td th:text="${creditAccount.id}"></td>
+										<td th:text="${creditAccount.bankAccountType.name}"></td>
+										<td
+											th:text="${#numbers.formatInteger(creditAccount.balance,0,'POINT')+' ₫'}"></td>
+										<td
+											th:text="${#numbers.formatInteger(creditAccount.limitBalance,0,'POINT')+' ₫'}"></td>
+										<td><a
+											th:href="@{'/admin/transaction/credit/detail-account/' + ${creditAccount.id}}">Chi
+												tiết giao dịch</a>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:insert="includes.html :: footer"></div>
+		</div>
+	</div>
+</body>
+<style>
+.table td, .table th {
+	border-top: 0;
+}
+</style>
+
+</html>
