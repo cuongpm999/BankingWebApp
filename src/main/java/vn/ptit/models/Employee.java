@@ -15,6 +15,7 @@ public class Employee {
 	private String position;
 	private Account account;
 	private List<Salary> salaries = new ArrayList<>();
+	private boolean status;
 	
 	public Employee() {
 		// TODO Auto-generated constructor stub
@@ -112,6 +113,14 @@ public class Employee {
 
 	public void setSalaries(List<Salary> salaries) {
 		this.salaries = salaries;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 }

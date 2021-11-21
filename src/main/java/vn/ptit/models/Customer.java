@@ -8,6 +8,7 @@ public class Customer {
 	private String idCard;
 	private Date dateOfBirth;
 	private String address;
+	private boolean status;
 
 	public Customer() {
 		
@@ -59,6 +60,14 @@ public class Customer {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 }

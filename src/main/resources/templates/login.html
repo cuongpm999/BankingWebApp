@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/home.js}"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+
+<title>Banking Project</title>
+</head>
+<body>
+	<!-- HEADER -->
+
+	<!-- ------ -->
+
+	<!-- MAIN -->
+	<div id="main">
+		<div class="header-w3l">
+			<h1 class="mt-5">Đăng nhập</h1>
+		</div>
+		<div class="main-w3layouts-agileinfo">
+			<!--form-stars-here-->
+			<div class="wthree-form">
+				<h2>Vui lòng điền để đăng nhập</h2>
+				<form action="/perform-login" method="post">
+					<div class="form-sub-w3">
+						<input type="text" name="username" placeholder="Tên tài khoản"
+							required />
+						<div class="icon-w3">
+							<i class="fa fa-user" aria-hidden="true"></i>
+						</div>
+					</div>
+					<div class="form-sub-w3">
+						<input type="password" name="password" placeholder="Mật khẩu"
+							required />
+						<div class="icon-w3">
+							<i class="fa fa-unlock-alt" aria-hidden="true"></i>
+						</div>
+					</div>
+					<div class="submit-agileits">
+						<input type="submit" name="submit" value="Đăng nhập">
+					</div>
+				</form>
+			</div>
+
+		</div>
+	</div>
+	<!-- ------ -->
+
+	<!-- FOOTER -->
+
+	<!-- ------ -->
+</body>
+
+</html>

@@ -27,6 +27,10 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
 <!-- ----------------- -->
 
 <title>Banking Project</title>
@@ -37,36 +41,39 @@
 	<!-- MAIN -->
 	<div id="main">
 		<div th:insert="includes.html :: sidebar"></div>
-
 		<div class="page-container">
-
 			<div th:insert="includes.html :: header"></div>
-
 			<div class="main-content">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-add">
 							<div class="card-body">
 								<div class="panel-body">
-									<form th:object="${customer}"
-										th:action="@{/admin/manage/customer/edit}" th:method="post">
-										<input type="hidden" th:field="*{id}">
+									<form th:object="${creditAccount}"
+										action="/admin/manage/credit-account/add" method="post"
+										id="credit-form">
 										<div class="form-group">
-											<label class="required">Full name: </label> <input
-												th:field="*{fullName}" class="form-control" />
+											<label class="required">Mã số tài khoản: </label> <input
+												th:field="*{id}" class="form-control"
+												placeholder="Mã số tín dụng" readonly="readonly" />
 										</div>
 										<div class="form-group">
-											<label class="required">ID card: </label> <input
-												th:field="*{idCard}" class="form-control" />
+											<label class="required">Số dư: </label> <input
+												th:field="*{balance}" class="form-control"
+												placeholder="Số dư" readonly="readonly" />
 										</div>
 										<div class="form-group">
-											<label class="required">Date of birth: </label> <input
-												name="dob" class="form-control" type="date"
-												th:value="${#dates.format(customer.dateOfBirth, 'yyyy-MM-dd')}" />
+											<label class="required">Hạn mức tín dụng: </label> <input
+												th:field="*{limitBalance}" class="form-control"
+												placeholder="Hạn mức tín dụng" />
 										</div>
 										<div class="form-group">
-											<label class="required">Address: </label> <input
-												th:field="*{address}" class="form-control" />
+											<label class="required">Loại tài khoản:</label> <select
+												th:field="*{bankAccountType.id}" class="form-control">
+												<option th:each="bankAccountType_ : ${bankAccountTypes}"
+													th:value="${bankAccountType_.id}"
+													th:text="${bankAccountType_.name}"></option>
+											</select>
 										</div>
 										<button type="submit" class="btn btn-success">
 											<i class="fas fa-download"></i> Save
@@ -77,9 +84,34 @@
 						</div>
 					</div>
 				</div>
-				<div th:insert="includes.html :: footer"></div>
 			</div>
+			<div th:insert="includes.html :: footer"></div>
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+	$().ready(function() {
+		$('#credit-form').validate({
+			rules : {
+				limitBalance : {
+					required : true,
+					digits : true,
+				},
+			},
+			messages : {
+				limitBalance : {
+					required : "Vui lòng nhập hạn mức tín dụng",
+					digits : "Hạn mức tín dụng chỉ bao gồm số"
+				},
+			},
+		})
+	})
+</script>
+<style>
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
+}
+</style>
 </html>

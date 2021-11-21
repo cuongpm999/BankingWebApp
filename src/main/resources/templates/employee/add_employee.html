@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+
+		<div class="page-container">
+
+			<div th:insert="includes.html :: header"></div>
+
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+
+							<div class="card-body">
+								<div class="panel-body">
+									<form action="/admin/manage/employee/add"
+										th:object="${employee}" method="post" id="employee-form">
+										<div class="form-group">
+											<label class="required">CMT:</label> <input
+												th:field="*{idCard}" class="form-control" placeholder="Cmt" />
+										</div>
+										<div class="form-group">
+											<label class="required">Họ và tên:</label> <input
+												th:field="*{fullName}" class="form-control"
+												placeholder="Họ và tên" />
+										</div>
+										<div class="form-group">
+											<label class="required">Ngày sinh:</label> <input type="date"
+												name="dob" class="form-control" placeholder="Ngày sinh" />
+										</div>
+										<div class="form-group">
+											<label class="required">Địa chỉ:</label> <input
+												th:field="*{address}" class="form-control"
+												placeholder="Địa chỉ" />
+										</div>
+										<div class="form-group">
+											<label class="required">Bậc nghề:</label> <input
+												th:field="*{level}" class="form-control"
+												placeholder="Bậc nghề" />
+										</div>
+										<div class="form-group">
+											<label class="required">Thâm niên:</label> <input
+												th:field="*{seniority}" class="form-control"
+												placeholder="Thâm niên" />
+										</div>
+										<div class="form-group">
+											<label class="required">Vị trí:</label> <select
+												th:field="*{position}" class="form-control">
+												<option value="MANAGER">Manager</option>
+												<option value="TELLER">Teller</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<div th:if="${status == 'faileTenBiTrung'}">
+												<div class="alert alert-danger">
+													<strong>Failed!</strong> Tên tài khoản đã được sử dụng!
+												</div>
+											</div>
+											<label class="required">Tên tài khoản:</label> <input
+												th:field="*{account.username}" class="form-control"
+												placeholder="Tên tài khoản" />
+										</div>
+										<div class="form-group">
+											<label class="required">Mật khẩu:</label> <input
+												th:field="*{account.password}" class="form-control"
+												type="password" placeholder="Mật khẩu" />
+										</div>
+										<button type="submit" class="btn btn-success">
+											<i class="fas fa-download"></i> Save
+										</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div th:insert="includes.html :: footer"></div>
+
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript">
+	$().ready(function() {
+		$('#employee-form').validate({
+			rules : {
+				fullName : "required",
+				idCard : {
+					required : true,
+					digits : true,
+					minlength : 12,
+					maxlength : 12,
+				},
+				dob : "required",
+				address : "required",
+				level : {
+					required : true,
+					digits : true,
+				},
+				seniority : {
+					required : true,
+					digits : true,
+				},
+				'account.username' : "required",
+				'account.password' : {
+					required : true,
+					minlength : 6,
+				}
+
+			},
+			messages : {
+				fullName : "Vui lòng điền đầy đủ họ tên",
+				idCard : {
+					required : "Vui lòng nhập số CMT",
+					minlength : "Số CMT phải bao gồm ít nhất 12 số",
+					maxlength : "Số CMT chỉ bao gồm nhiều nhất 12 số",
+					digits : "Số CMT chỉ bao gồm số"
+				},
+				dob : "Vui lòng nhập ngày sinh",
+				address : "Vui lòng nhập địa chỉ",
+				level : {
+					required : "Vui lòng nhập số bậc nghề",
+					digits : "Bậc nghề chỉ bao gồm số"
+				},
+				seniority : {
+					required : "Vui lòng nhập số năm thâm niên",
+					digits : "Thâm niên chỉ bao gồm số"
+				},
+				'account.username' : "Vui lòng đăng kí tên tài khoản",
+				'account.password' : {
+					required : "Vui lòng đăng kí mật khẩu",
+					minlength : "Mật khẩu cần tối thiểu 6 kí tự"
+				}
+
+			},
+		})
+	})
+</script>
+<style>
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
+}
+</style>
+
+</html>

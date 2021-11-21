@@ -4,6 +4,7 @@ public class BankAccountType {
 	private int id;
 	private String name;
 	private String note;
+	private boolean status;
 
 	public BankAccountType() {
 		// TODO Auto-generated constructor stub
@@ -37,6 +38,14 @@ public class BankAccountType {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 }

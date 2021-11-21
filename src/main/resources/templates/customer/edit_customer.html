@@ -27,6 +27,10 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
 <!-- ----------------- -->
 
 <title>Banking Project</title>
@@ -46,48 +50,27 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-add">
-
 							<div class="card-body">
 								<div class="panel-body">
-									<form action="/admin/manage/employee/add"
-										th:object="${employee}" method="post">
+									<form th:object="${customer}"
+										th:action="@{/admin/manage/customer/edit}" th:method="post" id="customer-form">
+										<input type="hidden" th:field="*{id}">
 										<div class="form-group">
-											<label class="required">CMT:</label> <input
+											<label class="required">Họ và tên: </label> <input
+												th:field="*{fullName}" class="form-control" placeholder="Họ và tên"/>
+										</div>
+										<div class="form-group">
+											<label class="required">CMT: </label> <input
 												th:field="*{idCard}" class="form-control" placeholder="Cmt"/>
 										</div>
 										<div class="form-group">
-											<label>Họ và tên:</label> <input th:field="*{fullName}"
-												class="form-control" placeholder="Họ và tên"/>
+											<label class="required">Ngày sinh: </label> <input
+												name="dob" class="form-control" type="date"
+												th:value="${#dates.format(customer.dateOfBirth, 'yyyy-MM-dd')}" placeholder="Ngày sinh"/>
 										</div>
 										<div class="form-group">
-											<label>Ngày sinh:</label> <input type="date" name="dob"
-												class="form-control" placeholder="Ngày sinh" />
-										</div>
-										<div class="form-group">
-											<label>Địa chỉ:</label> <input th:field="*{address}"
-												class="form-control" placeholder="Địa chỉ"/>
-										</div>
-										<div class="form-group">
-											<label>Bậc nghề:</label> <input th:field="*{level}"
-												class="form-control" placeholder="Bậc nghề"/>
-										</div>
-										<div class="form-group">
-											<label>Thâm niên:</label> <input th:field="*{seniority}"
-												class="form-control" placeholder="Thâm niên"/>
-										</div>
-										<div class="form-group">
-											<label>Vị trí:</label> 
-											<select th:field="*{position}" class="form-control">
-												<option value="ROLE_MANAGER">Manager</option>
-												<option value="ROLE_TELLER">Teller</option>
-											</select>
-										</div>
-										<div class="form-group">
-											<label>Tên tài khoản:</label> <input th:field="*{account.username}"
-												class="form-control" placeholder="Tên tài khoản"/>
-										</div>
-										<div class="form-group">
-											<label>Mật khẩu:</label> <input th:field="*{account.password}" class="form-control" type="password" placeholder="Mật khẩu"/>
+											<label class="required">Địa chỉ: </label> <input
+												th:field="*{address}" class="form-control" placeholder="Địa chỉ"/>
 										</div>
 										<button type="submit" class="btn btn-success">
 											<i class="fas fa-download"></i> Save
@@ -97,15 +80,45 @@
 							</div>
 						</div>
 					</div>
-				</div>
-
+				</div>			
 			</div>
-
 			<div th:insert="includes.html :: footer"></div>
-
 		</div>
 	</div>
-
 </body>
-
+<script type="text/javascript">
+	$().ready(function() {
+		$('#customer-form').validate({
+			rules : {
+				'fullName' : "required",
+				idCard : {
+					required : true,
+					digits : true,
+					minlength : 12,
+					maxlength : 12,
+				},
+				dob : "required",
+				address : "required",
+			},
+			messages : {
+				fullName : "Vui lòng điền đầy đủ họ tên",
+				idCard : {
+					required : "Vui lòng nhập số CMT",
+					minlength : "Số CMT phải bao gồm ít nhất 12 số",
+					maxlength : "Số CMT chỉ bao gồm nhiều nhất 12 số",
+					digits : "Số CMT chỉ bao gồm số"
+				},
+				dob : "Vui lòng nhập ngày sinh",
+				address : "Vui lòng nhập địa chỉ"
+			},
+		})
+	})
+</script>
+<style>
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
+}
+</style>
 </html>

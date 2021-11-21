@@ -1,0 +1,236 @@
+body {
+	background: url('https://wallpaperbat.com/img/41249-banking-wallpaper-top-free-banking-background.jpg') no-repeat 0 0;
+	background-size: cover;
+	-webkit-background-size: cover;
+	-ms-background-size: cover;
+	-o-background-size: cover;
+	-moz-background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+}
+
+.main-w3layouts-agileinfo {
+	width: 30%;
+	margin: 0 auto;
+	padding: 4em 2em;
+	background: rgba(255, 255, 255, .07);
+	-webkit-box-shadow: 0 6px 12px 0 #252525;
+	-moz-box-shadow: 0 6px 12px 0 #252525;
+	box-shadow: 0 6px 43px 0 rgba(0, 0, 0, .4)
+}
+
+.wthree-form h2 {
+	color: #fff;
+	font-size: 20px;
+	font-weight: 300;
+	text-align: center;
+	margin-bottom: 1.5em;
+	letter-spacing: 3px;
+	text-shadow: 3px 3px 4px #000
+}
+
+h1 {
+	text-align: center;
+	font-size: 45px;
+	font-weight: 300;
+	margin: 40px 0;
+	color: #fff;
+	letter-spacing: 9px;
+	text-shadow: 4px 4px 3px #000;
+	word-spacing: 4px;
+	font-weight: 500;
+	font-family: 'Josefin Slab', serif
+}
+
+.icon-w3 i {
+	color: #fff;
+	font-size: 19px;
+	line-height: 49px
+}
+
+.icon-w3 {
+	display: inline-block;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 53px;
+	height: 50px;
+	text-align: center;
+	background: #00c6d7
+}
+
+.main-w3layouts-agileinfo .svg-inline--fa {
+	vertical-align: middle;
+	margin-top: 16px
+}
+
+form {
+	margin: 0 auto;
+	width: 100%
+}
+
+.submit-agileits {
+	text-align: center;
+	margin-top: 2em
+}
+
+.form-sub-w3 {
+	position: relative;
+	margin-bottom: 20px
+}
+
+.form-sub-w3 input[type=text], input[type=password] {
+	width: 85%;
+	padding: 15px 66px 15px 19px;
+	text-align: left;
+	background-color: rgba(0, 0, 0, .16);
+	border: 0;
+	border-left: 2px solid #00c6d7;
+	font-size: 15px;
+	letter-spacing: 1.5px;
+	color: #fff;
+	outline: 0;
+	-webkit-box-shadow: 0 6px 12px 0 #252525;
+	-moz-box-shadow: 0 6px 12px 0 #252525;
+	box-shadow: 0 6px 12px 0 rgba(0, 0, 0, .4);
+	font-family: 'Open Sans', sans-serif
+}
+
+.submit-agileits input[type=submit] {
+	text-align: center;
+	border: 0;
+	color: #fff;
+	font-size: 17px;
+	font-weight: 600;
+	padding: 14px 90px;
+	background-color: rgba(0, 0, 0, .34);
+	border: 3px solid rgba(255, 255, 255, .43);
+	-webkit-box-shadow: 0 12px 32px 0 rgba(0, 0, 0, .71);
+	-moz-box-shadow: 0 12px 32px 0 rgba(0, 0, 0, .71);
+	box-shadow: 0 12px 32px 0 rgba(0, 0, 0, .71);
+	outline: 0;
+	cursor: pointer;
+	font-family: 'Open Sans', sans-serif;
+	letter-spacing: 1px;
+	transition: .5s ease-in-out;
+	-webkit-transition: .5s ease-in-out;
+	-moz-transition: .5s ease-in-out;
+	-o-transition: .5s ease-in-out;
+	-ms-transition: .5s ease-in-out
+}
+
+.submit-agileits input[type=submit]:hover {
+	color: #fff;
+	border-color: #00c6d7
+}
+
+#main {
+	margin-bottom: 83px;
+}
+
+h2 a {
+	color: #0ff
+}
+
+#main a.login-google {
+	text-decoration: none;
+	color: #4b566b;
+	font-family: 'Open Sans', sans-serif
+}
+
+#main .login-google img {
+	width: 30px;
+	height: 30px
+}
+
+#main .login-google .btn-gg {
+	background: #fff;
+	display: flex;
+	width: 100%;
+	margin-top: 55px;
+	border-radius: 1px;
+	box-shadow: 0 6px 12px 0 rgb(0 0 0/ 40%)
+}
+
+#main .login-google .btn-gg .btn-gg-img {
+	padding: 8px;
+	display: inline-block;
+	width: 30%;
+	align-items: center
+}
+
+#main .login-google .btn-gg .btn-gg-text {
+	padding: 10px 0;
+	font-size: 16px;
+	text-align: left;
+	width: 70%;
+	letter-spacing: .25px;
+	align-items: center
+}
+
+#main .separator {
+	align-items: center;
+	color: #fff;
+	margin: 20px 0 20px;
+	font-weight: 700;
+	display: flex
+}
+
+#main .separator::after {
+	content: "";
+	height: 1px;
+	background: #fff;
+	flex-grow: 1;
+	margin: 0 8px
+}
+
+#main .separator::before {
+	content: "";
+	height: 1px;
+	background: #fff;
+	flex-grow: 1;
+	margin: 0 8px
+}
+
+#main a.login-facebook {
+	text-decoration: none;
+	color: #fff;
+	font-family: 'Open Sans', sans-serif
+}
+
+#main .login-facebook img {
+	width: 30px;
+	height: 30px
+}
+
+#main .login-facebook .btn-f {
+	background: #fff;
+	border-radius: 1px;
+	display: flex;
+	width: 100%;
+	margin-top: 10px;
+	background: #4ab3f4;
+	margin-bottom: 10px;
+	box-shadow: 0 6px 12px 0 rgb(0 0 0/ 40%)
+}
+
+#main .login-facebook .btn-f .btn-f-img {
+	padding: 8px;
+	display: inline-block;
+	width: 30%;
+	align-items: center
+}
+
+#main .login-facebook .btn-f .btn-f-text {
+	padding: 10px 0;
+	font-size: 16px;
+	text-align: left;
+	width: 70%;
+	letter-spacing: .25px;
+	align-items: center
+}
+
+::placeholder {
+  color: white;
+  opacity: 0.7;
+}

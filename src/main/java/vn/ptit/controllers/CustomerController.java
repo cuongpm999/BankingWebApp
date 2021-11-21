@@ -36,13 +36,13 @@ public class CustomerController {
 		List<Customer> customers = Arrays
 				.asList(rest.getForObject(domainServices + "/rest/api/customer/find-all", Customer[].class));
 		model.addAttribute("customers", customers);
-		return "manage_customer";
+		return "customer/manage_customer";
 	}
 
 	@GetMapping(value = "/add")
 	public String addCustomer(Model model, HttpServletRequest req, HttpServletResponse resp) {
 		model.addAttribute("customer", new Customer());
-		return "add_customer";
+		return "customer/add_customer";
 	}
 
 	@PostMapping(value = "/add")
@@ -51,6 +51,7 @@ public class CustomerController {
 			Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
 		customer.setDateOfBirth(dob);
+		customer.setStatus(true);
 		rest.postForObject(domainServices + "/rest/api/customer/insert", customer, Customer.class);
 		return "redirect:/admin/manage/customer";
 	}
@@ -59,7 +60,7 @@ public class CustomerController {
 	public String editCustomer(@PathVariable("id") int id, Model model, HttpServletRequest req, HttpServletResponse resp) {
 		Customer customer = rest.getForObject(domainServices + "/rest/api/customer/find-by-id/" + id, Customer.class);
 		model.addAttribute("customer", customer);
-		return "edit_customer";
+		return "customer/edit_customer";
 	}
 	
 	@PostMapping(value = "/edit")
@@ -68,6 +69,7 @@ public class CustomerController {
 			Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
 		customer.setDateOfBirth(dob);
+		customer.setStatus(true);
 		rest.postForObject(domainServices + "/rest/api/customer/insert", customer, Customer.class);
 		return "redirect:/admin/manage/customer";
 	}
@@ -75,7 +77,7 @@ public class CustomerController {
 	@GetMapping("/delete/{id}")
 	public String deleteCustomer(@PathVariable("id") int id, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
-		rest.getForObject(domainServices + "/rest/api/customer/delete-by-id/" + id, Integer.class);
+		rest.delete(domainServices + "/rest/api/customer/delete-by-id/" + id);
 		return "redirect:/admin/manage/customer";
 	}
 }

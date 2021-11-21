@@ -27,6 +27,10 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
 <!-- ----------------- -->
 
 <title>Banking Project</title>
@@ -50,7 +54,7 @@
 							<div class="card-body">
 								<div class="panel-body">
 									<form action="/admin/manage/employee/edit"
-										th:object="${employee}" method="post">
+										th:object="${employee}" method="post" id="employee-form">
 										<input type="hidden" th:field="*{id}" />
 										<input type="hidden" th:field="*{account.id}" />
 
@@ -59,41 +63,40 @@
 												th:field="*{idCard}" class="form-control" placeholder="Cmt" />
 										</div>
 										<div class="form-group">
-											<label>Họ và tên:</label> <input th:field="*{fullName}"
+											<label  class="required">Họ và tên:</label> <input th:field="*{fullName}"
 												class="form-control" placeholder="Họ và tên" />
 										</div>
 										<div class="form-group">
-											<label>Ngày sinh:</label> <input type="date" name="dob"
+											<label  class="required">Ngày sinh:</label> <input type="date" name="dob"
 												class="form-control" placeholder="Ngày sinh"
 												th:value="${#dates.format(employee.dateOfBirth, 'yyyy-MM-dd')}" />
 										</div>
 										<div class="form-group">
-											<label>Địa chỉ:</label> <input th:field="*{address}"
+											<label  class="required">Địa chỉ:</label> <input th:field="*{address}"
 												class="form-control" placeholder="Địa chỉ" />
 										</div>
 										<div class="form-group">
-											<label>Bậc nghề:</label> <input th:field="*{level}"
+											<label  class="required">Bậc nghề:</label> <input th:field="*{level}"
 												class="form-control" placeholder="Bậc nghề" />
 										</div>
 										<div class="form-group">
-											<label>Thâm niên:</label> <input th:field="*{seniority}"
+											<label  class="required">Thâm niên:</label> <input th:field="*{seniority}"
 												class="form-control" placeholder="Thâm niên" />
 										</div>
 										<div class="form-group">
-											<label>Vị trí:</label> <select th:field="*{position}"
+											<label  class="required">Vị trí:</label> <select th:field="*{position}"
 												class="form-control">
-												<option value="ROLE_MANAGE">Manage</option>
-												<option value="ROLE_ADMIN">Admin</option>
-												<option value="ROLE_STAFF">Staff</option>
+												<option value="MANAGER">Manager</option>
+												<option value="TELLER">Teller</option>
 											</select>
 										</div>
 										<div class="form-group">
-											<label>Tên tài khoản:</label> <input
+											<label  class="required">Tên tài khoản:</label> <input
 												th:field="*{account.username}" class="form-control"
 												placeholder="Tên tài khoản" readonly="true"/>
 										</div>
 										<div class="form-group">
-											<label>Mật khẩu:</label> <input type="password"
+											<label  class="required">Mật khẩu:</label> <input type="password"
 												th:value="*{account.password}" name="password_"
 												class="form-control" placeholder="Mật khẩu" />
 										</div>
@@ -115,5 +118,68 @@
 	</div>
 
 </body>
+<script type="text/javascript">
+	$().ready(function() {
+		$('#employee-form').validate({
+			rules : {
+				fullName : "required",
+				idCard : {
+					required : true,
+					digits : true,
+					minlength : 12,
+					maxlength : 12,
+				},
+				dob : "required",
+				address : "required",
+				level : {
+					required : true,
+					digits : true,
+				},
+				seniority : {
+					required : true,
+					digits : true,
+				},
+				'account.username' : "required",
+				password_ : {
+					required : true,
+					minlength : 6,
+				}
+
+			},
+			messages : {
+				fullName : "Vui lòng điền đầy đủ họ tên",
+				idCard : {
+					required : "Vui lòng nhập số CMT",
+					minlength : "Số CMT phải bao gồm ít nhất 12 số",
+					maxlength : "Số CMT chỉ bao gồm nhiều nhất 12 số",
+					digits : "Số CMT chỉ bao gồm số"
+				},
+				dob : "Vui lòng nhập ngày sinh",
+				address : "Vui lòng nhập địa chỉ",
+				level : {
+					required : "Vui lòng nhập số bậc nghề",
+					digits : "Bậc nghề chỉ bao gồm số"
+				},
+				seniority : {
+					required : "Vui lòng nhập số năm thâm niên",
+					digits : "Thâm niên chỉ bao gồm số"
+				},
+				'account.username' : "Vui lòng đăng kí tên tài khoản",
+				password_ : {
+					required : "Vui lòng đăng kí mật khẩu",
+					minlength : "Mật khẩu cần tối thiểu 6 kí tự"
+				}
+
+			},
+		})
+	})
+</script>
+<style>
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
+}
+</style>
 
 </html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+		<div class="page-container">
+			<div th:insert="includes.html :: header"></div>
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+							<div class="card-body">
+								<div class="panel-body">
+									<form th:object="${creditAccount}"
+										action="/admin/manage/credit-account/edit" method="post"
+										id="credit-form">
+										<div class="form-group">
+											<label class="required">Mã số tài khoản: </label> <input
+												th:field="*{id}" class="form-control"
+												placeholder="Mã số tín dụng" readonly="readonly" />
+										</div>
+										<div class="form-group">
+											<label class="required">Số dư: </label> <input
+												th:field="*{balance}" class="form-control"
+												placeholder="Số dư"/>
+										</div>
+										<div class="form-group">
+											<label class="required">Hạn mức tín dụng: </label> <input
+												th:field="*{limitBalance}" class="form-control"
+												placeholder="Hạn mức tín dụng" />
+										</div>
+										<div class="form-group">
+											<label class="required">Loại tài khoản:</label> <select
+												th:field="*{bankAccountType.id}" class="form-control">
+												<option th:each="bankAccountType_ : ${bankAccountTypes}"
+													th:value="${bankAccountType_.id}"
+													th:text="${bankAccountType_.name}"></option>
+											</select>
+										</div>
+										<button type="submit" class="btn btn-success">
+											<i class="fas fa-download"></i> Save
+										</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:insert="includes.html :: footer"></div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$().ready(function() {
+		$('#credit-form').validate({
+			rules : {
+				limitBalance : {
+					required : true,
+					digits : true,
+				},
+				balance : {
+					required : true,
+					digits : true,
+				},
+			},
+			messages : {
+				limitBalance : {
+					required : "Vui lòng nhập hạn mức tín dụng",
+					digits : "Hạn mức tín dụng chỉ bao gồm số"
+				},
+				balance : {
+					required : "Vui lòng nhập số dư",
+					digits : "Số dư chỉ bao gồm số"
+				},
+			},
+		})
+	})
+</script>
+<style>
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
+}
+</style>
+</html>

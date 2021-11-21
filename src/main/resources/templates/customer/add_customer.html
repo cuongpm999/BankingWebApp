@@ -53,20 +53,22 @@
 										action="/admin/manage/customer/add" method="post"
 										id="customer-form">
 										<div class="form-group">
-											<label class="required">Full name: </label> <input
-												th:field="*{fullName}" class="form-control" />
+											<label class="required">Họ và tên: </label> <input
+												th:field="*{fullName}" class="form-control"
+												placeholder="Họ và tên" />
 										</div>
 										<div class="form-group">
-											<label class="required">ID card: </label> <input
-												th:field="*{idCard}" class="form-control" />
+											<label class="required">CMT: </label> <input
+												th:field="*{idCard}" class="form-control" placeholder="Cmt" />
 										</div>
 										<div class="form-group">
-											<label class="required">Date of birth: </label> <input
-												name="dob" class="form-control" type="date" />
+											<label class="required">Ngày sinh: </label> <input name="dob"
+												class="form-control" type="date" placeholder="Ngày sinh" />
 										</div>
 										<div class="form-group">
-											<label class="required">Address: </label> <input
-												th:field="*{address}" class="form-control" />
+											<label class="required">Địa chỉ: </label> <input
+												th:field="*{address}" class="form-control"
+												placeholder="Địa chỉ" />
 										</div>
 										<button type="submit" class="btn btn-success">
 											<i class="fas fa-download"></i> Save
@@ -77,8 +79,8 @@
 						</div>
 					</div>
 				</div>
-				<div th:insert="includes.html :: footer"></div>
 			</div>
+			<div th:insert="includes.html :: footer"></div>
 		</div>
 	</div>
 </body>
@@ -90,8 +92,8 @@
 				idCard : {
 					required : true,
 					digits : true,
-					minlength : 9,
-					maxlength : 10,
+					minlength : 12,
+					maxlength : 12,
 				},
 				dob : "required",
 				address : "required",
@@ -99,10 +101,10 @@
 			messages : {
 				fullName : "Vui lòng điền đầy đủ họ tên",
 				idCard : {
-					required : "Vui lòng nhập số CMND/CCCD",
-					minlength : "Số CMND/CCCD phải bao gồm ít nhất 9 số",
-					maxlength : "Số CMND/CCCD chỉ bao gồm nhiều nhất 10 số",
-					digits : "Số CMND/CCCD chỉ bao gồm số"
+					required : "Vui lòng nhập số CMT",
+					minlength : "Số CMT phải bao gồm ít nhất 12 số",
+					maxlength : "Số CMT chỉ bao gồm nhiều nhất 12 số",
+					digits : "Số CMT chỉ bao gồm số"
 				},
 				dob : "Vui lòng nhập ngày sinh",
 				address : "Vui lòng nhập địa chỉ"
