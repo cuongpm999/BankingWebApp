@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+		<div class="page-container">
+			<div th:insert="includes.html :: header"></div>
+
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+							<div class="card-body">
+								<div class="panel-body">
+									<form method="POST" th:object="${bankAccountType}" th:action="@{/admin/manage/bank-account-type/add}" id="bank-account-type-form">
+										<div class="form-group">
+										<label class="required">Name:</label>
+										<input type="text" th:field="*{name}" class="form-control" />
+									</div>
+									<div class="form-group">
+										<label class="required">Note:</label>
+										<input type="text" th:field="*{note}" class="form-control" />
+									</div>
+									<button type="submit" class="btn btn-success">
+										<i class="fas fa-download"></i> Save
+									</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div th:insert="includes.html :: footer"></div>
+			</div>
+		</div>
+</body>
+<script type="text/javascript">
+	$().ready(function() {
+		$('#bank-account-type-form').validate({
+			rules : {
+				name : "required",
+			},
+			messages : {
+				name : "Vui lòng điền đầy đủ tên",
+			},
+		})
+	})
+</script>
+<style>
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
+}
+</style>
+</html>
