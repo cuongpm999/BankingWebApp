@@ -49,9 +49,9 @@
 						<div class="form-add">
 							<div class="card-body">
 								<div class="panel-body">
-									<form th:object="${creditAccount}"
-										action="/admin/manage/credit-account/edit" method="post"
-										id="credit-form">
+									<form th:object="${depositAccount}"
+										action="/admin/manage/deposit-account/edit" method="post"
+										id="deposit-form">
 										<div class="form-group">
 											<label class="required">Mã số tài khoản: </label> <input
 												th:field="*{id}" class="form-control"
@@ -60,12 +60,17 @@
 										<div class="form-group">
 											<label class="required">Số dư: </label> <input
 												th:field="*{balance}" class="form-control"
-												placeholder="Số dư"/>
+												placeholder="Số dư" />
 										</div>
 										<div class="form-group">
-											<label class="required">Hạn mức tín dụng: </label> <input
-												th:field="*{limitBalance}" class="form-control"
-												placeholder="Hạn mức tín dụng" />
+											<label class="required">Số dư tối thiểu: </label> <input
+												th:field="*{minimumBalance}" class="form-control"
+												placeholder="Số dư tối thiểu" />
+										</div>
+										<div class="form-group">
+											<label class="required">Lãi suất hàng tháng: </label> <input
+												th:field="*{interestRate}" class="form-control"
+												placeholder="Số dư tối thiểu" />
 										</div>
 										<div class="form-group">
 											<label class="required">Loại tài khoản:</label> <select
@@ -91,9 +96,9 @@
 </body>
 <script type="text/javascript">
 	$().ready(function() {
-		$('#credit-form').validate({
+		$('#deposit-form').validate({
 			rules : {
-				limitBalance : {
+				minimumBalance : {
 					required : true,
 					number : true,
 				},
@@ -101,15 +106,24 @@
 					required : true,
 					number : true,
 				},
+				interestRate : {
+					required : true,
+					number : true,
+				},
+				
 			},
 			messages : {
-				limitBalance : {
-					required : "Vui lòng nhập hạn mức tín dụng",
-					number : "Hạn mức tín dụng chỉ bao gồm số"
+				minimumBalance : {
+					required : "Vui lòng nhập số dư tối thiểu",
+					number : "Số dư tối thiểu chỉ bao gồm số"
 				},
 				balance : {
 					required : "Vui lòng nhập số dư",
 					number : "Số dư chỉ bao gồm số"
+				},
+				interestRate : {
+					required : "Vui lòng nhập lãi suất hàng tháng",
+					number : "Lãi suất hàng tháng chỉ bao gồm số"
 				},
 			},
 		})
