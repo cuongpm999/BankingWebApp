@@ -50,27 +50,30 @@
 						<div class="form-add">
 							<div class="card-body">
 								<div class="panel-body">
-									<form method="POST" th:object="${bankAccountType}" th:action="@{/admin/manage/bank-account-type/add}" id="bank-account-type-form">
+									<form method="POST" th:object="${bankAccountType}"
+										th:action="@{/admin/manage/bank-account-type/add}"
+										id="bank-account-type-form">
 										<div class="form-group">
-										<label class="required">Name:</label>
-										<input type="text" th:field="*{name}" class="form-control" />
-									</div>
-									<div class="form-group">
-										<label class="required">Note:</label>
-										<input type="text" th:field="*{note}" class="form-control" />
-									</div>
-									<button type="submit" class="btn btn-success">
-										<i class="fas fa-download"></i> Save
-									</button>
+											<label class="required">Tên:</label> <input type="text"
+												th:field="*{name}" class="form-control" />
+										</div>
+										<div class="form-group">
+											<label>Ghi chú:</label> <input type="text" th:field="*{note}"
+												class="form-control" />
+										</div>
+										<button type="submit" class="btn btn-success">
+											<i class="fas fa-download"></i> Save
+										</button>
 									</form>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div th:insert="includes.html :: footer"></div>
 			</div>
+			<div th:insert="includes.html :: footer"></div>
 		</div>
+	</div>
 </body>
 <script type="text/javascript">
 	$().ready(function() {

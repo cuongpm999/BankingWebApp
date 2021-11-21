@@ -47,17 +47,16 @@
 							<input class="form-control" id="myInput" type="text"
 								placeholder="Search.."> <a
 								href="/admin/manage/bank-account-type/add" class="btn btn-success"
-								style="margin-top: 10px"><i class="fas fa-plus-square"></i> Add
-								Bank Account Type</a>
+								style="margin-top: 10px"><i class="fas fa-plus-square"></i> Add</a>
 							<h1 class="my-3"></h1>
 
 							<table class="table">
 								<thead class="thead-light">
 									<tr>
-										<th>No.</th>
-										<th>Name</th>
-										<th>Note</th>
-										<th>Action</th>
+										<th>#</th>
+										<th>Tên</th>
+										<th>Ghi chú</th>
+										<th></th>
 									</tr>
 								</thead>
 								<tbody id="myTable">
@@ -75,9 +74,9 @@
 							</table>
 						</div>
 					</div>
-				</div>
-				<div th:insert="includes.html :: footer"></div>
+				</div>			
 			</div>
+			<div th:insert="includes.html :: footer"></div>
 		</div>
 	</div>
 </body>
