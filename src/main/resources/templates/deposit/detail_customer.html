@@ -53,67 +53,46 @@
 									<tbody>
 										<tr>
 											<td>CMT</td>
-											<td
-												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${session.customerPay.idCard}"></td>
+											<td style="font-size: 17px; font-weight: 600; color: #495057;" th:text="${customer.idCard}"></td>
 										</tr>
 										<tr>
 											<td>Họ và tên</td>
-											<td
-												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${session.customerPay.fullName}"></td>
+											<td style="font-size: 17px; font-weight: 600; color: #495057;" th:text="${customer.fullName}"></td>
 										</tr>
 										<tr>
 											<td>Ngày sinh</td>
-											<td
-												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${#dates.format(session.customerPay.dateOfBirth, 'dd/MM/yyyy')}"></td>
+											<td style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#dates.format(customer.dateOfBirth, 'dd/MM/yyyy')}"></td>
 										</tr>
 										<tr>
 											<td>Địa chỉ</td>
-											<td
-												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${session.customerPay.address}"></td>
-										</tr>
-										<tr>
-											<td>Mã tài khoản</td>
-											<td
-												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${session.depositAccountId_Pay}"></td>
+											<td style="font-size: 17px; font-weight: 600; color: #495057;" th:text="${customer.address}"></td>
 										</tr>
 									</tbody>
 								</table>
-
 							</div>
-							<input class="form-control" id="myInput" type="text"
-								placeholder="Search..">
-							<a href="/admin/transaction/create-payment/create"
-								class="btn btn-success" style="margin-top: 10px"><i
-								class="fas fa-plus-square"></i> Chuyển tiền</a>
 							<h1 class="my-3"></h1>
 
 							<table class="table">
 								<thead class="thead-light">
 									<tr>
-										<th>#</th>
-										<th>Ngày thực hiện</th>
-										<th>Số tiền giao dịch</th>
-										<th>Mã số tài khoản nhận</th>
-										<th>Nhân viên tạo</th>
+										<th>Mã số tài khoản</th>
+										<th>Loại tài khoản</th>
+										<th>Số dư</th>
+										<th>Lãi suất ngân hàng</th>
+										<th>Số dư tối thiểu</th>
 										<th></th>
 									</tr>
 								</thead>
 								<tbody id="myTable">
-									<tr th:each="transaction : ${transactions}">
-										<td th:text="${transactionStat.index + 1}"></td>
-										<td
-											th:text="${#dates.format(transaction.dateCreate, 'dd/MM/yyyy HH:mm:ss')}"></td>
-										<td
-											th:text="${#numbers.formatInteger(transaction.money,0,'POINT')+' ₫'}"></td>
-										<td th:text="${transaction.creditAccount.id}"></td>
-										<td th:text="${transaction.employee.fullName}"></td>
-										<td><a
-											th:href="@{'/admin/transaction/create-payment/detail-transaction/' + ${transaction.id}}">Xem chi tiết</a></td>
+									<tr th:each="depositAccount : ${depositAccounts}">
+										<td th:text="${depositAccount.id}"></td>
+										<td th:text="${depositAccount.bankAccountType.name}"></td>
+										<td th:text="${#numbers.formatInteger(depositAccount.balance,0,'POINT')+' ₫'}"></td>
+										<td th:text="${depositAccount.interestRate+' %'}"></td>
+										<td th:text="${#numbers.formatInteger(depositAccount.minimumBalance,0,'POINT')+' ₫'}"></td>
+										 <td><a
+											th:href="@{'/admin/transaction/deposit/detail-account/' + ${depositAccount.id}}">Chi tiết giao dịch</a>
 									</tr>
 								</tbody>
 							</table>

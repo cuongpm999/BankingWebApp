@@ -48,7 +48,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-add">
-							<a th:href="@{'/admin/transaction/create-payment/detail-account/'+ ${session.depositAccountId_Pay}}"
+							<a th:href="@{'/admin/transaction/credit/detail-account/'+ ${session.accountId_credit}}"
 								class="btn btn-success"
 								style="font-size: 18px; font-weight: 600;"><i
 								class="far fa-arrow-alt-circle-left"></i> Quay lại</a>
@@ -75,12 +75,6 @@
 												th:text="${transaction.customer.fullName}"></td>
 										</tr>
 										<tr>
-											<td>Mã số tài khoản gửi tiền</td>
-											<td
-												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${transaction.depositAccount.id}"></td>
-										</tr>
-										<tr>
 											<td>Mã số tài khoản tín dụng</td>
 											<td
 												style="font-size: 17px; font-weight: 600; color: #495057;"
@@ -91,12 +85,6 @@
 											<td
 												style="font-size: 17px; font-weight: 600; color: #495057;"
 												th:text="${#numbers.formatInteger(transaction.money,0,'POINT')+' ₫'}"></td>
-										</tr>
-										<tr>
-											<td>Số dư còn lại của tài khoản gửi tiền</td>
-											<td
-												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${#numbers.formatInteger(transaction.afterBalanceDeposit,0,'POINT')+' ₫'}"></td>
 										</tr>
 										<tr>
 											<td>Số nợ còn lại của tài khoản tín dụng</td>

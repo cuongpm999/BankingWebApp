@@ -59,10 +59,11 @@ public class CreatePaymentController {
 	
 	@GetMapping("/detail-account/{id}")
 	public String viewAccountDetail(@PathVariable("id") String id, Model model, HttpServletRequest req, HttpServletResponse resp) {
+		HttpSession httpSession = req.getSession();
+		if(httpSession.getAttribute("customerPay")==null) return "redirect:/admin/transaction/create-payment";
 		List<Transaction> transactions = Arrays.asList(rest.getForObject(domainServices + "/rest/api/create-payment/find-payment-account/"+id, Transaction[].class));
 		model.addAttribute("transactions", transactions);
-		DepositAccount depositAccount = rest.getForObject(domainServices+"/rest/api/deposit-account/find-by-id/"+id, DepositAccount.class);
-		req.getSession().setAttribute("depositAccount_Pay", depositAccount);
+		req.getSession().setAttribute("depositAccountId_Pay", id);
 		return "payment/detail_account";
 	}
 	
@@ -70,7 +71,10 @@ public class CreatePaymentController {
 	public String viewPay(Model model, HttpServletRequest req, HttpServletResponse resp) {
 		HttpSession httpSession = req.getSession();
 		if(httpSession.getAttribute("customerPay")==null) return "redirect:/admin/transaction/create-payment";
-		if(httpSession.getAttribute("depositAccount_Pay")==null) return "redirect:/admin/transaction/create-payment";
+		if(httpSession.getAttribute("depositAccountId_Pay")==null) return "redirect:/admin/transaction/create-payment";
+		String id = httpSession.getAttribute("depositAccountId_Pay").toString();
+		DepositAccount depositAccount = rest.getForObject(domainServices+"/rest/api/deposit-account/find-by-id/"+id, DepositAccount.class);
+		req.getSession().setAttribute("depositAccount_Pay", depositAccount);
 		
 		Transaction transaction = new Transaction();
 		model.addAttribute("transaction", transaction);
@@ -117,7 +121,7 @@ public class CreatePaymentController {
 	public String viewTransactionDetail(@PathVariable("id") int id, Model model, HttpServletRequest req, HttpServletResponse resp) {
 		HttpSession httpSession = req.getSession();
 		if(httpSession.getAttribute("customerPay")==null) return "redirect:/admin/transaction/create-payment";
-		if(httpSession.getAttribute("depositAccount_Pay")==null) return "redirect:/admin/transaction/create-payment";
+		if(httpSession.getAttribute("depositAccountId_Pay")==null) return "redirect:/admin/transaction/create-payment";
 		
 		Transaction transaction = rest.getForObject(domainServices + "/rest/api/create-payment/find-transaction-by-id/"+id, Transaction.class);
 		model.addAttribute("transaction", transaction);
