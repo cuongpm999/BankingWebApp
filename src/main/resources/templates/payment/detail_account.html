@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/home.js}"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+
+		<div class="page-container">
+
+			<div th:insert="includes.html :: header"></div>
+
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+							<div class="customer-infor" style="width: 500px">
+								<table class="table">
+									<tbody>
+										<tr>
+											<td>CMT</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.customerPay.idCard}"></td>
+										</tr>
+										<tr>
+											<td>Họ và tên</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.customerPay.fullName}"></td>
+										</tr>
+										<tr>
+											<td>Ngày sinh</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#dates.format(session.customerPay.dateOfBirth, 'dd/MM/yyyy')}"></td>
+										</tr>
+										<tr>
+											<td>Địa chỉ</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.customerPay.address}"></td>
+										</tr>
+										<tr>
+											<td>Mã tài khoản</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.depositAccount_Pay.id}"></td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+							<a href="/admin/transaction/create-payment/create"
+								class="btn btn-success" style="margin-top: 10px"><i
+								class="fas fa-plus-square"></i> Chuyển tiền</a>
+							<h1 class="my-3"></h1>
+
+							<table class="table">
+								<thead class="thead-light">
+									<tr>
+										<th>#</th>
+										<th>Ngày thực hiện</th>
+										<th>Số tiền giao dịch</th>
+										<th>Mã số tài khoản nhận</th>
+										<th>Người tạo</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="myTable">
+									<tr th:each="transaction : ${transactions}">
+										<td th:text="${transactionStat.index + 1}"></td>
+										<td
+											th:text="${#dates.format(transaction.dateCreate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+										<td
+											th:text="${#numbers.formatInteger(transaction.money,0,'POINT')+' ₫'}"></td>
+										<td th:text="${transaction.creditAccount.id}"></td>
+										<td th:text="${transaction.employee.fullName}"></td>
+										<td><a
+											th:href="@{'/admin/transaction/create-payment/detail-transaction/' + ${transaction.id}}">Xem chi tiết</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:insert="includes.html :: footer"></div>
+		</div>
+	</div>
+</body>
+<style>
+.table td, .table th {
+	border-top: 0;
+}
+</style>
+
+</html>

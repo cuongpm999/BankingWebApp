@@ -27,5 +27,31 @@ var Banking = {
 			location.href = link;
 		}
 	},
+	
+	checkAccountId: function(){
+		var data = {};
+		data["number"] = $('#number').val();
+
+		$.ajax({
+			url: "/rest/api/check/account",
+			type: "post",
+			contentType: "application/json",
+			data: JSON.stringify(data),
+
+			dataType: "json",
+			success: function(jsonResult) {
+				if (jsonResult.status == "333") {
+					location.href = "/admin/transaction/create-payment/create";
+				}
+				else if (jsonResult.status == "111") {
+					alert("Tài khoản không tồn tại");
+				}
+				else if (jsonResult.status == "222") {
+					alert("Vui lòng nhập số tài khoản");
+				}
+			}
+		});
+	},
+
 
 }

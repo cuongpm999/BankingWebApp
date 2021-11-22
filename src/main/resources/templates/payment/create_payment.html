@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/home.js}"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/form_infor.css}">
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+		<div class="page-container">
+			<div th:insert="includes.html :: header"></div>
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+							<div class="card-body">
+								<div class="panel-body">
+
+									<div class="box-from-to" style="margin-bottom: 30px;">
+										<div class="row row-0 list-mb10 list-last-mb">
+											<div class="col-md-6">
+												<a class="card-ft card-from" href="javascript:void(0);">
+													<div class="row row-10 align-items-center">
+														<div class="col-auto">
+															<div class="h5 b"
+																th:text="${session.depositAccount_Pay.id}"></div>
+															<div class="h7 b1"
+																th:text="${session.customerPay.fullName}"></div>
+															<div class="h7 mt2"
+																th:text="${#numbers.formatInteger(session.depositAccount_Pay.balance,0,'POINT')+' ₫'}"></div>
+															<div class="h7 mt2"
+																th:text="${#numbers.formatInteger(session.depositAccount_Pay.minimumBalance,0,'POINT')+' ₫'}"></div>
+														</div>
+													</div>
+												</a>
+											</div>
+											<div class="col-md-6" data-toggle="modal"
+												data-target="#exampleModal">
+												<a class="card-ft card-to" href="javascript:void(0);"> <!---->
+													<!---->
+													<div class="width-full">
+														<div class="row row-10 align-items-center">
+															<div class="col-auto text-right">
+																<div th:if="${session.creditAccount_Pay != null}">
+																	<div class="h5 b"
+																		th:text="${session.creditAccount_Pay.id}"></div>
+																	<div class="h7 b1"
+																		th:text="${session.customerOtherPay.fullName}"></div>
+																	<div class="h7 mt2"
+																		th:text="${#numbers.formatInteger(session.creditAccount_Pay.balance,0,'POINT')+' ₫'}"></div>
+																</div>
+																<div th:if="${session.creditAccount_Pay == null}">
+																	<div class="h5 b">Tài khoản tín dụng</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</a>
+											</div>
+										</div>
+									</div>
+									<div th:if="${status == 'failed'}">
+										<div class="alert alert-danger">
+											<strong>Failed!</strong> Số tiền giao dịch vượt quá số tiền
+											tối thiểu!
+										</div>
+									</div>
+									<div th:if="${status == 'selectAccount'}">
+										<div class="alert alert-danger">
+											<strong>Failed!</strong> Vui lòng chọn tài khoản tín dụng để giao dịch!
+										</div>
+									</div>
+
+									<form th:object="${transaction}"
+										action="/admin/transaction/create-payment/create"
+										method="post" id="deposit-form">
+										<div class="form-group">
+											<label class="required">Số tiền giao dịch: </label> <input
+												th:field="*{money}" class="form-control"
+												placeholder="Số tiền giao dịch" />
+										</div>
+										<div class="form-group">
+											<label>Ghi chú: </label>
+											<textarea th:field="*{note}" class="form-control" rows="5"
+												style="width: 100%;"></textarea>
+										</div>
+										<div th:if="${session.creditAccount_Pay != null}">
+											<button type="submit" class="btn btn-success">
+												<i class="fas fa-download"></i> Save
+											</button>
+										</div>
+										<div th:unless="${session.creditAccount_Pay != null}">
+											<button type="submit" class="btn btn-success" disabled>
+												<i class="fas fa-download"></i> Save
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:insert="includes.html :: footer"></div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div style="text-align: center; width: 100%;">
+						<h5 class="modal-title" id="exampleModalLabel"
+							style="font-size: 25px;">Tìm tài khoản tín dụng</h5>
+					</div>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form id="check-form">
+					<div class="modal-body">
+
+						<div class="form-group" style="position: relative;">
+							<label style="font-size: 18px; font-weight: 600;"
+								class="required">Số tài khoản:</label> <input type="text"
+								class="form-control" id="number" name="accountId_"
+								style="padding-right: 87px;" /> <a
+								style="text-decoration: none; color: blue; font-size: 16px; font-weight: 600; position: absolute; top: 42px; right: 10px;"
+								href="javascript:void(0);" onclick="Banking.checkAccountId()">
+								KIỂM TRA </a>
+						</div>
+
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- --- -->
+</body>
+<script type="text/javascript">
+	$().ready(function() {
+		$('#deposit-form').validate({
+			rules : {
+				money : {
+					required : true,
+					number : true,
+				},
+
+			},
+			messages : {
+				money : {
+					required : "Vui lòng nhập số tiền giao dịch",
+					number : "Số tiền giao dịch chỉ bao gồm số"
+				},
+			},
+		});
+
+		$('#check-form').validate({
+			rules : {
+				accountId_ : {
+					required : true,
+					digits : true,
+				},
+			},
+			messages : {
+				accountId_ : {
+					required : "Vui lòng nhập số tài khoản",
+					digits : "Số tài khoản chỉ bao gồm số"
+				},
+
+			},
+		})
+	})
+</script>
+<style>
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
+}
+</style>
+</html>
