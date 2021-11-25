@@ -1,0 +1,231 @@
+/* header */
+header{
+	background-color: #222d32;
+	height: 80px;
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+	position: relative;
+}
+
+header .services{
+	color: #fff;
+	line-height: 80px;
+	font-size: 18px;
+	margin-left: 20px;
+}
+
+header .services:hover{
+	cursor: pointer;
+}
+
+header .services:hover header ul{
+	display: block;
+}
+
+header .services i{
+	font-size: 15px;
+}
+
+header .drop-down-menu{
+	display: none;
+	background-color: #fff;
+	opacity: 0.9;
+	padding-top: 20px;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	box-shadow: 0 2px 10px rgb(0 0 0 / 20%);
+}
+
+header .drop-down-menu a{
+	color: #a71117;
+	line-height: 35px;
+}
+
+header .drop-down-menu a:hover{
+	color: #23527c;
+	text-decoration: none;
+}
+
+header .drop-down-menu ul li{
+	display: inline-block;
+	width: 15%;
+	text-align: center;
+	line-height: 50px;
+}
+
+header .logo a{
+	line-height: 80px;
+	color: #ebd352;
+	font-size: 32px;
+	font-weight: 700;
+	font-family: "Times New Roman", Times, serif;
+}
+
+header .logo a:hover{
+	text-decoration: none;
+}
+
+header .logo a img{
+	width: 45px;
+	margin-bottom: 5px;
+}
+
+header .contact i{
+	color: #fff;
+}
+
+header .contact a{
+	color: #fff;
+	line-height: 80px;
+	font-size: 17px;
+	font-weight: 300;
+}
+
+#banner img {
+	width: 100%;
+	height: 480px;
+}
+
+#banner ul li {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+}
+
+/* main */
+#main{
+	height: 350px;
+}
+
+#main .main-item{
+	position: relative;
+	padding: 0;
+}
+
+#main .main-item h6{
+	position: absolute;
+	top: 30px;
+	left: 20px;
+	font-size: 20px;
+	color: #fff;
+}
+
+#main .tien-gui .bg-img{
+	background: linear-gradient(90deg,rgba(0,0,0,0.3), rgba(0,0,0,0.3)),url('../img/gui-tien.jpeg') no-repeat 95% 50%;
+	height: 350px;
+	opacity: 1;
+	transition: all 0.5s;
+}
+
+#main .ngan-hang-so .bg-img{
+	background: linear-gradient(90deg,rgba(0,0,0,0.3), rgba(0,0,0,0.3)),url('../img/ngan-hang-so.png') no-repeat 67% 12%;
+	height: 350px;
+	opacity: 1;
+	transition: all 0.5s;
+}
+#main .dich-vu-the .bg-img{
+	background: linear-gradient(90deg,rgba(0,0,0,0.3), rgba(0,0,0,0.3)),url('../img/dich-vu-the.jpg') no-repeat 67% 12%;
+	height: 350px;
+	opacity: 1;
+	transition: all 0.5s;
+}
+#main .thanh-toan_chuyen-khoan .bg-img{
+	background: linear-gradient(90deg,rgba(0,0,0,0.3), rgba(0,0,0,0.3)),url('../img/thanh-toan-chuyen-tien.jpg') no-repeat 30% 80%;
+	height: 350px;
+	opacity: 1;
+	transition: all 0.5s;
+}
+#main .vay-ca-nhan .bg-img{
+	background: linear-gradient(90deg,rgba(0,0,0,0.3), rgba(0,0,0,0.3)),url('../img/vay-ca-nhan.jpg') no-repeat 82% 32%;
+	height: 350px;
+	opacity: 1;
+	transition: all 0.5s;
+}
+#main .ngoai-hoi_thi-truong-von .bg-img{
+	background: linear-gradient(90deg,rgba(0,0,0,0.3), rgba(0,0,0,0.3)),url('../img/thi-truong-von.jpg') no-repeat 82% 32%;
+	height: 350px;
+	opacity: 1;
+	transition: all 0.5s;
+}
+
+.main-item-content{
+	position: absolute;
+	top: 100px;
+	left: 20px;
+	display: none;
+}
+
+.main-item-content a{
+	display: block;
+	color: #fff;
+	font-size: 14px;
+	line-height: 30px;
+}
+
+.main-item-content a:hover{
+	color: #fff;
+}
+
+.hello-welcome{
+	margin-top: 15px;
+	font-size: 27px;
+	font-weight: 700;
+}
+
+/* nav-tab */
+.nav-tabs .nav-link{
+	border: none;
+}
+
+#myTab{
+	border-bottom: 1px solid #e0e0e0;
+	margin-bottom: 20px;
+}
+
+.nav-tabs .nav-link{
+	color: #1c2e36;
+}
+
+.nav-tabs .nav-link.active{
+	color: #21409a;
+	border-bottom: 2px solid #21409a;
+}
+
+/* footer */
+#footer {
+	border-top: 2px solid orange;
+	margin-top: 55px;
+	background-color: #222d32;
+	padding-top: 20px;
+	color: aliceblue;
+}
+
+#footer ul {
+	padding-left: 0;
+}
+
+#footer ul li a {
+	text-decoration: none;
+	color: rgb(186, 223, 218);
+}
+
+#footer ul li {
+	list-style: none;
+}
+
+#footer ul li a:hover {
+	color: rgba(0, 238, 255, 0.959);
+}
+
+#footer h4 {
+	color: orange;
+	font-size: 25px;
+	font-weight: 700;
+}
+
+#footer h5 {
+	font-weight: 700;
+}
