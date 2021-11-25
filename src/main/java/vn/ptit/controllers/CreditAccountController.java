@@ -58,7 +58,15 @@ public class CreditAccountController {
 	}
 	
 	@GetMapping("/add")
-	public String viewAddCreditAccount(Model model) {
+	public String viewAddCreditAccount(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		Customer customer = new Customer();
+		HttpSession httpSession = req.getSession();
+		if(httpSession.getAttribute("customer_")!=null) {
+			customer = (Customer) httpSession.getAttribute("customer_");
+		}
+		boolean flag = rest.getForObject(domainServices+"/rest/api/credit-account/count/"+customer.getId(), Boolean.class);
+		if(!flag) return "redirect:/admin/manage/credit-account/detail/"+customer.getId();
+		
 		CreditAccount creditAccount = new CreditAccount();
 		RandomString randomString = new RandomString(14, new SecureRandom(), RandomString.digits);
 		creditAccount.setId(randomString.nextString());

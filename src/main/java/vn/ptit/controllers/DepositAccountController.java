@@ -59,7 +59,16 @@ public class DepositAccountController {
 	}
 
 	@GetMapping("/add")
-	public String viewAddDepositAccount(Model model) {
+	public String viewAddDepositAccount(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		Customer customer = new Customer();
+		HttpSession httpSession = req.getSession();
+		if (httpSession.getAttribute("customer_1") != null) {
+			customer = (Customer) httpSession.getAttribute("customer_1");
+		} else
+			return "redirect:/admin/manage/deposit-account";
+		boolean flag = rest.getForObject(domainServices+"/rest/api/deposit-account/count/"+customer.getId(), Boolean.class);
+		if(!flag) return "redirect:/admin/manage/deposit-account/detail/"+customer.getId();
+		
 		DepositAccount depositAccount = new DepositAccount();
 		RandomString randomString = new RandomString(14, new SecureRandom(), RandomString.digits);
 		depositAccount.setId(randomString.nextString());
