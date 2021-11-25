@@ -1,5 +1,5 @@
 body {
-	background: url('https://wallpaperbat.com/img/41249-banking-wallpaper-top-free-banking-background.jpg') no-repeat 0 0;
+	background: linear-gradient(90deg, rgb(22 76 197 / 18%) 65%,rgb(22 86 100 / 50%)),url('https://wallpaperbat.com/img/41249-banking-wallpaper-top-free-banking-background.jpg') no-repeat 0 0;
 	background-size: cover;
 	-webkit-background-size: cover;
 	-ms-background-size: cover;
@@ -126,7 +126,7 @@ form {
 }
 
 #main {
-	margin-bottom: 83px;
+	margin-bottom: 225px;
 }
 
 h2 a {

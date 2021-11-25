@@ -6,6 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- FAVICON -->
+<link rel="apple-touch-icon" sizes="180x180"
+	href="/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="/favicon/favicon-16x16.png">
+<link rel="manifest" href="/favicon/site.webmanifest">
+<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"
+	color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
 <!-- CSS & JAVA_SCRIPT -->
 <!-- CSS -->
 <link rel="stylesheet"
@@ -22,14 +35,100 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script th:src="@{/js/home.js}"></script>
-
+<link rel="stylesheet" th:href="@{/css/style.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
 
 <title>Banking Project</title>
 </head>
 <body>
-	<!-- HEADER -->
+	<div id="fb-root"></div>
+	<script async defer crossorigin="anonymous"
+		src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v12.0&appId=169447865033151&autoLogAppEvents=1"
+		nonce="8tLXlQO9"></script>
 
+	<!-- HEADER -->
+	<header class="container-fluid">
+		<div class="container d-flex justify-content-between">
+			<div class="services">
+				Dịch vụ <i class="fas fa-chevron-down"></i>
+			</div>
+			<div class="logo">
+				<a href="/"> <img src="/img/logo.png"> ACTBANK
+				</a>
+			</div>
+			<div class="contact">
+				<i class="fas fa-sign-in-alt"></i>&nbsp; <a href="/admin"> Đăng
+					nhập </a>
+			</div>
+		</div>
+		<div class="drop-down-menu">
+			<ul class="container d-flex justify-content-between">
+				<li>
+					<div>
+						<a href="javascript:void(0);"> <img src="/img/motk_1.png">
+						</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);">Gửi tiền</a>
+					</div>
+				</li>
+				<li>
+					<div>
+						<a href="javascript:void(0);"> <img src="/img/motk_3.png">
+						</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);">Giao dịch</a>
+					</div>
+				</li>
+				<li>
+					<div>
+						<a href="javascript:void(0);"> <img src="/img/motk_4.png">
+						</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);">Thanh toán</a>
+					</div>
+				</li>
+				<li>
+					<div>
+						<a href="javascript:void(0);"> <img src="/img/motk_2.png">
+						</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);">Thẻ Actbank</a>
+					</div>
+				</li>
+				<li>
+					<div>
+						<a href="javascript:void(0);"> <img src="/img/motk_7.png">
+						</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);">Bảo hiểm</a>
+					</div>
+				</li>
+				<li>
+					<div>
+						<a href="javascript:void(0);"> <img src="/img/motk_6.png">
+						</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);">Ngân hàng số</a>
+					</div>
+				</li>
+				<li>
+					<div>
+						<a href="javascript:void(0);"> <img src="/img/more.png">
+						</a>
+					</div>
+					<div>
+						<a href="javascript:void(0);">Xem thêm</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</header>
 	<!-- ------ -->
 
 	<!-- MAIN -->
@@ -67,8 +166,69 @@
 	<!-- ------ -->
 
 	<!-- FOOTER -->
+	<div id="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5">
+					<h5>NHANH CHÓNG, UY TÍN, AN TOÀN</h5>
+					<ul>
+						<li>
+							<h4>ACTBANK</h4>
+						</li>
+						<li><a href="javascript:void(0);"><i
+								class="fas fa-map-marker-alt"></i>&ensp;Address: PTIT, Hà Nội</a></li>
+						<li><a href="javascript:void(0);"><i
+								class="fas fa-envelope"></i>&ensp;Email:
+								phamcuongth2000@gmail.com</a></li>
+						<li><a href="javascript:void(0);"><i class="fas fa-phone"></i>&ensp;Mobile:
+								0961656067</a></li>
+					</ul>
+				</div>
+				<div class="col-md-3">
+					<h5>DỊCH VỤ</h5>
+					<ul>
+						<li><a href="javascript:void(0);">Gửi tiền</a></li>
+						<li><a href="javascript:void(0);">Giao dịch</a></li>
+						<li><a href="javascript:void(0);">Thanh toán</a></li>
+					</ul>
+				</div>
+
+				<div class="col-md-4">
+					<h5>KẾT NỐI VỚI CHÚNG TÔI</h5>
+					<div class="fb-page"
+						data-href="https://www.facebook.com/ACT-Bank-107269611788124"
+						data-tabs="timeline" data-width="300" data-height="230"
+						data-small-header="false" data-adapt-container-width="true"
+						data-hide-cover="false" data-show-facepile="true">
+						<blockquote
+							cite="https://www.facebook.com/ACT-Bank-107269611788124"
+							class="fb-xfbml-parse-ignore">
+							<a href="https://www.facebook.com/ACT-Bank-107269611788124">ACT
+								Bank</a>
+						</blockquote>
+					</div>
+
+				</div>
+
+				<hr>
+				<div class="footer-copyright text-center py-3" style="width: 100%;">
+					©
+					<script>
+						var now = new Date();
+						document.write(now.getFullYear());
+					</script>
+					Copyright: <a href="https://www.facebook.com/cuongphamptit999/">
+						Team 01 - Java Web</a>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- ------ -->
 </body>
-
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
 </html>

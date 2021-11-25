@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .loginPage("/login")
         .and()
         .logout()
-        .logoutSuccessUrl("/login")
+        .logoutSuccessUrl("/")
         .invalidateHttpSession(true)
         .clearAuthentication(true)
 		.and()
