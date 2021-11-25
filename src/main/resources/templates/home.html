@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Banking Project</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="icon" type="image/gif/png" th:href="@{/img/logo.png}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+	<header class="container-fluid">
+		<div class="container d-flex justify-content-between">
+			<div class="services">
+				Dịch vụ
+				<i class="fas fa-chevron-down"></i>
+			</div>
+			<div class="logo">
+				<a href="#">
+					<img src="/img/logo.png">
+					ACTBANK
+				</a>
+			</div>
+			<div class="contact">
+				<i class="fas fa-sign-in-alt"></i>&nbsp;
+				<a href="/login">
+					Đăng nhập
+				</a>
+			</div>
+		</div>
+		<div class="drop-down-menu">
+			<ul class="container">
+				<li>
+					<div>
+						<a href="#">
+							<img src="/img/motk_1.png">
+						</a>
+					</div>
+					<div>
+						<a href="#">Gửi tiền</a>
+					</div>
+				</li>
+				<li>
+					<div>
+						<a href="#">
+							<img src="/img/motk_3.png">
+						</a>
+					</div>
+					<div>
+						<a href="#">Giao dịch</a>
+					</div>
+				</li>
+				<li>
+					<div>
+						<a href="#">
+							<img src="/img/motk_4.png">
+						</a>
+					</div>
+					<div>
+						<a href="#">Thanh toán</a>
+					</div>
+				</li>
+			</ul>
+		</div>		
+	</header>
+
+	<div id="banner">
+		<div id="demo" class="carousel slide" data-ride="carousel">
+
+			<ul class="carousel-indicators">
+				<li data-target="#demo" data-slide-to="0" class="active"></li>
+				<li data-target="#demo" data-slide-to="1"></li>
+				<li data-target="#demo" data-slide-to="2"></li>
+				<li data-target="#demo" data-slide-to="3"></li>
+			</ul>
+
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img src="/img/banner1.png" alt="Banner">
+				</div>
+				<div class="carousel-item">
+					<img src="/img/banner2.jpg" alt="Banner">
+				</div>
+				<div class="carousel-item">
+					<img src="/img/banner3.jpg" alt="Banner">
+				</div>
+				<div class="carousel-item">
+					<img src="/img/banner4.jpg" alt="Banner">
+				</div>
+			</div>
+
+			<a class="carousel-control-prev" href="#demo" data-slide="prev">
+				<span class="carousel-control-prev-icon"></span>
+			</a> <a class="carousel-control-next" href="#demo" data-slide="next">
+				<span class="carousel-control-next-icon"></span>
+			</a>
+
+		</div>
+	</div>	
+
+	<section class="section-hello container my-5 d-flex">
+	
+		
+
+		<div class="hello-day" th:if="${#dates.format(#dates.createNow(), 'HH')} <= 11">
+			<img src="/img/Day.svg">
+			<div class="hello-welcome">
+				Chúc buổi sáng vui vẻ, <br>
+				Bạn cần thông tin gì hôm nay?
+			</div>
+		</div>
+		<div class="hello-eve" th:if="(12 <= ${#dates.format(#dates.createNow(), 'HH')}) and (${#dates.format(#dates.createNow(), 'HH')} <= 18)">
+			<img src="/img/Day.svg">
+			<div class="hello-welcome">
+				Chúc buổi chiều vui vẻ, <br>
+				Bạn cần thông tin gì hôm nay?
+			</div>
+		</div>
+		<div class="hello-night" th:if="${#dates.format(#dates.createNow(), 'HH')} >= 19">
+			<img src="/img/Night.svg">
+			<div class="hello-welcome">
+				Chúc buổi tối vui vẻ, <br>
+				Bạn cần thông tin gì tối nay?
+			</div>
+		</div>
+		
+	</section>
+
+	<div id="main">
+		<div class="container-fluid">
+			<div class="row change-bg">
+				<div class="col-md-2 tien-gui main-item">
+					<div class="bg-img"></div>
+					<h6>Tiền gửi</h6>
+					<div class="main-item-content">
+						<a href="#">Tiền gửi thanh toán</a>
+						<a href="#">Tiền gửi có kỳ hạn</a>
+						<a href="#">Tiền gửi kinh doanh chứng khoán và Tiền gửi chuyên dùng</a>
+						<a href="#">Gói tài khoản</a>
+					</div>
+				</div>
+				<div class="col-md-2 ngan-hang-so main-item">
+					<div class="bg-img"></div>
+					<h6>Ngân hàng số</h6>
+					<div class="main-item-content">
+						<a href="#">Ngân hàng di động</a>
+						<a href="#">Dịch vụ ATM</a>
+						<a href="#">Công nghệ mới</a>
+					</div>
+				</div>
+				<div class="col-md-2 dich-vu-the main-item">
+					<div class="bg-img"></div>
+					<h6>Dịch vụ thẻ</h6>
+					<div class="main-item-content">
+						<a href="#">Thẻ ghi nợ quốc tế</a>
+						<a href="#">Thẻ tín dụng quốc tế</a>
+						<a href="#">Thẻ ghi nợ nội địa</a>
+					</div>
+				</div>
+				<div class="col-md-2 thanh-toan_chuyen-khoan main-item">
+					<div class="bg-img"></div>
+					<h6>Thanh toán & chuyển khoản</h6>
+					<div class="main-item-content">
+						<a href="#">Chuyển tiền trong nước</a>
+						<a href="#">Chuyển tiền quốc tế</a>
+						<a href="#">Dịch vụ thanh toán</a>
+					</div>
+				</div>
+				<div class="col-md-2 vay-ca-nhan main-item">
+					<div class="bg-img"></div>
+					<h6>Vay cá nhân</h6>
+					<div class="main-item-content">
+						<a href="#">Vay nhu cầu nhà ở</a>
+						<a href="#">Vay mua ô tô</a>
+						<a href="#">Vay du học</a>
+						<a href="#">Vay sản xuất kinh doanh</a>
+					</div>
+				</div>
+				<div class="col-md-2 ngoai-hoi_thi-truong-von main-item">
+					<div class="bg-img"></div>
+					<h6>Ngoại hối & Thị trường vốn</h6>
+					<div class="main-item-content">
+						<a href="#">Mua bán ngoại tệ</a>
+						<a href="#">Sản phẩm cấu trúc</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container my-5">
+		<div class="row">
+			<div class="col-md-7" style="height: 100%">
+				<ul class="nav nav-tabs justify-content-around" id="myTab" role="tablist">
+					<li class="nav-item">
+    					<a class="nav-link active" id="home-tab" data-toggle="tab" href="#menu1" role="tab" aria-selected="true">Lãi suất Gửi</a>
+  					</li>
+  					<li class="nav-item">
+				    	<a class="nav-link" id="profile-tab" data-toggle="tab" href="#menu2" role="tab" aria-selected="false">Lãi suất Vay</a>
+				  	</li>
+				</ul>
+
+				<div class="tab-content" id="myTabContent">
+					<div class="tab-pane fade show active" id="menu1" role="tabpanel">
+						<iframe frameborder="0" width="100%" height="400px" src="https://webtygia.com/api/laisuat?bgheader=222d32&colorheader=ffffff&padding=5&fontsize=14&undefined"></iframe>
+					</div>
+					<div class="tab-pane fade" id="menu2" role="tabpanel">
+						<iframe frameborder="0" width="100%" height="400px" src="https://webtygia.com/api/laisuatchovay?bgheader=222d32&colorheader=ffffff&padding=5&fontsize=14&border=1&undefined"></iframe>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-5" style="padding-top: 38px; height: 100%;">
+				<iframe frameborder="0" height="400px" width="100%" src="https://webtygia.com/api/cong-cu-chuyen-doi-tien-te?maukhungketqua=222d32&mauchuketqua=ffffff&sizechuketqua=30&fontsize=14&border=0&hienthamkhao=0&undefined"></iframe>
+			</div>
+		</div>
+	</div>
+
+	<div id="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5">
+					<h5>NHANH CHÓNG, UY TÍN, AN TOÀN</h5>
+					<ul>
+						<li>
+							<h4>ACTBANK</h4>
+						</li>
+						<li><a href="javascript:void(0);"><i
+								class="fas fa-map-marker-alt"></i>&ensp;Address: PTIT, Hà Nội</a></li>
+						<li><a href="javascript:void(0);"><i
+								class="fas fa-envelope"></i>&ensp;Email:
+								phamcuongth2000@gmail.com</a></li>
+						<li><a href="javascript:void(0);"><i class="fas fa-phone"></i>&ensp;Mobile:
+								0961656067</a></li>
+					</ul>
+				</div>
+				<div class="col-md-3">
+					<h5>DỊCH VỤ</h5>
+					<ul>
+						<li><a href="#">Gửi tiền</a></li>
+						<li><a href="#">Giao dịch</a></li>
+						<li><a href="#">Thanh toán</a></li>
+					</ul>
+				</div>
+
+				<div class="col-md-4">
+					<h5>KẾT NỐI VỚI CHÚNG TÔI</h5>
+					<div class="fb-page"
+						data-href="https://www.facebook.com/Computer-CuongPham-110156041221389"
+						data-tabs="timeline" data-width="300" data-height="230"
+						data-small-header="false" data-adapt-container-width="true"
+						data-hide-cover="false" data-show-facepile="true">
+						<blockquote
+							cite="https://www.facebook.com/Computer-CuongPham-110156041221389"
+							class="fb-xfbml-parse-ignore">
+							<a
+								href="https://www.facebook.com/Computer-CuongPham-110156041221389">Computer
+								CuongPham</a>
+						</blockquote>
+					</div>
+
+				</div>
+
+				<hr>
+				<div class="footer-copyright text-center py-3" style="width: 100%;">
+					©
+					<script>
+						var now = new Date();
+						document.write(now.getFullYear());
+					</script>
+					Copyright: <a href="https://www.facebook.com/cuongphamptit999/">
+						CuongPham.com</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+</html>
