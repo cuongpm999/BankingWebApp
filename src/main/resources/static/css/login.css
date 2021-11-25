@@ -81,7 +81,7 @@ form {
 
 .form-sub-w3 input[type=text], input[type=password] {
 	width: 85%;
-	padding: 15px 66px 15px 19px;
+	padding: 15px 15px 15px 19px;
 	text-align: left;
 	background-color: rgba(0, 0, 0, .16);
 	border: 0;
@@ -97,6 +97,7 @@ form {
 }
 
 .submit-agileits input[type=submit] {
+	width: 100%;
 	text-align: center;
 	border: 0;
 	color: #fff;

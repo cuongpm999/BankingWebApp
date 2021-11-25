@@ -112,7 +112,7 @@ public class CreditAccountController {
 		HttpSession httpSession = req.getSession();
 		if(httpSession.getAttribute("customer_")!=null) {
 			customer = (Customer) httpSession.getAttribute("customer_");
-		}
+		}else return "redirect:/admin/manage/credit-account";
 		rest.delete(domainServices + "/rest/api/credit-account/delete-by-id/" + id);
 		return "redirect:/admin/manage/credit-account/detail/"+customer.getId();
 	}

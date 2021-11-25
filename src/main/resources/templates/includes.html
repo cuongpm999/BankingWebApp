@@ -44,9 +44,11 @@
 						class="nav-link dropdown-toggle" href="#" id="navbardrop"
 						data-toggle="dropdown"><i class="fas fa-chart-bar"></i>Statistics</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="/admin/manage/statistic/item">Item</a>
-							<a class="dropdown-item" href="/admin/manage/statistic/customer">Customer</a>
-							<a class="dropdown-item" href="/admin/manage/statistic/shipment">Shipment</a>
+							<a class="dropdown-item" href="/admin/statistic/customer-deposit-max">Customer deposit max</a>
+							<a class="dropdown-item" href="/admin/statistic/customer-credit-max">Customer credit max</a>
+							<a class="dropdown-item" href="/admin/statistic/credit-account-balance-max">Credit account balance max</a>
+							<a class="dropdown-item" href="/admin/statistic/deposit-account-balance-max">Deposit account balance max</a>
+							<a class="dropdown-item" href="/admin/statistic/customer-with-transaction">Customer with transaction</a>
 						</div></li>
 				</ul>
 
@@ -72,10 +74,9 @@
 
 	<div class="footer" th:fragment="footer">
 		©
-		<c:set var="now" value="" />
-		<fmt:formatDate pattern="yyyy" value="${now}" />
+		<span th:text="${#dates.format(#dates.createNow(), 'yyyy')}"></span>
 		Copyright: <a href="https://www.facebook.com/cuongphamptit999/">
-			CuongPham.com</a>
+			Team 01 - Java Web</a>
 	</div>
 
 

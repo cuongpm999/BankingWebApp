@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/home.js}"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
+
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+
+		<div class="page-container">
+
+			<div th:insert="includes.html :: header"></div>
+
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+							<form style="display: flex;"
+								action="/admin/statistic/customer-with-transaction"
+								method="post" id="stat-form">
+								<div style="display: flex; margin-right: 20px;">
+									<label
+										style="margin-top: 6px; margin-right: 10px; font-size: 17px;">Loại
+										giao dịch:</label> <select class="form-control" name="selectType">
+										<option value="DEPOSIT" th:selected="${type} == 'DEPOSIT'">DEPOSIT</option>
+										<option value="CREDIT" th:selected="${type} == 'CREDIT'">CREDIT</option>
+										<option value="PAYMENT" th:selected="${type} == 'PAYMENT'">PAYMENT</option>
+									</select>
+								</div>
+								<div style="display: flex; margin-right: 20px;">
+									<label
+										style="margin-top: 6px; margin-right: 10px; font-size: 17px;">From:</label>
+									<div>
+										<input type="date" class="form-control" name="from"
+											th:value="${fromD}">
+									</div>
+								</div>
+								<div style="display: flex; margin-right: 20px;">
+									<label
+										style="margin-top: 6px; margin-right: 10px; font-size: 17px;">To:
+									</label>
+									<div>
+										<input type="date" class="form-control" name="to"
+											th:value="${toD}">
+									</div>
+								</div>
+								<div>
+									<button type="submit" class="btn btn-primary">
+										<i class="fas fa-search"></i> Tìm
+									</button>
+								</div>
+							</form>
+							<h1 class="my-3"></h1>
+
+							<table class="table">
+								<thead class="thead-light">
+									<tr>
+										<th>#</th>
+										<th>Họ và tên</th>
+										<th>Địa chỉ</th>
+										<th>CMT</th>
+										<th>Ngày sinh</th>
+										<th>Số giao dịch</th>
+									</tr>
+								</thead>
+								<tbody id="myTable">
+									<tr
+										th:each="customerTransactionStat, state : ${customerTransactionStats}">
+										<td th:text="${state.index+1}"></td>
+										<td th:text="${customerTransactionStat.fullName}"></td>
+										<td th:text="${customerTransactionStat.address}"></td>
+										<td th:text="${customerTransactionStat.idCard}"></td>
+										<td
+											th:text="${#dates.format(customerTransactionStat.dateOfBirth, 'dd/MM/yyyy')}"></td>
+										<td
+											th:text="${#numbers.formatInteger(customerTransactionStat.tongTienGiaoDich,0,'POINT')+' ₫'}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:insert="includes.html :: footer"></div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$().ready(function() {
+		$('#stat-form').validate({
+			rules : {
+				from : "required",
+				to : "required",
+
+			},
+			messages : {
+				from : "Vui lòng nhập ngày bắt đầu",
+				to : "Vui lòng nhập ngày kết thúc",
+			},
+		})
+	})
+</script>
+<style>
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
+}
+
+.form-control {
+	width: auto;
+}
+</style>
+</html>

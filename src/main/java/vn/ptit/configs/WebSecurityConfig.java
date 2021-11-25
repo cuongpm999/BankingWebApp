@@ -31,14 +31,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .loginPage("/login")
         .and()
         .logout()
-//        .logoutUrl("/logout")
         .logoutSuccessUrl("/login")
         .invalidateHttpSession(true)
-        .clearAuthentication(true);
-//        .and()
-//        .httpBasic()
-//        .and()
-//        .exceptionHandling().accessDeniedPage("/error-403");
+        .clearAuthentication(true)
+		.and()
+        .exceptionHandling().accessDeniedPage("/admin/403-error");
 	}
 
 	@Bean

@@ -49,7 +49,7 @@ public class DepositAccountController {
 			HttpServletResponse resp) {
 		Customer customer = rest.getForObject(domainServices + "/rest/api/customer/find-by-id/" + id, Customer.class);
 		model.addAttribute("customer", customer);
-		req.getSession().setAttribute("customer_", customer);
+		req.getSession().setAttribute("customer_1", customer);
 
 		List<DepositAccount> depositAccounts = Arrays.asList(rest.getForObject(
 				domainServices + "/rest/api/deposit-account/find-by-customer/" + id, DepositAccount[].class));
@@ -79,8 +79,8 @@ public class DepositAccountController {
 		depositAccount.setStatus(true);
 		Customer customer = new Customer();
 		HttpSession httpSession = req.getSession();
-		if (httpSession.getAttribute("customer_") != null) {
-			customer = (Customer) httpSession.getAttribute("customer_");
+		if (httpSession.getAttribute("customer_1") != null) {
+			customer = (Customer) httpSession.getAttribute("customer_1");
 		} else
 			return "redirect:/admin/manage/deposit-account";
 		Employee employee = rest.getForObject(
@@ -118,9 +118,10 @@ public class DepositAccountController {
 			HttpServletResponse resp) {
 		Customer customer = new Customer();
 		HttpSession httpSession = req.getSession();
-		if (httpSession.getAttribute("customer_") != null) {
-			customer = (Customer) httpSession.getAttribute("customer_");
-		}
+		if (httpSession.getAttribute("customer_1") != null) {
+			customer = (Customer) httpSession.getAttribute("customer_1");
+		}else
+			return "redirect:/admin/manage/deposit-account";
 		rest.delete(domainServices + "/rest/api/deposit-account/delete-by-id/" + id);
 		return "redirect:/admin/manage/deposit-account/detail/" + customer.getId();
 	}
@@ -130,8 +131,8 @@ public class DepositAccountController {
 			HttpServletRequest req, HttpServletResponse resp) {
 		Customer customer = new Customer();
 		HttpSession httpSession = req.getSession();
-		if (httpSession.getAttribute("customer_") != null) {
-			customer = (Customer) httpSession.getAttribute("customer_");
+		if (httpSession.getAttribute("customer_1") != null) {
+			customer = (Customer) httpSession.getAttribute("customer_1");
 		} else
 			return "redirect:/admin/manage/deposit-account";
 		depositAccount.setStatus(true);
