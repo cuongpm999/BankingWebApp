@@ -52,7 +52,6 @@ header .drop-down-menu a:hover{
 
 header .drop-down-menu ul li{
 	display: inline-block;
-	width: 15%;
 	text-align: center;
 	line-height: 50px;
 }
