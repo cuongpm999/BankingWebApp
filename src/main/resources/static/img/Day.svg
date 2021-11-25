@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 2 Copy</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Weather" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-2-Copy" transform="translate(-4.000000, -4.000000)">
+            <rect id="Rectangle" x="0" y="0" width="50" height="50"></rect>
+            <g id="Group-3" transform="translate(5.000000, 5.000000)" stroke="#FFC900" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <path d="M14.5454545,14.6890909 C15.3309091,10.4672727 19.0345455,7.27272727 23.4818182,7.27272727 C28.5036364,7.27272727 32.5727273,11.3418182 32.5727273,16.3636364 C32.5727273,18.4109091 31.8963636,20.2981818 30.7545455,21.8181818" id="Stroke-5893-Copy"></path>
+                <path d="M40,16.3636364 L38.1818182,16.3636364" id="Stroke-6043-Copy"></path>
+                <path d="M35.8309091,5.45454545 L34.5454545,6.74" id="Stroke-6045-Copy"></path>
+                <path d="M23.6363636,0 L23.6363636,1.81818182" id="Stroke-6047-Copy"></path>
+                <path d="M12.7272727,5.45454545 L14.0127273,6.74" id="Stroke-6049-Copy"></path>
+                <path d="M30.9090909,21.8181818 C28.6509091,21.8181818 26.6127273,22.6709091 25.0236364,24.0345455 C23.5872727,18.5763636 18.6345455,14.5454545 12.7272727,14.5454545 C5.69818182,14.5454545 0,20.2436364 0,27.2727273 C0,34.3018182 5.69818182,40 12.7272727,40 L30.9090909,40 C35.9290909,40 40,35.9290909 40,30.9090909 C40,25.8890909 35.9290909,21.8181818 30.9090909,21.8181818 L30.9090909,21.8181818 Z" id="Stroke-6051-Copy"></path>
+            </g>
+        </g>
+    </g>
+</svg>

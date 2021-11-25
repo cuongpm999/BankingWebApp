@@ -34,6 +34,11 @@ public class HomeController {
 	@Value("${domain.services.name}")
 	private String domainServices;
 	
+	@GetMapping()
+	public String home() {
+		return "home";
+	}
+	
 	@GetMapping("/login")
 	public String viewLogin() {
 		return "login";
