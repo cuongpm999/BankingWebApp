@@ -5,6 +5,7 @@ header{
 	padding-right: 0 !important;
 	padding-left: 0 !important;
 	position: relative;
+	border-bottom: 2px solid orange;
 }
 
 header .services{
@@ -82,6 +83,10 @@ header .contact a{
 	line-height: 80px;
 	font-size: 17px;
 	font-weight: 300;
+	text-decoration: none;
+}
+header .contact a:hover{
+	color: #ffff00;
 }
 
 #banner img {
