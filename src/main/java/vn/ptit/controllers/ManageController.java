@@ -9,6 +9,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +25,7 @@ import vn.ptit.models.CreditAccount;
 import vn.ptit.models.CustomerCreditStat;
 import vn.ptit.models.CustomerDepositStat;
 import vn.ptit.models.DepositAccount;
+import vn.ptit.models.Employee;
 
 @Controller
 @RequestMapping("/admin")
@@ -90,5 +97,13 @@ public class ManageController {
 	@GetMapping("/403-error")
 	public String view403Error() {
 		return "403_error";
+	}
+
+	@GetMapping("/profile")
+	public String viewProfile(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		String username = (String) req.getSession().getAttribute("usernameEmployee");
+		Employee employee = rest.getForObject(domainServices + "/rest/api/employee/get/" + username, Employee.class);
+		model.addAttribute("employee", employee);
+		return "employee/detail_employee";
 	}
 }
