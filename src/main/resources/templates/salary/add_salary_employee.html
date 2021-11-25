@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/home.js}"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+
+		<div class="page-container">
+
+			<div th:insert="includes.html :: header"></div>
+
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+							<div class="customer-infor" style="width: 500px">
+								<table class="table">
+									<tbody>
+										<tr>
+											<td>Họ và tên</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.employeeSalary.fullName}"></td>
+										</tr>
+										<tr>
+											<td>Vị trí</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.employeeSalary.position}"></td>
+										</tr>
+										<tr>
+											<td>Thâm niên</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.employeeSalary.seniority}"></td>
+										</tr>
+										<tr>
+											<td>Bậc nghề</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.employeeSalary.level}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<h3 class="my-3"
+								th:utext="'Thêm lương tháng ' + ${#dates.format(#dates.createNow(),'MM')}"></h3>
+							<form action="/admin/manage/salary/add" th:object="${salary}"
+								method="post" id="employee-form">
+								<div class="form-group">
+									<label class="required">Basic salary:</label> <input
+										th:field="*{basicSalary}" class="form-control"
+										placeholder="Basic salary" />
+								</div>
+								<div class="form-group">
+									<label class="required">Bonus salary:</label> <input
+										th:field="*{bonusSalary}" class="form-control" placeholder="0"
+										readonly />
+								</div>
+								<div class="form-group">
+									<label class="required">Date start:</label> <input type="date"
+										name="dateS" class="form-control" placeholder="Ngày sinh" />
+								</div>
+								<div class="form-group">
+									<label class="required">Date end:</label> <input type="date"
+										name="dateE" class="form-control" placeholder="Ngày sinh" />
+								</div>
+								<button type="submit" class="btn btn-success">
+									<i class="fas fa-download"></i> Save
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div th:insert="includes.html :: footer"></div>
+
+		</div>
+	</div>
+
+</body>
+<style>
+.table td, .table th {
+	border-top: 0;
+}
+
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
+}
+</style>
+<script type="text/javascript">
+	$().ready(function() {
+		$('#employee-form').validate({
+			rules : {
+				basicSalary : {
+					required : true,
+					digits : true,
+				},
+				dateS : "required",
+				dateE : "required",
+			},
+			messages : {
+				basicSalary : {
+					required : "Vui lòng nhập số lương cơ bản",
+					digits : "Lương cơ bản chỉ bao gồm số"
+				},
+				dateS : "Vui lòng nhập ngày bắt đầu",
+				dateE : "Vui lòng nhập ngày kết thúc",
+			},
+		})
+	})
+</script>
+</html>

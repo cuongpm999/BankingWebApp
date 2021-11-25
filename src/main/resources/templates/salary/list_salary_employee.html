@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/home.js}"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+
+		<div class="page-container">
+
+			<div th:insert="includes.html :: header"></div>
+
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+							<div class="customer-infor" style="width: 500px">
+								<table class="table">
+									<tbody>
+										<tr>
+											<td>Họ và tên</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.employeeSalary.fullName}"></td>
+										</tr>
+										<tr>
+											<td>Vị trí</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.employeeSalary.position}"></td>
+										</tr>
+										<tr>
+											<td>Thâm niên</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.employeeSalary.seniority}"></td>
+										</tr>
+										<tr>
+											<td>Bậc nghề</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.employeeSalary.level}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<h1 class="my-3"></h1>
+							<input class="form-control" id="myInput" type="text"
+								placeholder="Search.."> <a
+								th:href="@{'/admin/manage/salary/add'}" class="btn btn-success"
+								style="margin-top: 10px"><i class="fas fa-plus-square"></i>
+								Add salary</a>
+							<h1 class="my-3"></h1>
+							<table class="table">
+								<thead class="thead-light">
+									<tr>
+										<th>#</th>
+										<th>Lương cơ bản</th>
+										<th>Lương thưởng</th>
+										<th>Ngày bắt đầu</th>
+										<th>Ngày kết thúc</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="myTable">
+									<tr th:each="salary : ${salaries}">
+										<td th:text="${salaryStat.index + 1}"></td>
+										<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#numbers.formatInteger(salary.basicSalary,0,'POINT')+' ₫'}"></td>
+										<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#numbers.formatInteger(salary.bonusSalary,0,'POINT')+' ₫'}"></td>
+										<td th:text="${#dates.format(salary.dateStart, 'dd/MM/yyyy')}"></td>
+										<td th:text="${#dates.format(salary.dateEnd, 'dd/MM/yyyy')}"></td>
+										<td><a
+											th:href="@{'/admin/manage/salary/edit/' + ${salary.id}}"
+											class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
+											<a th:href="@{'/admin/manage/salary/detail/' + ${salary.id}}" class="btn btn-warning">
+												<i class="fas fa-coins"></i> Detail</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div th:insert="includes.html :: footer"></div>
+
+		</div>
+	</div>
+
+</body>
+<style>
+.table td, .table th {
+	border-top: 0;
+}
+</style>
+</html>

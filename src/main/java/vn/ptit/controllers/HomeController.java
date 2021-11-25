@@ -76,5 +76,5 @@ public class HomeController {
 
 		return userDetail;
 	}
-
+	
 }

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/home.js}"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+
+		<div class="page-container">
+
+			<div th:insert="includes.html :: header"></div>
+
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+							<a
+								th:href="@{'/admin/manage/salary/'+ ${session.employeeSalary.id}}"
+								class="btn btn-success"
+								style="font-size: 18px; font-weight: 600;"><i
+								class="far fa-arrow-alt-circle-left"></i> Quay lại</a>
+							<h1 class="my-4"></h1>
+							<div class="customer-infor">
+								<table class="table">
+									<tbody>
+										<tr>
+											<td>Họ và tên</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.employeeSalary.fullName}"></td>
+										</tr>
+										<tr>
+											<td>Vị trí</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.employeeSalary.position}"></td>
+										</tr>
+										<tr>
+											<td>Ngày bắt đầu</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#dates.format(salary.dateStart, 'dd/MM/yyyy')}"></td>
+										</tr>
+										<tr>
+											<td>Ngày kết thúc</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#dates.format(salary.dateEnd, 'dd/MM/yyyy')}"></td>
+										</tr>
+										<tr>
+											<td>Lương cơ bản</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#numbers.formatInteger(salary.basicSalary,0,'POINT')+' ₫'}"></td>
+										</tr>
+										<tr class="main-bonus-salary">
+											<td>Lương thuởng (+)</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#numbers.formatInteger(salary.bonusSalary,0,'POINT')+' ₫'}"></td>
+										</tr>
+										<tr class="bonus-salary" style="display: none">
+											<td>Thưởng từ số tài khoản tín dụng đã tạo</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#numbers.formatInteger(moneyCreatedCreditAccount,0,'POINT')+ ' ₫'+' (' + #lists.size(createdBankAccounts) + ' tài khoản)'}"></td>
+										</tr>
+										<tr th:each="createdBankAccount : ${createdBankAccounts}"
+											class="bonus-salary" style="display: none">
+											<td th:text="${createdBankAccount.customer.fullName}"></td>
+											<td th:text="${createdBankAccount.bankAccount.id}"></td>
+										</tr>
+										<tr class="bonus-salary" style="display: none">
+											<td>Thưởng từ khách hàng nạp lần đầu vào tài khoản gửi
+												tiền</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#numbers.formatInteger(moneyDeposit,0,'POINT')+' ₫'}"></td>
+										</tr>
+										<tr>
+											<td>Tổng lương nhận</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#numbers.formatInteger(salary.basicSalary + salary.bonusSalary,0,'POINT')+' ₫'}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:insert="includes.html :: footer"></div>
+		</div>
+	</div>
+
+</body>
+<style>
+.main-bonus-salary:hover {
+	cursor: pointer;
+}
+</style>
+
+<script type="text/javascript">
+	$(".main-bonus-salary").click(function() {
+		$(".bonus-salary").slideToggle(300);
+	});
+</script>
+</html>
