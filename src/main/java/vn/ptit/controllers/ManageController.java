@@ -96,7 +96,7 @@ public class ManageController {
 	
 	@GetMapping("/403-error")
 	public String view403Error() {
-		return "403_error";
+		return "error/403_error";
 	}
 
 	@GetMapping("/profile")

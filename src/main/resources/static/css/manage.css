@@ -347,3 +347,14 @@
 .sidebar .navbar i {
     margin-right: 10px;
 }
+
+#onTop{
+    width:40px;
+    display:none
+}
+#toTop{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    cursor:pointer
+}

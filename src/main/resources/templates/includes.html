@@ -21,34 +21,48 @@
 						class="nav-link dropdown-toggle" href="#" id="navbardrop"
 						data-toggle="dropdown"><i class="fas fa-money-bill-wave"></i>Transactions</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="/admin/transaction/credit">Giao dịch</a> <a
-								class="dropdown-item" href="/admin/transaction/create-payment">Thanh toán</a>
-							<a class="dropdown-item" href="/admin/transaction/deposit">Gửi tiền</a>
+							<a class="dropdown-item" href="/admin/transaction/credit">Giao
+								dịch</a> <a class="dropdown-item"
+								href="/admin/transaction/create-payment">Thanh toán</a> <a
+								class="dropdown-item" href="/admin/transaction/deposit">Gửi
+								tiền</a>
 						</div></li>
 					<li class="nav-item"><a class="nav-link"
-						href="/admin/manage/customer"><i class="fas fa-users"></i>Manage customer</a></li>
-						<li class="nav-item"><a class="nav-link"
-						href="/admin/manage/employee"><i class="fas fa-user-tie"></i>Manage employee</a></li>
-						<li class="nav-item dropdown"><a
+						href="/admin/manage/customer"><i class="fas fa-users"></i>Manage
+							customer</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/admin/manage/employee"><i class="fas fa-user-tie"></i>Manage
+							employee</a></li>
+					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" href="#" id="navbardrop"
-						data-toggle="dropdown"><i class="far fa-credit-card"></i>Manage bank account</a>
+						data-toggle="dropdown"><i class="far fa-credit-card"></i>Manage
+							bank account</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="/admin/manage/deposit-account">Manage deposit account</a> <a
-								class="dropdown-item" href="/admin/manage/credit-account">Manage credit account</a>
+							<a class="dropdown-item" href="/admin/manage/deposit-account">Manage
+								deposit account</a> <a class="dropdown-item"
+								href="/admin/manage/credit-account">Manage credit account</a>
 						</div></li>
 					<li class="nav-item"><a class="nav-link"
-						href="/admin/manage/bank-account-type"><i class="fas fa-folder"></i>Manage bank account type</a></li>
+						href="/admin/manage/bank-account-type"><i
+							class="fas fa-folder"></i>Manage bank account type</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="/admin/manage/salary"><i class="fas fa-calculator"></i>Manage salary</a></li>
+						href="/admin/manage/salary"><i class="fas fa-calculator"></i>Manage
+							salary</a></li>
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" href="#" id="navbardrop"
 						data-toggle="dropdown"><i class="fas fa-chart-bar"></i>Statistics</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="/admin/statistic/customer-deposit-max">Customer deposit max</a>
-							<a class="dropdown-item" href="/admin/statistic/customer-credit-max">Customer credit max</a>
-							<a class="dropdown-item" href="/admin/statistic/credit-account-balance-max">Credit account balance max</a>
-							<a class="dropdown-item" href="/admin/statistic/deposit-account-balance-max">Deposit account balance max</a>
-							<a class="dropdown-item" href="/admin/statistic/customer-with-transaction">Customer with transaction</a>
+							<a class="dropdown-item"
+								href="/admin/statistic/customer-deposit-max">Customer
+								deposit max</a> <a class="dropdown-item"
+								href="/admin/statistic/customer-credit-max">Customer credit
+								max</a> <a class="dropdown-item"
+								href="/admin/statistic/credit-account-balance-max">Credit
+								account balance max</a> <a class="dropdown-item"
+								href="/admin/statistic/deposit-account-balance-max">Deposit
+								account balance max</a> <a class="dropdown-item"
+								href="/admin/statistic/customer-with-transaction">Customer
+								with transaction</a>
 						</div></li>
 				</ul>
 
@@ -62,25 +76,26 @@
 				<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" href="#" id="navbardrop"
 					data-toggle="dropdown"><img class="icon" alt="user"
-						src="/img/userlogin.png">
-						<span class="text-icon" th:text="${session.usernameEmployee}"></span> </a>
+						src="/img/userlogin.png"> <span class="text-icon"
+						th:text="${session.usernameEmployee}"></span> </a>
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="/admin/profile"><i
-									class="far fa-user"></i>Profile</a>
-						<a class="dropdown-item" href="/logout"><i
-							class="fas fa-power-off"></i>Logout</a>
+							class="far fa-user"></i>Profile</a> <a class="dropdown-item"
+							href="/logout"><i class="fas fa-power-off"></i>Logout</a>
 					</div></li>
 			</ul>
 		</nav>
 	</div>
 
 	<div class="footer" th:fragment="footer">
-		©
-		<span th:text="${#dates.format(#dates.createNow(), 'yyyy')}"></span>
+		© <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}"></span>
 		Copyright: <a href="https://www.facebook.com/cuongphamptit999/">
 			Team 01 - Java Web</a>
-	</div>
 
+		<div id="toTop">
+			<img src="/img/arrow5-up-512.png" id="onTop" />
+		</div>
+	</div>
 
 </body>
 </html>
