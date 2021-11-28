@@ -93,16 +93,10 @@
 												th:text="${session.employeeSalary.level}"></td>
 										</tr>
 										<tr>
-											<td>Ngày bắt đầu</td>
+											<td>Lương tháng</td>
 											<td
 												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${#dates.format(salary.dateStart, 'dd/MM/yyyy')}"></td>
-										</tr>
-										<tr>
-											<td>Ngày kết thúc</td>
-											<td
-												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${#dates.format(salary.dateEnd, 'dd/MM/yyyy')}"></td>
+												th:text="${salary.dateSalary}"></td>
 										</tr>
 										<tr>
 											<td>Lương cơ bản</td>

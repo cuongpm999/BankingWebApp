@@ -102,8 +102,7 @@
 										<th>#</th>
 										<th>Lương cơ bản</th>
 										<th>Lương thưởng</th>
-										<th>Ngày bắt đầu</th>
-										<th>Ngày kết thúc</th>
+										<th>Lương tháng</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -112,8 +111,7 @@
 										<td th:text="${salaryStat.index + 1}"></td>
 										<td th:text="${#numbers.formatInteger(salary.basicSalary,0,'POINT')+' ₫'}"></td>
 										<td th:text="${#numbers.formatInteger(salary.bonusSalary,0,'POINT')+' ₫'}"></td>
-										<td th:text="${#dates.format(salary.dateStart, 'dd/MM/yyyy')}"></td>
-										<td th:text="${#dates.format(salary.dateEnd, 'dd/MM/yyyy')}"></td>
+										<td th:text="${salary.dateSalary}"></td>
 										<td><a
 											th:href="@{'/admin/manage/salary/edit/' + ${salary.id}}"
 											class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>

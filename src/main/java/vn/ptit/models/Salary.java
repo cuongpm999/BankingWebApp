@@ -6,19 +6,10 @@ public class Salary {
 	private int id;
 	private double basicSalary;
 	private double bonusSalary;
-	private Date dateStart;
-	private Date dateEnd;
+	private String dateSalary;
 	
 	public Salary() {
 		// TODO Auto-generated constructor stub
-	}
-	
-	public Salary(double basicSalary, double bonusSalary, Date dateStart, Date dateEnd) {
-		super();
-		this.basicSalary = basicSalary;
-		this.bonusSalary = bonusSalary;
-		this.dateStart = dateStart;
-		this.dateEnd = dateEnd;
 	}
 
 	public int getId() {
@@ -45,20 +36,11 @@ public class Salary {
 		this.bonusSalary = bonusSalary;
 	}
 
-	public Date getDateStart() {
-		return dateStart;
+	public String getDateSalary() {
+		return dateSalary;
 	}
 
-	public void setDateStart(Date dateStart) {
-		this.dateStart = dateStart;
+	public void setDateSalary(String dateSalary) {
+		this.dateSalary = dateSalary;
 	}
-
-	public Date getDateEnd() {
-		return dateEnd;
-	}
-
-	public void setDateEnd(Date dateEnd) {
-		this.dateEnd = dateEnd;
-	}
-
 }

@@ -34,13 +34,13 @@ public class BankAccountTypeController {
 		List<BankAccountType> bankAccountTypes = Arrays.asList(
 				rest.getForObject(domainService + "/rest/api/bank-account-type/find-all", BankAccountType[].class));
 		model.addAttribute("bankAccountTypes", bankAccountTypes);
-		return "/bank_account_type/manage_bank_account_type";
+		return "bank_account_type/manage_bank_account_type";
 	}
 
 	@GetMapping("/add")
 	public String viewInsertBankAccountType(ModelMap model, HttpServletRequest req, HttpServletResponse resp) {
 		model.addAttribute("bankAccountType", new BankAccountType());
-		return "/bank_account_type/add_bank_account_type";
+		return "bank_account_type/add_bank_account_type";
 	}
 
 	@PostMapping("/add")
@@ -50,7 +50,7 @@ public class BankAccountTypeController {
 		rest.postForObject(domainService + "/rest/api/bank-account-type/insert", bankAccountType,
 				BankAccountType.class);
 		model.addAttribute("bankAccountType", new BankAccountType());
-		return "/bank_account_type/add_bank_account_type";
+		return "bank_account_type/add_bank_account_type";
 	}
 
 	@GetMapping("/edit/{bankAccountTypeID}")
@@ -59,7 +59,7 @@ public class BankAccountTypeController {
 		BankAccountType bankAccountType = rest.getForObject(
 				domainService + "/rest/api/bank-account-type/find-by-id/" + bankAccountTypeID, BankAccountType.class);
 		model.addAttribute("bankAccountType", bankAccountType);
-		return "/bank_account_type/edit_bank_account_type";
+		return "bank_account_type/edit_bank_account_type";
 	}
 
 	@PostMapping("/edit")

@@ -1,5 +1,6 @@
 package vn.ptit.controllers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,6 @@ public class ManageSalaryController {
 	private String domainServices;
 	private RestTemplate rest = new RestTemplate();
 
-	// hiển thị trang quản lý lương của nhân viên
 	@GetMapping
 	public String viewManageSalaryEmployee(Model model, HttpServletRequest req, HttpServletResponse resp) {
 		List<Employee> employees = Arrays
@@ -40,7 +40,7 @@ public class ManageSalaryController {
 		model.addAttribute("employees", employees);
 		return "salary/manage_salary_employee";
 	}
-	// hiển thị trang danh sách lương các tháng của 1 nhân viên nào đó
+	
 	@GetMapping("/{id}")
 	public String viewListSalaryEmployee(@PathVariable("id") int id, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
@@ -51,54 +51,36 @@ public class ManageSalaryController {
 		model.addAttribute("salaries", salaries);
 		return "salary/list_salary_employee";
 	}
-	// hiển thị trang thêm lương cho 1 nhân viên
+	
 	@GetMapping("/add")
 	public String viewAddSalaryEmployee(Model model, HttpServletRequest req, HttpServletResponse resp) {
 		HttpSession session = req.getSession();
 		if (session.getAttribute("employeeSalary") == null) {
 			return "redirect:/admin/manage/salary";
 		}
-		int id = ((Employee) session.getAttribute("employeeSalary")).getId();
 		Salary salary = new Salary();
-		List<Transaction> transactions = Arrays.asList(rest.getForObject(
-				domainServices + "/rest/api/deposit/find-first-transactions-in-month/" + id, Transaction[].class));
-		double total = 0;
-		for (Transaction transaction : transactions) {
-			total += transaction.getMoney() * 0.02;
-		}
-		if(((Employee) session.getAttribute("employeeSalary")).getPosition().equals("MANAGER")){
-			List<Transaction> transactions1 = Arrays.asList(rest.getForObject(
-					domainServices + "/rest/api/deposit/find-first-transactions-deposit-account/" + id, Transaction[].class));
-			for (Transaction transaction : transactions1) {
-				total += transaction.getMoney() * 0.02;
-			}
-			List<CreatedBankAccount> createdBankAccounts = Arrays.asList(rest.getForObject(
-					domainServices + "/rest/api/credit-account/find-by-employee/" + id, CreatedBankAccount[].class));
-			total += createdBankAccounts.size() * 500000;
-		}
-		salary.setBonusSalary(total);
 		model.addAttribute("salary", salary);
-		return "/salary/add_salary_employee";
+		return "salary/add_salary_employee";
 	}
 
-	// thêm lương cho 1 nhân viên
 	@PostMapping("/add")
-	public String addSalaryEmloyee(@ModelAttribute("salary") Salary salary,
-			@RequestParam("dateS") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateStart,
-			@RequestParam("dateE") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateEnd, Model model,
+	public String addSalaryEmloyee(@ModelAttribute("salary") Salary salary, Model model,
 			HttpServletRequest req, HttpServletResponse resp) {
 		HttpSession session = req.getSession();
 		if (session.getAttribute("employeeSalary") == null) {
 			return "redirect:/admin/manage/salary";
 		}
-		salary.setDateStart(dateStart);
-		salary.setDateEnd(dateEnd);
+
 		int id = ((Employee) session.getAttribute("employeeSalary")).getId();
-		rest.postForObject(domainServices + "/rest/api/salary/insert/" + id, salary, Salary.class);
+		Boolean flag = rest.postForObject(domainServices + "/rest/api/salary/insert/" + id, salary, Boolean.class);
+		if(!flag) {
+			model.addAttribute("salary", salary);
+			model.addAttribute("status", "failed");
+			return "salary/add_salary_employee";
+		}
 		return "redirect:/admin/manage/salary/" + id;
 	}
 	
-	// sửa lương
 	@GetMapping("/edit/{id}")
 	public String viewEditSalaryEmployee(@PathVariable("id") int salaryId, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
@@ -106,45 +88,29 @@ public class ManageSalaryController {
 		if (session.getAttribute("employeeSalary") == null) {
 			return "redirect:/admin/manage/salary";
 		}
-		int id = ((Employee) session.getAttribute("employeeSalary")).getId();
 		Salary salary = rest.getForObject(domainServices + "/rest/api/salary/find-by-id/" + salaryId, Salary.class);
-		List<Transaction> transactions = Arrays.asList(rest.getForObject(
-				domainServices + "/rest/api/deposit/find-first-transactions-in-month/" + id, Transaction[].class));
-		double total = 0;
-		for (Transaction transaction : transactions) {
-			total += transaction.getMoney() * 0.02;
-		}
-		if(((Employee) session.getAttribute("employeeSalary")).getPosition().equals("MANAGER")){
-			List<Transaction> transactions1 = Arrays.asList(rest.getForObject(
-					domainServices + "/rest/api/deposit/find-first-transactions-deposit-account/" + id, Transaction[].class));
-			for (Transaction transaction : transactions1) {
-				total += transaction.getMoney() * 0.02;
-			}
-			List<CreatedBankAccount> createdBankAccounts = Arrays.asList(rest.getForObject(
-					domainServices + "/rest/api/credit-account/find-by-employee/" + id, CreatedBankAccount[].class));
-			total += createdBankAccounts.size() * 500000;
-		}
-		salary.setBonusSalary(total);
 		model.addAttribute("salary", salary);
 		return "salary/edit_salary_employee";
 	}
+	
 	@PostMapping("/edit")
-	public String editSalaryEmloyee(@ModelAttribute("salary") Salary salary,
-			@RequestParam("dateS") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateStart,
-			@RequestParam("dateE") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateEnd, Model model,
+	public String editSalaryEmloyee(@ModelAttribute("salary") Salary salary, Model model,
 			HttpServletRequest req, HttpServletResponse resp) {
 		HttpSession session = req.getSession();
 		if (session.getAttribute("employeeSalary") == null) {
 			return "redirect:/admin/manage/salary";
 		}
-		salary.setDateStart(dateStart);
-		salary.setDateEnd(dateEnd);
 		int id = ((Employee) session.getAttribute("employeeSalary")).getId();
-		rest.postForObject(domainServices + "/rest/api/salary/insert/" + id, salary, Salary.class);
+		Boolean flag = rest.postForObject(domainServices + "/rest/api/salary/update/" + id, salary, Boolean.class);
+		if(!flag) {
+			model.addAttribute("salary", salary);
+			model.addAttribute("status", "failed");
+			return "salary/edit_salary_employee";
+		}
 		return "redirect:/admin/manage/salary/" + id;
 	}
 	
-	// xem chi tiết lương của nhân viên
+	
 	@GetMapping("/detail/{id}")
 	public String viewDetailSalary(@PathVariable("id") int salaryId, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
@@ -154,19 +120,22 @@ public class ManageSalaryController {
 		}
 		Salary salary = rest.getForObject(domainServices + "/rest/api/salary/find-by-id/" + salaryId, Salary.class);
 		int id = ((Employee) session.getAttribute("employeeSalary")).getId();
-		List<Transaction> transactions = Arrays.asList(rest.getForObject(
-				domainServices + "/rest/api/deposit/find-first-transactions-in-month/" + id, Transaction[].class));
+		List<String> text = new ArrayList<String>();
+		text.add(String.valueOf(id));
+		text.add(salary.getDateSalary());
+		List<Transaction> transactions = Arrays.asList(rest.postForObject(
+				domainServices + "/rest/api/deposit/find-first-transactions-in-month",text, Transaction[].class));
 		double totalMoney = salary.getBasicSalary()+salary.getBonusSalary();
 		double moneyDeposit1 = 0;
 		for (Transaction transaction : transactions) {
 			moneyDeposit1 += transaction.getMoney()*0.02;
 		}
 		if(((Employee) session.getAttribute("employeeSalary")).getPosition().equals("MANAGER")){
-			List<CreatedBankAccount> createdBankAccounts = Arrays.asList(rest.getForObject(
-					domainServices + "/rest/api/credit-account/find-by-employee/" + id, CreatedBankAccount[].class));
+			List<CreatedBankAccount> createdBankAccounts = Arrays.asList(rest.postForObject(
+					domainServices + "/rest/api/credit-account/find-create-bank-account-by-employee", text,CreatedBankAccount[].class));
 			double moneyCreatedCreditAccount = createdBankAccounts.size()*500000;
-			List<Transaction> transactions1 = Arrays.asList(rest.getForObject(
-					domainServices + "/rest/api/deposit/find-first-transactions-deposit-account/" + id, Transaction[].class));
+			List<Transaction> transactions1 = Arrays.asList(rest.postForObject(
+					domainServices + "/rest/api/deposit/find-first-transactions-deposit-account", text, Transaction[].class));
 			double moneyDeposit2 = 0;
 			for (Transaction transaction : transactions1) {
 				moneyDeposit2 += transaction.getMoney() * 0.02;
@@ -178,6 +147,6 @@ public class ManageSalaryController {
 		model.addAttribute("moneyDeposit1", moneyDeposit1);
 		model.addAttribute("totalMoney", totalMoney);
 		model.addAttribute("salary", salary);
-		return "/salary/detail_salary_employee";
+		return "salary/detail_salary_employee";
 	}
 }

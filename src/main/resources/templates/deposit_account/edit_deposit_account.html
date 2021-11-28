@@ -37,7 +37,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+<script th:src="@{/js/home.js}"></script>
 <link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
@@ -71,12 +71,12 @@
 										</div>
 										<div class="form-group">
 											<label class="required">Số dư: </label> <input
-												th:field="*{balance}" class="form-control"
-												placeholder="Số dư" />
+												th:value="${#numbers.formatInteger(depositAccount.balance,0)}" class="form-control" name="balance"
+												placeholder="Số dư" readonly="readonly" />
 										</div>
 										<div class="form-group">
 											<label class="required">Số dư tối thiểu: </label> <input
-												th:field="*{minimumBalance}" class="form-control"
+												th:value="${#numbers.formatInteger(depositAccount.minimumBalance,0)}" class="form-control" name="minimumBalance"
 												placeholder="Số dư tối thiểu" />
 										</div>
 										<div class="form-group">
