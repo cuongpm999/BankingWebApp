@@ -1,4 +1,4 @@
-package vn.ptit.utils;
+package vn.ptit.services;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -24,66 +24,52 @@ public class SendMailService {
 	TemplateEngine templateEngine;
 
 	public void sendMailPayment(Transaction transaction, Customer customerOtherPay) throws MessagingException {
-		// Prepare the evaluation context
 		Context ctx = new Context();
 		ctx.setVariable("transaction", transaction);
 		ctx.setVariable("customerOtherPay", customerOtherPay);
 
-		// Prepare message using a Spring helper
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
 		message.setSubject("THANH TOÁN THÀNH CÔNG");
 		message.setFrom("actbankptit999@gmail.com");
 		String[] to = { transaction.getCustomer().getEmail(), customerOtherPay.getEmail() };
 		message.setTo(to);
-//		message.setTo("phamcuongth2000@gmail.com");
 //		message.addAttachment("logo.png", new ClassPathResource("static/img/logo.png"));
 
-		// Create the HTML body using Thymeleaf
 		String htmlContent = templateEngine.process("send_mail/payment.html", ctx);
 		message.setText(htmlContent, true); // true = isHtml
 
-		// Send mail
 		javaMailSender.send(mimeMessage);
 	}
 
 	public void sendMailDeal(Transaction transaction) throws MessagingException {
-		// Prepare the evaluation context
 		Context ctx = new Context();
 		ctx.setVariable("transaction", transaction);
 
-		// Prepare message using a Spring helper
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
 		message.setSubject("GIAO DỊCH THÀNH CÔNG");
 		message.setFrom("actbankptit999@gmail.com");
 		message.setTo(transaction.getCustomer().getEmail());
-//		message.setTo("phamcuongth2000@gmail.com");
 //		message.addAttachment("logo.png", new ClassPathResource("static/img/logo.png"));
 
-		// Create the HTML body using Thymeleaf
 		String htmlContent = templateEngine.process("send_mail/deal.html", ctx);
 		message.setText(htmlContent, true); // true = isHtml
 
-		// Send mail
 		javaMailSender.send(mimeMessage);
 	}
 
 	public void sendMailDeposit(Transaction transaction) throws MessagingException {
-		// Prepare the evaluation context
 		Context ctx = new Context();
 		ctx.setVariable("transaction", transaction);
 
-		// Prepare message using a Spring helper
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
 		message.setSubject("GỬI TIỀN THÀNH CÔNG");
 		message.setFrom("actbankptit999@gmail.com");
 		message.setTo(transaction.getCustomer().getEmail());
-//		message.setTo("phamcuongth2000@gmail.com");
 //		message.addAttachment("logo.png", new ClassPathResource("static/img/logo.png"));
 
-		// Create the HTML body using Thymeleaf
 		String htmlContent = templateEngine.process("send_mail/deposit.html", ctx);
 		message.setText(htmlContent, true); // true = isHtml
 
@@ -93,7 +79,6 @@ public class SendMailService {
 
 	public void sendMailCreateAccount(DepositAccount depositAccount, CreditAccount creditAccount, Customer customer)
 			throws MessagingException {
-		// Prepare the evaluation context
 		Context ctx = new Context();
 		if (depositAccount != null) {
 			ctx.setVariable("depositAccount", depositAccount);
@@ -101,20 +86,16 @@ public class SendMailService {
 			ctx.setVariable("creditAccount", creditAccount);
 		}
 
-		// Prepare message using a Spring helper
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
 		message.setSubject("ĐĂNG KÝ THÀNH CÔNG");
 		message.setFrom("actbankptit999@gmail.com");
 		message.setTo(customer.getEmail());
-//		message.setTo("phamcuongth2000@gmail.com");
 //		message.addAttachment("logo.png", new ClassPathResource("static/img/logo.png"));
 
-		// Create the HTML body using Thymeleaf
 		String htmlContent = templateEngine.process("send_mail/signup.html", ctx);
 		message.setText(htmlContent, true); // true = isHtml
 
-		// Send mail
 		javaMailSender.send(mimeMessage);
 	}
 

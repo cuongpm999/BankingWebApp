@@ -26,9 +26,9 @@ import vn.ptit.models.CreatedBankAccount;
 import vn.ptit.models.Customer;
 import vn.ptit.models.DepositAccount;
 import vn.ptit.models.Employee;
+import vn.ptit.services.SendMailService;
 import vn.ptit.utils.HelperCreateBankAccount;
 import vn.ptit.utils.RandomString;
-import vn.ptit.utils.SendMailService;
 
 @Controller
 @RequestMapping("/admin/manage/deposit-account")

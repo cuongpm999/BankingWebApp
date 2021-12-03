@@ -108,6 +108,7 @@
 										<th>Họ và tên</th>
 										<th>Địa chỉ</th>
 										<th>CMT</th>
+										<th>Email</th>
 										<th>Ngày sinh</th>
 										<th>Số tiền giao dịch</th>
 									</tr>
@@ -119,6 +120,7 @@
 										<td th:text="${customerTransactionStat.fullName}"></td>
 										<td th:text="${customerTransactionStat.address}"></td>
 										<td th:text="${customerTransactionStat.idCard}"></td>
+										<td th:text="${customerTransactionStat.email}"></td>
 										<td
 											th:text="${#dates.format(customerTransactionStat.dateOfBirth, 'dd/MM/yyyy')}"></td>
 										<td

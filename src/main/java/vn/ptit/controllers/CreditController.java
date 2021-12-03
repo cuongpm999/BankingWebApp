@@ -25,7 +25,7 @@ import vn.ptit.models.Customer;
 import vn.ptit.models.DepositAccount;
 import vn.ptit.models.Employee;
 import vn.ptit.models.Transaction;
-import vn.ptit.utils.SendMailService;
+import vn.ptit.services.SendMailService;
 
 @Controller
 @RequestMapping("/admin/transaction/credit")

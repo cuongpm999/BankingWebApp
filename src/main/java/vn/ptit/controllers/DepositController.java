@@ -24,7 +24,7 @@ import vn.ptit.models.Customer;
 import vn.ptit.models.DepositAccount;
 import vn.ptit.models.Employee;
 import vn.ptit.models.Transaction;
-import vn.ptit.utils.SendMailService;
+import vn.ptit.services.SendMailService;
 
 @Controller
 @RequestMapping("/admin/transaction/deposit")
@@ -68,8 +68,7 @@ public class DepositController {
 		httpSession.setAttribute("accountId_deposit", id);
 		if (httpSession.getAttribute("customerDeposit_deposit") == null)
 			return "redirect:/admin/transaction/deposit";
-		Customer customer = (Customer) httpSession.getAttribute("customerDeposit_deposit");
-		System.out.println("..............123"+customer.getFullName());
+		
 		return "deposit/detail_account";
 	}
 
