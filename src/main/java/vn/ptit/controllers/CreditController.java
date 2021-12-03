@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,7 @@ import vn.ptit.models.Customer;
 import vn.ptit.models.DepositAccount;
 import vn.ptit.models.Employee;
 import vn.ptit.models.Transaction;
+import vn.ptit.utils.SendMailService;
 
 @Controller
 @RequestMapping("/admin/transaction/credit")
@@ -30,9 +33,12 @@ public class CreditController {
 
 	private RestTemplate rest = new RestTemplate();
 
+	@Autowired
+	SendMailService sendMailService;
+
 	@Value("${domain.services.name}")
 	private String domainServices;
-	
+
 	@GetMapping()
 	public String viewSearchCustomer(Model model) {
 		List<Customer> customers = Arrays
@@ -40,7 +46,7 @@ public class CreditController {
 		model.addAttribute("customers", customers);
 		return "credit/search_customer";
 	}
-	
+
 	@GetMapping("/detail-customer/{id}")
 	public String viewCustomerDetail(@PathVariable("id") int id, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
@@ -52,7 +58,7 @@ public class CreditController {
 		model.addAttribute("creditAccounts", creditAccounts);
 		return "credit/detail_customer";
 	}
-	
+
 	@GetMapping("/detail-account/{id}")
 	public String viewDetailAccount(@PathVariable("id") String id, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
@@ -61,27 +67,30 @@ public class CreditController {
 		model.addAttribute("transactions", transactions);
 		HttpSession httpSession = req.getSession();
 		httpSession.setAttribute("accountId_credit", id);
-		if (httpSession.getAttribute("customerCredit_credit") == null) return "redirect:/admin/transaction/credit";
+		if (httpSession.getAttribute("customerCredit_credit") == null)
+			return "redirect:/admin/transaction/credit";
 		return "credit/detail_account";
 	}
-	
+
 	@GetMapping("/deal")
 	public String saveMoney(Model model, HttpServletRequest req, HttpServletResponse resp) {
 		Transaction transaction = new Transaction();
 		HttpSession httpSession = req.getSession();
-		if(httpSession.getAttribute("customerCredit_credit")==null) return "redirect:/admin/transaction/credit";
-		if(httpSession.getAttribute("accountId_credit")==null) return "redirect:/admin/transaction/credit";
+		if (httpSession.getAttribute("customerCredit_credit") == null)
+			return "redirect:/admin/transaction/credit";
+		if (httpSession.getAttribute("accountId_credit") == null)
+			return "redirect:/admin/transaction/credit";
 		String id = (String) req.getSession().getAttribute("accountId_credit");
 		CreditAccount creditAccount = rest.getForObject(domainServices + "/rest/api/credit-account/find-by-id/" + id,
 				CreditAccount.class);
 		req.getSession().setAttribute("creditAccount_credit", creditAccount);
-		model.addAttribute("transaction", transaction);	
+		model.addAttribute("transaction", transaction);
 		return "credit/deal";
 	}
-	
+
 	@PostMapping("/deal")
 	public String saveMoneyPost(@ModelAttribute("transaction") Transaction transaction, Model model,
-			HttpServletRequest req, HttpServletResponse resp) {
+			HttpServletRequest req, HttpServletResponse resp) throws MessagingException {
 		HttpSession httpSession = req.getSession();
 		CreditAccount creditAccount = new CreditAccount();
 		if (httpSession.getAttribute("customerCredit_credit") != null) {
@@ -102,23 +111,28 @@ public class CreditController {
 		transaction.setEmployee(employee);
 		transaction.setDateCreate(new Date());
 		boolean flag = rest.postForObject(domainServices + "/rest/api/credit/insert", transaction, Boolean.class);
-		if(!flag) {
+		if (!flag) {
 			model.addAttribute("transaction", transaction);
 			model.addAttribute("status", "failed");
 			return "credit/deal";
 		}
+		sendMailService.sendMailDeal(transaction);
 		return "redirect:/admin/transaction/credit/detail-account/" + creditAccount.getId();
 	}
-	
+
 	@GetMapping("/detail-transaction/{id}")
-	public String viewTransactionDetail(@PathVariable("id") int id, Model model, HttpServletRequest req, HttpServletResponse resp) {
+	public String viewTransactionDetail(@PathVariable("id") int id, Model model, HttpServletRequest req,
+			HttpServletResponse resp) {
 		HttpSession httpSession = req.getSession();
-		if(httpSession.getAttribute("customerCredit_credit")==null) return "redirect:/admin/transaction/credit";
-		if(httpSession.getAttribute("accountId_credit")==null) return "redirect:/admin/transaction/credit";
-		
-		Transaction transaction = rest.getForObject(domainServices + "/rest/api/credit/find-transaction-by-id/"+id, Transaction.class);
+		if (httpSession.getAttribute("customerCredit_credit") == null)
+			return "redirect:/admin/transaction/credit";
+		if (httpSession.getAttribute("accountId_credit") == null)
+			return "redirect:/admin/transaction/credit";
+
+		Transaction transaction = rest.getForObject(domainServices + "/rest/api/credit/find-transaction-by-id/" + id,
+				Transaction.class);
 		model.addAttribute("transaction", transaction);
 		return "credit/detail_transaction";
 	}
-	
+
 }

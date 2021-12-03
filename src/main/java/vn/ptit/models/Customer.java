@@ -9,17 +9,27 @@ public class Customer {
 	private Date dateOfBirth;
 	private String address;
 	private boolean status;
+	private String email;
 
 	public Customer() {
-		
+
 	}
 
-	public Customer(String fullName, String idCard, Date dateOfBirth, String address) {
+	public Customer(String fullName, String idCard, Date dateOfBirth, String address, String email) {
 		super();
 		this.fullName = fullName;
 		this.idCard = idCard;
 		this.dateOfBirth = dateOfBirth;
 		this.address = address;
+		this.email = email;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public int getId() {

@@ -18,7 +18,8 @@
 <link rel="icon" type="image/png" sizes="16x16"
 	href="/favicon/favicon-16x16.png">
 <link rel="manifest" href="/favicon/site.webmanifest">
-<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"
+	color="#5bbad5">
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
 
@@ -75,6 +76,7 @@
 										<th>Địa chỉ</th>
 										<th>CMT</th>
 										<th>Ngày sinh</th>
+										<th>Email</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -86,12 +88,19 @@
 										<td th:text="${customer.idCard}"></td>
 										<td
 											th:text="${#dates.format(customer.dateOfBirth, 'dd/MM/yyyy')}"></td>
+										<td th:text="${customer.email}"></td>
 										<td><a
 											th:href="@{'/admin/manage/customer/edit/' + ${customer.id}}"
 											class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
-											<a href="javascript:void(0);" th:onclick="'Banking.delete(\'/admin/manage/customer/delete/'+ ${customer.id} + '\')'"
+											<a href="javascript:void(0);"
+											th:onclick="'Banking.delete(\'/admin/manage/customer/delete/'+ ${customer.id} + '\')'"
 											class="btn btn-danger"><i class="fas fa-eraser"></i>
-												Delete</a></td>
+												Delete</a> <!-- <a
+											th:href="@{'/admin/manage/customer/delete/' + ${customer.id}}"
+											class="btn btn-danger"
+											th:data-confirm-delete="|Bạn có chắc muốn xóa khách hàng ${customer.fullName}?|"
+											onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+												Delete </a> --></td>
 									</tr>
 								</tbody>
 							</table>

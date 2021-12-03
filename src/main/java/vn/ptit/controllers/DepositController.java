@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,12 +24,16 @@ import vn.ptit.models.Customer;
 import vn.ptit.models.DepositAccount;
 import vn.ptit.models.Employee;
 import vn.ptit.models.Transaction;
+import vn.ptit.utils.SendMailService;
 
 @Controller
 @RequestMapping("/admin/transaction/deposit")
 public class DepositController {
 
 	private RestTemplate rest = new RestTemplate();
+
+	@Autowired
+	SendMailService sendMailService;
 
 	@Value("${domain.services.name}")
 	private String domainServices;
@@ -60,7 +66,10 @@ public class DepositController {
 		model.addAttribute("transactions", transactions);
 		HttpSession httpSession = req.getSession();
 		httpSession.setAttribute("accountId_deposit", id);
-		if (httpSession.getAttribute("customerDeposit_deposit") == null) return "redirect:/admin/transaction/deposit";
+		if (httpSession.getAttribute("customerDeposit_deposit") == null)
+			return "redirect:/admin/transaction/deposit";
+		Customer customer = (Customer) httpSession.getAttribute("customerDeposit_deposit");
+		System.out.println("..............123"+customer.getFullName());
 		return "deposit/detail_account";
 	}
 
@@ -68,12 +77,14 @@ public class DepositController {
 	public String saveMoney(Model model, HttpServletRequest req, HttpServletResponse resp) {
 		Transaction transaction = new Transaction();
 		HttpSession httpSession = req.getSession();
-		if(httpSession.getAttribute("customerDeposit_deposit")==null) return "redirect:/admin/transaction/deposit";
-		if(httpSession.getAttribute("accountId_deposit")==null) return "redirect:/admin/transaction/deposit";
+		if (httpSession.getAttribute("customerDeposit_deposit") == null)
+			return "redirect:/admin/transaction/deposit";
+		if (httpSession.getAttribute("accountId_deposit") == null)
+			return "redirect:/admin/transaction/deposit";
 		String id = (String) req.getSession().getAttribute("accountId_deposit");
 		DepositAccount depositAccount = rest.getForObject(domainServices + "/rest/api/deposit-account/find-by-id/" + id,
 				DepositAccount.class);
-		
+
 		req.getSession().setAttribute("depositAccount_deposit", depositAccount);
 		model.addAttribute("transaction", transaction);
 		return "deposit/save_money";
@@ -81,7 +92,7 @@ public class DepositController {
 
 	@PostMapping("/save-money")
 	public String saveMoneyPost(@ModelAttribute("transaction") Transaction transaction, Model model,
-			HttpServletRequest req, HttpServletResponse resp) {
+			HttpServletRequest req, HttpServletResponse resp) throws MessagingException {
 		HttpSession httpSession = req.getSession();
 		DepositAccount depositAccount = new DepositAccount();
 		if (httpSession.getAttribute("customerDeposit_deposit") != null) {
@@ -102,21 +113,26 @@ public class DepositController {
 		transaction.setEmployee(employee);
 		transaction.setDateCreate(new Date());
 		boolean flag = rest.postForObject(domainServices + "/rest/api/deposit/insert", transaction, Boolean.class);
-		if(!flag) {
+		if (!flag) {
 			model.addAttribute("transaction", transaction);
 			model.addAttribute("status", "failed");
 			return "deposit/save_money";
 		}
+		sendMailService.sendMailDeposit(transaction);
 		return "redirect:/admin/transaction/deposit/detail-account/" + depositAccount.getId();
 	}
-	
+
 	@GetMapping("/detail-transaction/{id}")
-	public String viewTransactionDetail(@PathVariable("id") int id, Model model, HttpServletRequest req, HttpServletResponse resp) {
+	public String viewTransactionDetail(@PathVariable("id") int id, Model model, HttpServletRequest req,
+			HttpServletResponse resp) {
 		HttpSession httpSession = req.getSession();
-		if(httpSession.getAttribute("customerDeposit_deposit")==null) return "redirect:/admin/transaction/deposit";
-		if(httpSession.getAttribute("accountId_deposit")==null) return "redirect:/admin/transaction/deposit";
-		
-		Transaction transaction = rest.getForObject(domainServices + "/rest/api/deposit/find-transaction-by-id/"+id, Transaction.class);
+		if (httpSession.getAttribute("customerDeposit_deposit") == null)
+			return "redirect:/admin/transaction/deposit";
+		if (httpSession.getAttribute("accountId_deposit") == null)
+			return "redirect:/admin/transaction/deposit";
+
+		Transaction transaction = rest.getForObject(domainServices + "/rest/api/deposit/find-transaction-by-id/" + id,
+				Transaction.class);
 		model.addAttribute("transaction", transaction);
 		return "deposit/detail_transaction";
 	}

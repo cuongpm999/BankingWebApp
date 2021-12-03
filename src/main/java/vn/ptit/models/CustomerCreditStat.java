@@ -1,7 +1,5 @@
 package vn.ptit.models;
 
-import java.util.Date;
-
 public class CustomerCreditStat extends Customer{
 	private double credit;
 	
@@ -9,6 +7,11 @@ public class CustomerCreditStat extends Customer{
 
 	}
 
+	public CustomerCreditStat(double credit) {
+		super();
+		this.credit = credit;
+	}
+	
 	public double getCredit() {
 		return credit;
 	}
