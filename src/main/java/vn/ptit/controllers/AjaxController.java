@@ -35,13 +35,16 @@ public class AjaxController {
 	@PostMapping(value = "/check/account")
 	public ResponseEntity<AjaxResponse> checkAccount(@RequestBody final Map<String, Object> data, Model model,
 			HttpServletRequest request, HttpServletResponse response) {
-		if(data.get("number").toString().isEmpty()) return ResponseEntity.ok(new AjaxResponse(222, null));
+		if (data.get("number").toString().isEmpty())
+			return ResponseEntity.ok(new AjaxResponse(222, null));
 		String accountId = data.get("number").toString();
-		CreditAccount creditAccount = rest.getForObject(domainServices+"/rest/api/credit-account/check-account/"+accountId, CreditAccount.class);
-		if(creditAccount ==null) {
+		CreditAccount creditAccount = rest.getForObject(
+				domainServices + "/rest/api/credit-account/check-account/" + accountId, CreditAccount.class);
+		if (creditAccount == null) {
 			return ResponseEntity.ok(new AjaxResponse(111, null));
 		}
-		Customer customer = rest.getForObject(domainServices+"/rest/api/customer/find-by-account/"+accountId, Customer.class);
+		Customer customer = rest.getForObject(domainServices + "/rest/api/customer/find-by-account/" + accountId,
+				Customer.class);
 		HttpSession httpSession = request.getSession();
 		httpSession.setAttribute("creditAccount_Pay", creditAccount);
 		httpSession.setAttribute("customerOtherPay", customer);

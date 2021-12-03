@@ -18,7 +18,8 @@
 <link rel="icon" type="image/png" sizes="16x16"
 	href="/favicon/favicon-16x16.png">
 <link rel="manifest" href="/favicon/site.webmanifest">
-<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"
+	color="#5bbad5">
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
 
@@ -65,24 +66,32 @@
 							<div class="card-body">
 								<div class="panel-body">
 									<form th:object="${customer}"
-										th:action="@{/admin/manage/customer/edit}" th:method="post" id="customer-form">
+										th:action="@{/admin/manage/customer/edit}" th:method="post"
+										id="customer-form">
 										<input type="hidden" th:field="*{id}">
 										<div class="form-group">
 											<label class="required">Họ và tên: </label> <input
-												th:field="*{fullName}" class="form-control" placeholder="Họ và tên"/>
+												th:field="*{fullName}" class="form-control"
+												placeholder="Họ và tên" />
 										</div>
 										<div class="form-group">
 											<label class="required">CMT: </label> <input
-												th:field="*{idCard}" class="form-control" placeholder="Cmt"/>
+												th:field="*{idCard}" class="form-control" placeholder="Cmt" />
 										</div>
 										<div class="form-group">
-											<label class="required">Ngày sinh: </label> <input
-												name="dob" class="form-control" type="date"
-												th:value="${#dates.format(customer.dateOfBirth, 'yyyy-MM-dd')}" placeholder="Ngày sinh"/>
+											<label class="required">Ngày sinh: </label> <input name="dob"
+												class="form-control" type="date"
+												th:value="${#dates.format(customer.dateOfBirth, 'yyyy-MM-dd')}"
+												placeholder="Ngày sinh" />
 										</div>
 										<div class="form-group">
 											<label class="required">Địa chỉ: </label> <input
-												th:field="*{address}" class="form-control" placeholder="Địa chỉ"/>
+												th:field="*{address}" class="form-control"
+												placeholder="Địa chỉ" />
+										</div>
+										<div class="form-group">
+											<label class="required">Email: </label> <input
+												th:field="*{email}" class="form-control" placeholder="Email" />
 										</div>
 										<button type="submit" class="btn btn-success">
 											<i class="fas fa-download"></i> Save
@@ -92,7 +101,7 @@
 							</div>
 						</div>
 					</div>
-				</div>			
+				</div>
 			</div>
 			<div th:insert="includes.html :: footer"></div>
 		</div>
@@ -111,6 +120,10 @@
 				},
 				dob : "required",
 				address : "required",
+				email : {
+					required : true,
+					email : true
+				}
 			},
 			messages : {
 				fullName : "Vui lòng điền đầy đủ họ tên",
@@ -121,7 +134,11 @@
 					digits : "Số CMT chỉ bao gồm số"
 				},
 				dob : "Vui lòng nhập ngày sinh",
-				address : "Vui lòng nhập địa chỉ"
+				address : "Vui lòng nhập địa chỉ",
+				email : {
+					required : "Vui lòng nhập Email",
+					email : "Vui lòng nhập đúng Email"
+				}
 			},
 		})
 	})

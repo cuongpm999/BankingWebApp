@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,29 +30,29 @@ import vn.ptit.models.Employee;
 @RequestMapping("/")
 public class HomeController {
 	private RestTemplate rest = new RestTemplate();
-	@Autowired PasswordEncoder passwordEncoder;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	@Value("${domain.services.name}")
 	private String domainServices;
-	
+
 	@GetMapping()
 	public String home() {
 		return "home";
 	}
-	
+
 	@GetMapping("/login")
 	public String viewLogin() {
 		return "login";
 	}
-	
+
 	@PostMapping("/perform-login")
 	public String loginEmployee(Model model, HttpServletRequest req, HttpServletResponse resp) {
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
 
-		Employee employee = rest.getForObject(domainServices+"/rest/api/employee/get/"+ username,
-				Employee.class);
-		if(employee==null) {
+		Employee employee = rest.getForObject(domainServices + "/rest/api/employee/get/" + username, Employee.class);
+		if (employee == null) {
 			return "login";
 		}
 		boolean flag = passwordEncoder.matches(password, employee.getAccount().getPassword());
@@ -64,7 +65,7 @@ public class HomeController {
 			req.getSession().setAttribute("usernameEmployee", employee.getAccount().getUsername());
 			return "redirect:/admin";
 		}
-		
+
 		return "login";
 	}
 
@@ -76,10 +77,10 @@ public class HomeController {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new SimpleGrantedAuthority(employee.getPosition()));
 
-		UserDetails userDetail = new User(employee.getAccount().getUsername(), employee.getAccount().getPassword(), enabled, accountNonExpired,
-				credentialsNonExpired, accountNonLocked, authorities);
+		UserDetails userDetail = new User(employee.getAccount().getUsername(), employee.getAccount().getPassword(),
+				enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 
 		return userDetail;
 	}
-	
+
 }

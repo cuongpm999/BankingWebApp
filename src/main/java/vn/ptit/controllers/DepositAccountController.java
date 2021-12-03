@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,11 +28,15 @@ import vn.ptit.models.DepositAccount;
 import vn.ptit.models.Employee;
 import vn.ptit.utils.HelperCreateBankAccount;
 import vn.ptit.utils.RandomString;
+import vn.ptit.utils.SendMailService;
 
 @Controller
 @RequestMapping("/admin/manage/deposit-account")
 public class DepositAccountController {
 	private RestTemplate rest = new RestTemplate();
+
+	@Autowired
+	SendMailService sendMailService;
 
 	@Value("${domain.services.name}")
 	private String domainServices;
@@ -66,9 +72,11 @@ public class DepositAccountController {
 			customer = (Customer) httpSession.getAttribute("customer_1");
 		} else
 			return "redirect:/admin/manage/deposit-account";
-		boolean flag = rest.getForObject(domainServices+"/rest/api/deposit-account/count/"+customer.getId(), Boolean.class);
-		if(!flag) return "redirect:/admin/manage/deposit-account/detail/"+customer.getId();
-		
+		boolean flag = rest.getForObject(domainServices + "/rest/api/deposit-account/count/" + customer.getId(),
+				Boolean.class);
+		if (!flag)
+			return "redirect:/admin/manage/deposit-account/detail/" + customer.getId();
+
 		DepositAccount depositAccount = new DepositAccount();
 		RandomString randomString = new RandomString(14, new SecureRandom(), RandomString.digits);
 		depositAccount.setId(randomString.nextString());
@@ -84,7 +92,7 @@ public class DepositAccountController {
 
 	@PostMapping("/add")
 	public String addDepositAccount(@ModelAttribute("depositAccount") DepositAccount depositAccount, Model model,
-			HttpServletRequest req, HttpServletResponse resp) {
+			HttpServletRequest req, HttpServletResponse resp) throws MessagingException {
 		depositAccount.setStatus(true);
 		Customer customer = new Customer();
 		HttpSession httpSession = req.getSession();
@@ -105,6 +113,7 @@ public class DepositAccountController {
 		rest.postForObject(domainServices + "/rest/api/deposit-account/insert", helperCreateBankAccount,
 				DepositAccount.class);
 
+		sendMailService.sendMailCreateAccount(depositAccount, null, customer);
 		return "redirect:/admin/manage/deposit-account/detail/" + customer.getId();
 	}
 
@@ -129,7 +138,7 @@ public class DepositAccountController {
 		HttpSession httpSession = req.getSession();
 		if (httpSession.getAttribute("customer_1") != null) {
 			customer = (Customer) httpSession.getAttribute("customer_1");
-		}else
+		} else
 			return "redirect:/admin/manage/deposit-account";
 		rest.delete(domainServices + "/rest/api/deposit-account/delete-by-id/" + id);
 		return "redirect:/admin/manage/deposit-account/detail/" + customer.getId();
