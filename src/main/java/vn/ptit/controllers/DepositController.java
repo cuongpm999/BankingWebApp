@@ -2,7 +2,9 @@ package vn.ptit.controllers;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,10 +40,38 @@ public class DepositController {
 	@Value("${domain.services.name}")
 	private String domainServices;
 
-	@GetMapping()
-	public String viewSearchCustomer(Model model) {
+	@GetMapping
+	public String viewCustomer(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		int page = 1;
+		if (req.getParameter("page") != null) {
+			page = Integer.parseInt(req.getParameter("page"));
+			map.put("page", page);
+			model.addAttribute("page", page);
+		}
+		if (req.getParameter("keyCustomer") != null) {
+			String keyCustomer = req.getParameter("keyCustomer");
+			map.put("keyCustomer", keyCustomer);
+			model.addAttribute("keyCustomer", keyCustomer);
+		}
+		if (req.getParameter("fromDate") != null) {
+			String fromDate = req.getParameter("fromDate");
+			map.put("fromDate", fromDate);
+			model.addAttribute("fromDate", fromDate);
+		}
+		if (req.getParameter("toDate") != null) {
+			String toDate = req.getParameter("toDate");
+			map.put("toDate", toDate);
+			model.addAttribute("toDate", toDate);
+		}
+		if (req.getParameter("sort") != null) {
+			String sort = req.getParameter("sort");
+			map.put("sort", sort);
+			model.addAttribute("sort", sort);
+		}
 		List<Customer> customers = Arrays
-				.asList(rest.getForObject(domainServices + "/rest/api/customer/find-all", Customer[].class));
+				.asList(rest.postForObject(domainServices + "/rest/api/customer/find-all", map, Customer[].class));
 		model.addAttribute("customers", customers);
 		return "deposit/search_customer";
 	}
@@ -61,14 +91,36 @@ public class DepositController {
 	@GetMapping("/detail-account/{id}")
 	public String viewDetailAccount(@PathVariable("id") String id, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
-		List<Transaction> transactions = Arrays.asList(rest
-				.getForObject(domainServices + "/rest/api/deposit/find-by-deposit-account/" + id, Transaction[].class));
+		Map<String, Object> map = new HashMap<String, Object>();
+		int page = 1;
+		if (req.getParameter("page") != null) {
+			page = Integer.parseInt(req.getParameter("page"));
+			map.put("page", page);
+			model.addAttribute("page", page);
+		}
+		if (req.getParameter("fromDate") != null) {
+			String fromDate = req.getParameter("fromDate");
+			map.put("fromDate", fromDate);
+			model.addAttribute("fromDate", fromDate);
+		}
+		if (req.getParameter("toDate") != null) {
+			String toDate = req.getParameter("toDate");
+			map.put("toDate", toDate);
+			model.addAttribute("toDate", toDate);
+		}
+		if (req.getParameter("sort") != null) {
+			String sort = req.getParameter("sort");
+			map.put("sort", sort);
+			model.addAttribute("sort", sort);
+		}
+		List<Transaction> transactions = Arrays.asList(rest.postForObject(
+				domainServices + "/rest/api/deposit/find-by-deposit-account/" + id, map, Transaction[].class));
 		model.addAttribute("transactions", transactions);
 		HttpSession httpSession = req.getSession();
 		httpSession.setAttribute("accountId_deposit", id);
 		if (httpSession.getAttribute("customerDeposit_deposit") == null)
 			return "redirect:/admin/transaction/deposit";
-		
+
 		return "deposit/detail_account";
 	}
 
