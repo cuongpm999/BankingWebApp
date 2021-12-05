@@ -52,6 +52,60 @@ var Banking = {
 			}
 		});
 	},
+	
+	goNext() {
+		var tech = Banking.getUrlParameter('page') || 1;
+		Banking.addUrlParameter('page', (parseInt(tech) + 1));
+	},
 
+	getUrlParameter: function(sParam) {
+		var sPageURL = window.location.search.substring(1),
+			sURLVariables = sPageURL.split('&'),
+			sParameterName,
+			i;
+
+		for (i = 0; i < sURLVariables.length; i++) {
+			sParameterName = sURLVariables[i].split('=');
+
+			if (sParameterName[0] === sParam) {
+				return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+			}
+		}
+	},
+
+	goPrev() {
+		var tech = Banking.getUrlParameter('page') || 1;
+		if (parseInt(tech) > 1)
+			Banking.addUrlParameter('page', (parseInt(tech) - 1));
+
+	},
+	
+	
+	searchForCustomer(){
+		var keyCustomer = $('#search-key-customer').val();
+		var fromDate = $('#from-date').val();
+		var toDate = $('#to-date').val();
+		
+		var searchParams = new URLSearchParams(window.location.search);	
+		if(keyCustomer !== ''){
+			searchParams.set('keyCustomer',keyCustomer);		
+		}
+		else searchParams.delete('keyCustomer');
+		if(fromDate !== ''){
+			searchParams.set('fromDate',fromDate);
+		}
+		else searchParams.delete('fromDate');
+		if(toDate !== ''){
+			searchParams.set('toDate',toDate);
+		}
+		else searchParams.delete('toDate');
+		window.location.search = searchParams.toString();
+	},
+
+	addUrlParameter(name, value) {
+		var searchParams = new URLSearchParams(window.location.search);
+		searchParams.set(name, value);
+		window.location.search = searchParams.toString();
+	},
 
 }

@@ -3,7 +3,9 @@ package vn.ptit.controllers;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,8 +35,36 @@ public class CustomerController {
 
 	@GetMapping
 	public String viewCustomer(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		int page = 1;
+		if(req.getParameter("page")!=null) {
+			page = Integer.parseInt(req.getParameter("page"));
+			map.put("page", page);
+			model.addAttribute("page", page);
+		}
+		if(req.getParameter("keyCustomer")!=null) {
+			String keyCustomer = req.getParameter("keyCustomer");
+			map.put("keyCustomer", keyCustomer);
+			model.addAttribute("keyCustomer", keyCustomer);
+		}
+		if(req.getParameter("fromDate")!=null) {
+			String fromDate = req.getParameter("fromDate");
+			map.put("fromDate", fromDate);
+			model.addAttribute("fromDate", fromDate);
+		}
+		if(req.getParameter("toDate")!=null) {
+			String toDate = req.getParameter("toDate");
+			map.put("toDate", toDate);
+			model.addAttribute("toDate", toDate);
+		}
+		if(req.getParameter("sort")!=null) {
+			String sort = req.getParameter("sort");
+			map.put("sort", sort);
+			model.addAttribute("sort", sort);
+		}
 		List<Customer> customers = Arrays
-				.asList(rest.getForObject(domainServices + "/rest/api/customer/find-all", Customer[].class));
+				.asList(rest.postForObject(domainServices + "/rest/api/customer/find-all", map, Customer[].class));
 		model.addAttribute("customers", customers);
 		return "customer/manage_customer";
 	}
