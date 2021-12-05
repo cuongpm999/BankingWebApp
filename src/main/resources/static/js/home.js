@@ -107,5 +107,20 @@ var Banking = {
 		searchParams.set(name, value);
 		window.location.search = searchParams.toString();
 	},
+	
+	searchForSalary(){
+		var fromDate = $('#from-date').val();
+		var toDate = $('#to-date').val();
+		var searchParams = new URLSearchParams(window.location.search);	
+		if(fromDate !== ''){
+			searchParams.set('fromDate',fromDate);
+		}
+		else searchParams.delete('fromDate');
+		if(toDate !== ''){
+			searchParams.set('toDate',toDate);
+		}
+		else searchParams.delete('toDate');
+		window.location.search = searchParams.toString();
+	},
 
 }

@@ -5,8 +5,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +28,7 @@ import vn.ptit.models.CustomerCreditStat;
 import vn.ptit.models.CustomerDepositStat;
 import vn.ptit.models.DepositAccount;
 import vn.ptit.models.Employee;
+import vn.ptit.models.Salary;
 
 @Controller
 @RequestMapping("/admin")
@@ -115,5 +118,39 @@ public class ManageController {
 		Employee employee = rest.getForObject(domainServices + "/rest/api/employee/get/" + username, Employee.class);
 		model.addAttribute("employee", employee);
 		return "employee/detail_employee";
+	}
+	
+	@GetMapping("/salary")
+	public String viewSalary(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		String username = (String) req.getSession().getAttribute("usernameEmployee");
+		Employee employee = rest.getForObject(domainServices + "/rest/api/employee/get/" + username, Employee.class);
+		model.addAttribute("employee", employee);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("empId", employee.getId());
+		int page = 1;
+		if(req.getParameter("page")!=null) {
+			page = Integer.parseInt(req.getParameter("page"));
+			map.put("page", page);
+			model.addAttribute("page", page);
+		}
+		if(req.getParameter("fromDate")!=null) {
+			String fromDate = req.getParameter("fromDate");
+			map.put("fromDate", fromDate);
+			model.addAttribute("fromDate", fromDate);
+		}
+		if(req.getParameter("toDate")!=null) {
+			String toDate = req.getParameter("toDate");
+			map.put("toDate", toDate);
+			model.addAttribute("toDate", toDate);
+		}
+		if(req.getParameter("sort")!=null) {
+			String sort = req.getParameter("sort");
+			map.put("sort", sort);
+			model.addAttribute("sort", sort);
+		}
+		List<Salary> salaries = Arrays.asList(
+				rest.postForObject(domainServices + "/rest/api/salary/filter", map, Salary[].class));
+		model.addAttribute("salaries", salaries);
+		return "employee/salary_employee";
 	}
 }

@@ -348,7 +348,7 @@
     margin-right: 10px;
 }
 
-.page-container .search-customer{
+.page-container .search-customer, .search-salary{
 	display: flex;
 	width: 100%;
 	justify-content: space-between;

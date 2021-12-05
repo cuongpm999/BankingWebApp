@@ -67,36 +67,37 @@
 											<td>Họ và tên</td>
 											<td
 												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${session.employeeSalary.fullName}"></td>
+												th:text="${employee.fullName}"></td>
 										</tr>
 										<tr>
 											<td>Vị trí</td>
 											<td
 												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${session.employeeSalary.position}"></td>
+												th:text="${employee.position}"></td>
 										</tr>
 										<tr>
 											<td>Thâm niên</td>
 											<td
 												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${session.employeeSalary.seniority}"></td>
+												th:text="${employee.seniority}"></td>
 										</tr>
 										<tr>
 											<td>Bậc nghề</td>
 											<td
 												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${session.employeeSalary.level}"></td>
+												th:text="${employee.level}"></td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
+							<h1 class="my-3"></h1>
 							<div class="search-salary">
 								<div style="display: flex; width: 90%;">
 									<div style="display: flex; margin-right: 20px;">
 										<label
 											style="margin-top: 6px; margin-right: 10px; font-size: 17px;">From:</label>
 										<input class="form-control" type="text"
-											style="margin-right: 20px;"
+											style="margin-right: 20px; width: 150%;"
 											placeholder="Tháng bắt đầu" id="from-date"
 											th:value="${fromDate}"> <label id="from-error"
 											class="error" for="from" style="display: none">Vui
@@ -106,7 +107,7 @@
 										<label
 											style="margin-top: 6px; margin-right: 10px; font-size: 17px;">To:
 										</label> <input class="form-control" type="text"
-											style="margin-right: 20px;"
+											style="margin-right: 20px; width: 150%;"
 											placeholder="Thắng kết thúc" id="to-date"
 											th:value="${toDate}"> <label id="from-error"
 											class="error" for="from" style="display: none">Vui
@@ -123,15 +124,12 @@
 										onchange="Banking.addUrlParameter('sort', this.value)"
 										class="form-control" style="width: max-content">
 										<option value="">Sắp xếp theo lương</option>
-										<option value="a-z" th:selected="${sort} == 'asc'">Tăng
+										<option value="asc" th:selected="${sort} == 'asc'">Tăng
 											dần</option>
-										<option value="z-a" th:selected="${sort} == 'desc'">Giảm
+										<option value="desc" th:selected="${sort} == 'desc'">Giảm
 											dần</option>
 									</select>
 								</div>
-								<a th:href="@{'/admin/manage/salary/add'}"
-									class="btn btn-success"><i class="fas fa-plus-square"></i>
-									Add</a>
 							</div>
 							<h1 class="my-3"></h1>
 							<table class="table">
@@ -141,7 +139,6 @@
 										<th>Lương cơ bản</th>
 										<th>Lương thưởng</th>
 										<th>Lương tháng</th>
-										<th></th>
 									</tr>
 								</thead>
 								<tbody id="myTable">
@@ -152,12 +149,6 @@
 										<td
 											th:text="${#numbers.formatInteger(salary.bonusSalary,0,'POINT')+' ₫'}"></td>
 										<td th:text="${salary.dateSalary}"></td>
-										<td><a
-											th:href="@{'/admin/manage/salary/edit/' + ${salary.id}}"
-											class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
-											<a th:href="@{'/admin/manage/salary/detail/' + ${salary.id}}"
-											class="btn btn-dark"> <i class="fas fa-coins"></i> Detail
-										</a></td>
 									</tr>
 								</tbody>
 							</table>
@@ -218,6 +209,7 @@
 
 		</div>
 	</div>
+
 </body>
 <style>
 .table td, .table th {
