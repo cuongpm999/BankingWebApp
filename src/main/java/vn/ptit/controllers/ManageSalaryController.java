@@ -3,7 +3,9 @@ package vn.ptit.controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,8 +37,36 @@ public class ManageSalaryController {
 
 	@GetMapping
 	public String viewManageSalaryEmployee(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		int page = 1;
+		if (req.getParameter("page") != null) {
+			page = Integer.parseInt(req.getParameter("page"));
+			map.put("page", page);
+			model.addAttribute("page", page);
+		}
+		if (req.getParameter("keyEmployee") != null) {
+			String keyEmployee = req.getParameter("keyEmployee");
+			map.put("keyEmployee", keyEmployee);
+			model.addAttribute("keyEmployee", keyEmployee);
+		}
+		if (req.getParameter("fromDate") != null) {
+			String fromDate = req.getParameter("fromDate");
+			map.put("fromDate", fromDate);
+			model.addAttribute("fromDate", fromDate);
+		}
+		if (req.getParameter("toDate") != null) {
+			String toDate = req.getParameter("toDate");
+			map.put("toDate", toDate);
+			model.addAttribute("toDate", toDate);
+		}
+		if (req.getParameter("sort") != null) {
+			String sort = req.getParameter("sort");
+			map.put("sort", sort);
+			model.addAttribute("sort", sort);
+		}
 		List<Employee> employees = Arrays
-				.asList(rest.getForObject(domainServices + "/rest/api/employee/find-all", Employee[].class));
+				.asList(rest.postForObject(domainServices + "/rest/api/employee/find-all",map, Employee[].class));
 		model.addAttribute("employees", employees);
 		return "salary/manage_salary_employee";
 	}

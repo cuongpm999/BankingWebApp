@@ -3,7 +3,9 @@ package vn.ptit.controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,15 +30,45 @@ import vn.ptit.models.Employee;
 @RequestMapping("/admin/manage/employee")
 public class EmployeeController {
 	private RestTemplate rest = new RestTemplate();
-	@Autowired PasswordEncoder passwordEncoder;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	@Value("${domain.services.name}")
 	private String domainServices;
 
 	@GetMapping()
-	public String viewManageEmployee(Model model) {
+	public String viewManageEmployee(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		int page = 1;
+		if (req.getParameter("page") != null) {
+			page = Integer.parseInt(req.getParameter("page"));
+			map.put("page", page);
+			model.addAttribute("page", page);
+		}
+		if (req.getParameter("keyEmployee") != null) {
+			String keyEmployee = req.getParameter("keyEmployee");
+			map.put("keyEmployee", keyEmployee);
+			model.addAttribute("keyEmployee", keyEmployee);
+		}
+		if (req.getParameter("fromDate") != null) {
+			String fromDate = req.getParameter("fromDate");
+			map.put("fromDate", fromDate);
+			model.addAttribute("fromDate", fromDate);
+		}
+		if (req.getParameter("toDate") != null) {
+			String toDate = req.getParameter("toDate");
+			map.put("toDate", toDate);
+			model.addAttribute("toDate", toDate);
+		}
+		if (req.getParameter("sort") != null) {
+			String sort = req.getParameter("sort");
+			map.put("sort", sort);
+			model.addAttribute("sort", sort);
+		}
+
 		List<Employee> employees = Arrays
-				.asList(rest.getForObject(domainServices+"/rest/api/employee/find-all", Employee[].class));
+				.asList(rest.postForObject(domainServices + "/rest/api/employee/find-all",map, Employee[].class));
 		model.addAttribute("employees", employees);
 		return "employee/manage_employee";
 	}
@@ -52,7 +84,7 @@ public class EmployeeController {
 			@RequestParam("dob") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
 		List<Employee> employees = Arrays
-				.asList(rest.getForObject(domainServices+"/rest/api/employee/find-all", Employee[].class));
+				.asList(rest.getForObject(domainServices + "/rest/api/employee/find-all", Employee[].class));
 		boolean flagUsername = false;
 
 		for (int i = 0; i < employees.size(); i++) {
@@ -86,14 +118,17 @@ public class EmployeeController {
 			@RequestParam("dob") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
 		String password = req.getParameter("password_");
-		Employee emp = rest.getForObject(domainServices+"/rest/api/employee/get/"+employee.getAccount().getUsername(), Employee.class);
-		
-		if(emp.getAccount().getPassword().equalsIgnoreCase(password)) employee.getAccount().setPassword(password);
-		else employee.getAccount().setPassword(passwordEncoder.encode(password));
-		
+		Employee emp = rest.getForObject(
+				domainServices + "/rest/api/employee/get/" + employee.getAccount().getUsername(), Employee.class);
+
+		if (emp.getAccount().getPassword().equalsIgnoreCase(password))
+			employee.getAccount().setPassword(password);
+		else
+			employee.getAccount().setPassword(passwordEncoder.encode(password));
+
 		employee.setDateOfBirth(dob);
 		employee.setStatus(true);
-		
+
 		rest.postForObject(domainServices + "/rest/api/employee/update", employee, Employee.class);
 		return "redirect:/admin/manage/employee";
 	}
