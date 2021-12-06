@@ -17,6 +17,17 @@ $(document).ready(function() {
 		$("html, body").animate({ scrollTop: 0 }, 700);
 	});
 
+	$('#search-key-customer').keyup(function(e) {
+		if (e.key == 'Enter') {
+			$('.search-customer button').click();
+		}
+	})
+	
+	$('#search-key-employee').keyup(function(e) {
+		if (e.key == 'Enter') {
+			$('.search-employee button').click();
+		}
+	})
 
 });
 
@@ -27,8 +38,8 @@ var Banking = {
 			location.href = link;
 		}
 	},
-	
-	checkAccountId: function(){
+
+	checkAccountId: function() {
 		var data = {};
 		data["number"] = $('#number').val();
 
@@ -52,7 +63,7 @@ var Banking = {
 			}
 		});
 	},
-	
+
 	goNext() {
 		var tech = Banking.getUrlParameter('page') || 1;
 		Banking.addUrlParameter('page', (parseInt(tech) + 1));
@@ -79,23 +90,23 @@ var Banking = {
 			Banking.addUrlParameter('page', (parseInt(tech) - 1));
 
 	},
-	
-	searchForCustomer(){
+
+	searchForCustomer() {
 		var keyCustomer = $('#search-key-customer').val();
 		var fromDate = $('#from-date').val();
 		var toDate = $('#to-date').val();
-		
-		var searchParams = new URLSearchParams(window.location.search);	
-		if(keyCustomer !== ''){
-			searchParams.set('keyCustomer',keyCustomer);		
+
+		var searchParams = new URLSearchParams(window.location.search);
+		if (keyCustomer !== '') {
+			searchParams.set('keyCustomer', keyCustomer);
 		}
 		else searchParams.delete('keyCustomer');
-		if(fromDate !== ''){
-			searchParams.set('fromDate',fromDate);
+		if (fromDate !== '') {
+			searchParams.set('fromDate', fromDate);
 		}
 		else searchParams.delete('fromDate');
-		if(toDate !== ''){
-			searchParams.set('toDate',toDate);
+		if (toDate !== '') {
+			searchParams.set('toDate', toDate);
 		}
 		else searchParams.delete('toDate');
 		window.location.search = searchParams.toString();
@@ -117,6 +128,22 @@ var Banking = {
 			searchParams.set('keyEmployee',keyEmployee);		
 		}
 		else searchParams.delete('keyEmployee');
+		if(fromDate !== ''){
+			searchParams.set('fromDate',fromDate);
+		}
+		else searchParams.delete('fromDate');
+		if(toDate !== ''){
+			searchParams.set('toDate',toDate);
+		}
+		else searchParams.delete('toDate');
+		window.location.search = searchParams.toString();
+	},
+	
+	searchForTransaction(){
+		var fromDate = $('#from-date').val();
+		var toDate = $('#to-date').val();
+		
+		var searchParams = new URLSearchParams(window.location.search);	
 		if(fromDate !== ''){
 			searchParams.set('fromDate',fromDate);
 		}

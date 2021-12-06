@@ -18,7 +18,8 @@
 <link rel="icon" type="image/png" sizes="16x16"
 	href="/favicon/favicon-16x16.png">
 <link rel="manifest" href="/favicon/site.webmanifest">
-<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"
+	color="#5bbad5">
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
 
@@ -103,11 +104,47 @@
 								</table>
 
 							</div>
-							<input class="form-control" id="myInput" type="text"
-								placeholder="Search..">
-							<a href="/admin/transaction/create-payment/create"
-								class="btn btn-success" style="margin-top: 10px"><i
-								class="fas fa-plus-square"></i> Chuyển tiền</a>
+							<div class="search-transaction">
+								<div style="display: flex; width: 75%;">
+									<div style="display: flex; margin-right: 20px;">
+										<label
+											style="margin-top: 6px; margin-right: 10px; font-size: 17px;">From:</label>
+										<div>
+											<input type="date" class="form-control" name="from"
+												th:value="${fromDate}" id="from-date">
+										</div>
+									</div>
+									<div style="display: flex; margin-right: 20px;">
+										<label
+											style="margin-top: 6px; margin-right: 10px; font-size: 17px;">To:
+										</label>
+										<div>
+											<input type="date" class="form-control" name="to"
+												th:value="${toDate}" id="to-date">
+										</div>
+									</div>
+									<div style="width: auto; margin-right: 20px;">
+										<button type="button" class="btn btn-primary"
+											style="width: max-content"
+											onclick="Banking.searchForTransaction()">
+											<i class="fas fa-search"></i> Tìm
+										</button>
+									</div>
+									<select id="sort-select" style="width: unset;"
+										onchange="Banking.addUrlParameter('sort', this.value)"
+										class="form-control">
+										<option value="">Sắp xếp theo số tiền giao dịch</option>
+										<option value="Tăng dần" th:selected="${sort} == 'Tăng dần'">Tăng
+											dần</option>
+										<option value="Giảm dần" th:selected="${sort} == 'Giảm dần'">Giảm
+											dần</option>
+									</select>
+								</div>
+
+								<a href="/admin/transaction/create-payment/create" class="btn btn-success"
+									style="width: max-content;"><i class="fas fa-plus-square"></i>
+									Chuyển tiền</a>
+							</div>
 							<h1 class="my-3"></h1>
 
 							<table class="table">
@@ -131,10 +168,59 @@
 										<td th:text="${transaction.creditAccount.id}"></td>
 										<td th:text="${transaction.employee.fullName}"></td>
 										<td><a
-											th:href="@{'/admin/transaction/create-payment/detail-transaction/' + ${transaction.id}}">Xem chi tiết</a></td>
+											th:href="@{'/admin/transaction/create-payment/detail-transaction/' + ${transaction.id}}">Xem
+												chi tiết</a></td>
 									</tr>
 								</tbody>
 							</table>
+
+							<div class="text-center"
+								style="margin-bottom: -18px; margin-top: 50px;">
+								<ul class="page-numbers">
+									<li><a class="prev page-numbers"
+										href="javascript:Banking.goPrev()"><i
+											class="fas fa-angle-left"></i></a></li>
+									<li><div th:if="${page} == 1 or ${page == null}">
+											<span aria-current="page" class="page-numbers current">1</span>
+										</div>
+										<div th:unless="${page} == 1 or ${page == null}">
+											<a class="page-numbers"
+												href="javascript:Banking.addUrlParameter('page', 1)">1</a>
+										</div></li>
+									<li><div th:if="${page} == 2">
+											<span aria-current="page" class="page-numbers current">2</span>
+										</div>
+										<div th:unless="${page} == 2">
+											<a class="page-numbers"
+												href="javascript:Banking.addUrlParameter('page', 2)">2</a>
+										</div></li>
+
+									<li><div th:if="${page} == 3">
+											<span aria-current="page" class="page-numbers current">3</span>
+										</div>
+										<div th:unless="${page} == 3">
+											<a class="page-numbers"
+												href="javascript:Banking.addUrlParameter('page', 3)">3</a>
+										</div></li>
+									<li><div th:if="${page} == 4">
+											<span aria-current="page" class="page-numbers current">4</span>
+										</div>
+										<div th:unless="${page} == 4">
+											<a class="page-numbers"
+												href="javascript:Banking.addUrlParameter('page', 4)">4</a>
+										</div></li>
+									<li><div th:if="${page} == 5">
+											<span aria-current="page" class="page-numbers current">5</span>
+										</div>
+										<div th:unless="${page} == 5">
+											<a class="page-numbers"
+												href="javascript:Banking.addUrlParameter('page', 5)">5</a>
+										</div></li>
+									<li><a class="next page-numbers"
+										href="javascript:Banking.goNext()"><i
+											class="fas fa-angle-right"></i></a></li>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>

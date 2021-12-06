@@ -360,6 +360,12 @@
 	justify-content: space-between;
 }
 
+.page-container .search-transaction{
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+}
+
 .page-numbers {
     padding: 0;
     margin: 20px 0;
