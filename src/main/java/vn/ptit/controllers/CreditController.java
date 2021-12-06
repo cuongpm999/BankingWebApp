@@ -43,7 +43,6 @@ public class CreditController {
 	@GetMapping
 	public String viewCustomer(Model model, HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> map = new HashMap<String, Object>();
-
 		int page = 1;
 		if (req.getParameter("page") != null) {
 			page = Integer.parseInt(req.getParameter("page"));
