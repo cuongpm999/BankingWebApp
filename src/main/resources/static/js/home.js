@@ -22,7 +22,7 @@ $(document).ready(function() {
 			$('.search-customer button').click();
 		}
 	})
-	
+
 	$('#search-key-employee').keyup(function(e) {
 		if (e.key == 'Enter') {
 			$('.search-employee button').click();
@@ -117,54 +117,63 @@ var Banking = {
 		searchParams.set(name, value);
 		window.location.search = searchParams.toString();
 	},
-	
-	searchForEmployee(){
+
+	searchForEmployee() {
 		var keyEmployee = $('#search-key-employee').val();
 		var fromDate = $('#from-date').val();
 		var toDate = $('#to-date').val();
-		
-		var searchParams = new URLSearchParams(window.location.search);	
-		if(keyEmployee !== ''){
-			searchParams.set('keyEmployee',keyEmployee);		
+
+		var searchParams = new URLSearchParams(window.location.search);
+		if (keyEmployee !== '') {
+			searchParams.set('keyEmployee', keyEmployee);
 		}
 		else searchParams.delete('keyEmployee');
-		if(fromDate !== ''){
-			searchParams.set('fromDate',fromDate);
+		if (fromDate !== '') {
+			searchParams.set('fromDate', fromDate);
 		}
 		else searchParams.delete('fromDate');
-		if(toDate !== ''){
-			searchParams.set('toDate',toDate);
+		if (toDate !== '') {
+			searchParams.set('toDate', toDate);
 		}
 		else searchParams.delete('toDate');
 		window.location.search = searchParams.toString();
 	},
-	
-	searchForTransaction(){
+
+	searchForTransaction() {
 		var fromDate = $('#from-date').val();
 		var toDate = $('#to-date').val();
-		
-		var searchParams = new URLSearchParams(window.location.search);	
-		if(fromDate !== ''){
-			searchParams.set('fromDate',fromDate);
+
+		var searchParams = new URLSearchParams(window.location.search);
+		if (fromDate !== '') {
+			searchParams.set('fromDate', fromDate);
 		}
 		else searchParams.delete('fromDate');
-		if(toDate !== ''){
-			searchParams.set('toDate',toDate);
+		if (toDate !== '') {
+			searchParams.set('toDate', toDate);
 		}
 		else searchParams.delete('toDate');
 		window.location.search = searchParams.toString();
 	},
-	
-	searchForSalary(){
-		var fromDate = $('#from-date').val();
-		var toDate = $('#to-date').val();
-		var searchParams = new URLSearchParams(window.location.search);	
-		if(fromDate !== ''){
-			searchParams.set('fromDate',fromDate);
+
+	searchForSalary() {
+		var fromDate = $('#salary-from-date').val();
+		var toDate = $('#salary-to-date').val();
+
+		var searchParams = new URLSearchParams(window.location.search);
+		if (fromDate !== '') {
+			if (!(/^(0[1-9]|1[0-2])\/\d{4}$/.test(fromDate))) {
+				$("#from-error-salary").css("display", "inline-block");
+				return;
+			}
+			searchParams.set('fromDate', fromDate);
 		}
 		else searchParams.delete('fromDate');
-		if(toDate !== ''){
-			searchParams.set('toDate',toDate);
+		if (toDate !== '') {
+			if (!(/^(0[1-9]|1[0-2])\/\d{4}$/.test(toDate))) {
+				$("#to-error-salary").css("display", "inline-block");
+				return;
+			}
+			searchParams.set('toDate', toDate);
 		}
 		else searchParams.delete('toDate');
 		window.location.search = searchParams.toString();

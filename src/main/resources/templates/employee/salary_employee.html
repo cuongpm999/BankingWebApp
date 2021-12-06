@@ -90,28 +90,30 @@
 									</tbody>
 								</table>
 							</div>
-							<h1 class="my-3"></h1>
 							<div class="search-salary">
 								<div style="display: flex; width: 90%;">
 									<div style="display: flex; margin-right: 20px;">
 										<label
 											style="margin-top: 6px; margin-right: 10px; font-size: 17px;">From:</label>
-										<input class="form-control" type="text"
-											style="margin-right: 20px; width: 150%;"
-											placeholder="Tháng bắt đầu" id="from-date"
-											th:value="${fromDate}"> <label id="from-error"
-											class="error" for="from" style="display: none">Vui
-											lòng nhập ngày bắt đầu</label>
+										<div>
+											<input class="form-control" type="text" style="width: 255px;"
+												placeholder="Nhập theo định dạng MM/yyyy"
+												id="salary-from-date" th:value="${fromDate}">
+											<div id="from-error-salary" class="error"
+												style="display: none">Sai định dạng (MM/yyyy)</div>
+										</div>
 									</div>
 									<div style="display: flex; margin-right: 20px;">
 										<label
 											style="margin-top: 6px; margin-right: 10px; font-size: 17px;">To:
-										</label> <input class="form-control" type="text"
-											style="margin-right: 20px; width: 150%;"
-											placeholder="Thắng kết thúc" id="to-date"
-											th:value="${toDate}"> <label id="from-error"
-											class="error" for="from" style="display: none">Vui
-											lòng nhập ngày bắt đầu</label>
+										</label>
+										<div>
+											<input class="form-control" type="text" style="width: 255px;"
+												placeholder="Nhập theo định dạng MM/yyyy"
+												id="salary-to-date" th:value="${toDate}">
+											<div id="to-error-salary" class="error" style="display: none">Sai
+												định dạng (MM/yyyy)</div>
+										</div>
 									</div>
 									<div style="width: auto; margin-right: 20px;">
 										<button type="button" class="btn btn-primary"
@@ -214,6 +216,12 @@
 <style>
 .table td, .table th {
 	border-top: 0;
+}
+
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
 }
 </style>
 </html>

@@ -95,22 +95,25 @@
 									<div style="display: flex; margin-right: 20px;">
 										<label
 											style="margin-top: 6px; margin-right: 10px; font-size: 17px;">From:</label>
-										<input class="form-control" type="text"
-											style="margin-right: 20px;"
-											placeholder="Tháng bắt đầu" id="from-date"
-											th:value="${fromDate}"> <label id="from-error"
-											class="error" for="from" style="display: none">Vui
-											lòng nhập ngày bắt đầu</label>
+										<div>
+											<input class="form-control" type="text" style="width: 255px;"
+												placeholder="Nhập theo định dạng MM/yyyy"
+												id="salary-from-date" th:value="${fromDate}">
+											<div id="from-error-salary" class="error"
+												style="display: none">Sai định dạng (MM/yyyy)</div>
+										</div>
 									</div>
 									<div style="display: flex; margin-right: 20px;">
 										<label
 											style="margin-top: 6px; margin-right: 10px; font-size: 17px;">To:
-										</label> <input class="form-control" type="text"
-											style="margin-right: 20px;"
-											placeholder="Thắng kết thúc" id="to-date"
-											th:value="${toDate}"> <label id="from-error"
-											class="error" for="from" style="display: none">Vui
-											lòng nhập ngày bắt đầu</label>
+										</label>
+										<div>
+											<input class="form-control" type="text" style="width: 255px;"
+												placeholder="Nhập theo định dạng MM/yyyy"
+												id="salary-to-date" th:value="${toDate}">
+											<div id="to-error-salary" class="error" style="display: none">Sai
+												định dạng (MM/yyyy)</div>
+										</div>
 									</div>
 									<div style="width: auto; margin-right: 20px;">
 										<button type="button" class="btn btn-primary"
@@ -123,16 +126,19 @@
 										onchange="Banking.addUrlParameter('sort', this.value)"
 										class="form-control" style="width: max-content">
 										<option value="">Sắp xếp theo lương</option>
-										<option value="a-z" th:selected="${sort} == 'asc'">Tăng
+										<option value="asc" th:selected="${sort} == 'asc'">Tăng
 											dần</option>
-										<option value="z-a" th:selected="${sort} == 'desc'">Giảm
+										<option value="desc" th:selected="${sort} == 'desc'">Giảm
 											dần</option>
 									</select>
 								</div>
-								<a th:href="@{'/admin/manage/salary/add'}"
-									class="btn btn-success"><i class="fas fa-plus-square"></i>
-									Add</a>
+								<div>
+									<a th:href="@{'/admin/manage/salary/add'}"
+										class="btn btn-success"><i class="fas fa-plus-square"></i>
+										Add</a>
+								</div>
 							</div>
+
 							<h1 class="my-3"></h1>
 							<table class="table">
 								<thead class="thead-light">
@@ -222,6 +228,12 @@
 <style>
 .table td, .table th {
 	border-top: 0;
+}
+
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
 }
 </style>
 </html>
