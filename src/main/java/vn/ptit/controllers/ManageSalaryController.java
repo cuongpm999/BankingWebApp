@@ -76,8 +76,31 @@ public class ManageSalaryController {
 			HttpServletResponse resp) {
 		Employee employee = rest.getForObject(domainServices + "/rest/api/employee/find-by-id/" + id, Employee.class);
 		req.getSession().setAttribute("employeeSalary", employee);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("empId", employee.getId());
+		int page = 1;
+		if(req.getParameter("page")!=null) {
+			page = Integer.parseInt(req.getParameter("page"));
+			map.put("page", page);
+			model.addAttribute("page", page);
+		}
+		if(req.getParameter("fromDate")!=null) {
+			String fromDate = req.getParameter("fromDate");
+			map.put("fromDate", fromDate);
+			model.addAttribute("fromDate", fromDate);
+		}
+		if(req.getParameter("toDate")!=null) {
+			String toDate = req.getParameter("toDate");
+			map.put("toDate", toDate);
+			model.addAttribute("toDate", toDate);
+		}
+		if(req.getParameter("sort")!=null) {
+			String sort = req.getParameter("sort");
+			map.put("sort", sort);
+			model.addAttribute("sort", sort);
+		}
 		List<Salary> salaries = Arrays.asList(
-				rest.getForObject(domainServices + "/rest/api/salary/find-all-by-employee/" + id, Salary[].class));
+				rest.postForObject(domainServices + "/rest/api/salary/filter", map, Salary[].class));
 		model.addAttribute("salaries", salaries);
 		return "salary/list_salary_employee";
 	}
