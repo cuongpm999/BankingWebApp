@@ -29,6 +29,7 @@ import vn.ptit.models.DepositAccount;
 import vn.ptit.models.Employee;
 import vn.ptit.models.Transaction;
 import vn.ptit.services.SendMailService;
+import vn.ptit.utils.HelperTransaction;
 
 @Controller
 @RequestMapping("/admin/transaction/create-payment")
@@ -165,23 +166,27 @@ public class CreatePaymentController {
 		Employee employee = rest.getForObject(
 				domainServices + "/rest/api/employee/get/" + httpSession.getAttribute("usernameEmployee").toString(),
 				Employee.class);
-		;
 		transaction.setEmployee(employee);
 		transaction.setCustomer(customer);
 		transaction.setDepositAccount(depositAccount);
 		transaction.setCreditAccount(creditAccount);
 		transaction.setDateCreate(new Date());
-
-		boolean flag = rest.postForObject(domainServices + "/rest/api/create-payment/insert", transaction,
-				Boolean.class);
-		if (!flag) {
+		
+		HelperTransaction helperTransaction = rest.postForObject(domainServices + "/rest/api/create-payment/insert", transaction,
+				HelperTransaction.class);
+		if (helperTransaction.getStatus()==0) {
 			model.addAttribute("transaction", transaction);
-			model.addAttribute("status", "failed");
-			httpSession.removeAttribute("creditAccount_Pay");
+			model.addAttribute("status", "failed0");
+			return "payment/create_payment";
+		}
+		
+		if (helperTransaction.getStatus()==1) {
+			model.addAttribute("transaction", transaction);
+			model.addAttribute("status", "failed1");
 			return "payment/create_payment";
 		}
 
-		sendMailService.sendMailPayment(transaction, (Customer) httpSession.getAttribute("customerOtherPay"));
+		sendMailService.sendMailPayment(helperTransaction.getTransaction(), (Customer) httpSession.getAttribute("customerOtherPay"));
 
 		httpSession.removeAttribute("creditAccount_Pay");
 		return "redirect:/admin/transaction/create-payment/detail-account/" + depositAccount.getId();

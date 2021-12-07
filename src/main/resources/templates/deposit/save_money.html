@@ -98,7 +98,7 @@
 									
 									<div th:if="${status == 'failed'}">
 										<div class="alert alert-danger">
-											<strong>Failed!</strong> Giao dịch thất bại!
+											<strong>Failed!</strong> Số dư sau giao dịch nhỏ hơn số dư tối thiểu!
 										</div>
 									</div>
 								
@@ -108,8 +108,8 @@
 										
 										<div class="form-group">
 											<label class="required">Số tiền gửi: </label> <input
-												th:field="*{money}" class="form-control"
-												placeholder="Số tiền gửi" />
+												name="money" class="form-control" th:value="${#numbers.formatInteger(transaction.money,0)}"
+												placeholder="Số tiền giao dịch" />
 										</div>
 										<div class="form-group">
 											<label>Ghi chú: </label>

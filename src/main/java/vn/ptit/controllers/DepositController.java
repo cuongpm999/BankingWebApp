@@ -27,6 +27,7 @@ import vn.ptit.models.DepositAccount;
 import vn.ptit.models.Employee;
 import vn.ptit.models.Transaction;
 import vn.ptit.services.SendMailService;
+import vn.ptit.utils.HelperTransaction;
 
 @Controller
 @RequestMapping("/admin/transaction/deposit")
@@ -162,13 +163,13 @@ public class DepositController {
 				Employee.class);
 		transaction.setEmployee(employee);
 		transaction.setDateCreate(new Date());
-		boolean flag = rest.postForObject(domainServices + "/rest/api/deposit/insert", transaction, Boolean.class);
-		if (!flag) {
+		HelperTransaction helperTransaction = rest.postForObject(domainServices + "/rest/api/deposit/insert", transaction, HelperTransaction.class);
+		if (helperTransaction.getStatus()==0) {
 			model.addAttribute("transaction", transaction);
 			model.addAttribute("status", "failed");
 			return "deposit/save_money";
 		}
-		sendMailService.sendMailDeposit(transaction);
+		sendMailService.sendMailDeposit(helperTransaction.getTransaction());
 		return "redirect:/admin/transaction/deposit/detail-account/" + depositAccount.getId();
 	}
 

@@ -107,10 +107,15 @@
 											</div>
 										</div>
 									</div>
-									<div th:if="${status == 'failed'}">
+									<div th:if="${status == 'failed0'}">
 										<div class="alert alert-danger">
-											<strong>Failed!</strong> Số tiền giao dịch vượt quá số tiền
+											<strong>Failed!</strong> Số dư còn lại ít hơn số dư
 											tối thiểu!
+										</div>
+									</div>
+									<div th:if="${status == 'failed1'}">
+										<div class="alert alert-danger">
+											<strong>Failed!</strong> Số tiền giao dịch lớn hơn số nợ hiện tại!
 										</div>
 									</div>
 									<div th:if="${status == 'selectAccount'}">
@@ -124,7 +129,7 @@
 										method="post" id="deposit-form">
 										<div class="form-group">
 											<label class="required">Số tiền giao dịch: </label> <input
-												th:field="*{money}" class="form-control"
+												name="money" class="form-control" th:value="${#numbers.formatInteger(transaction.money,0)}"
 												placeholder="Số tiền giao dịch" />
 										</div>
 										<div class="form-group">

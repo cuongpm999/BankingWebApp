@@ -27,6 +27,7 @@ import vn.ptit.models.Customer;
 import vn.ptit.models.Employee;
 import vn.ptit.models.Transaction;
 import vn.ptit.services.SendMailService;
+import vn.ptit.utils.HelperTransaction;
 
 @Controller
 @RequestMapping("/admin/transaction/credit")
@@ -160,13 +161,13 @@ public class CreditController {
 				Employee.class);
 		transaction.setEmployee(employee);
 		transaction.setDateCreate(new Date());
-		boolean flag = rest.postForObject(domainServices + "/rest/api/credit/insert", transaction, Boolean.class);
-		if (!flag) {
+		HelperTransaction helperTransaction = rest.postForObject(domainServices + "/rest/api/credit/insert", transaction, HelperTransaction.class);
+		if (helperTransaction.getStatus()==0) {
 			model.addAttribute("transaction", transaction);
 			model.addAttribute("status", "failed");
 			return "credit/deal";
 		}
-		sendMailService.sendMailDeal(transaction);
+		sendMailService.sendMailDeal(helperTransaction.getTransaction());
 		return "redirect:/admin/transaction/credit/detail-account/" + creditAccount.getId();
 	}
 
