@@ -139,6 +139,10 @@
 											dần</option>
 									</select>
 								</div>
+								
+								<a th:href="@{/admin/statistic/transaction-by-customer/export/deposit-account}" class="btn btn-success"
+									style="width: max-content;"><i class="far fa-file-excel"></i>
+									Export Excel</a>
 							</div>
 							<h1 class="my-3"></h1>
 							<table class="table">
@@ -150,7 +154,7 @@
 										<th>Số tiền gửi</th>
 										<th>Số dư sau giao dịch</th>
 										<th>Nhân viên tạo</th>
-										<th>Nội dung</th>
+										<th style="width: 250px;">Nội dung</th>
 									</tr>
 								</thead>
 								<tbody id="myTable">

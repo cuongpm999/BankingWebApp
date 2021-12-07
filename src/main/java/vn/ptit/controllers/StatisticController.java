@@ -1,5 +1,8 @@
 package vn.ptit.controllers;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -16,8 +19,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
@@ -29,6 +34,7 @@ import vn.ptit.models.CustomerDepositStat;
 import vn.ptit.models.CustomerTransactionStat;
 import vn.ptit.models.DepositAccount;
 import vn.ptit.models.Transaction;
+import vn.ptit.utils.ExcelExporter;
 
 @Controller
 @RequestMapping("/admin/statistic")
@@ -149,6 +155,11 @@ public class StatisticController {
 	@GetMapping("/transaction-by-customer/detail-credit-account/{id}")
 	public String viewDetailCreditAccount(@PathVariable("id") String id, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
+		HttpSession httpSession = req.getSession();
+		httpSession.setAttribute("accountId_credit_statistic", id);
+		if (httpSession.getAttribute("customerStatistic") == null)
+			return "redirect:/admin/statistic/transaction-by-customer";
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		int page = 1;
 		if (req.getParameter("page") != null) {
@@ -160,11 +171,13 @@ public class StatisticController {
 			String fromDate = req.getParameter("fromDate");
 			map.put("fromDate", fromDate);
 			model.addAttribute("fromDate", fromDate);
+			httpSession.setAttribute("fromDateExportCredit", fromDate);
 		}
 		if (req.getParameter("toDate") != null) {
 			String toDate = req.getParameter("toDate");
 			map.put("toDate", toDate);
 			model.addAttribute("toDate", toDate);
+			httpSession.setAttribute("toDateExportCredit", toDate);
 		}
 		if (req.getParameter("sort") != null) {
 			String sort = req.getParameter("sort");
@@ -174,16 +187,18 @@ public class StatisticController {
 		List<Transaction> transactions = Arrays.asList(rest.postForObject(
 				domainServices + "/rest/api/credit/statistic-by-credit-account/" + id, map, Transaction[].class));
 		model.addAttribute("transactions", transactions);
-		HttpSession httpSession = req.getSession();
-		httpSession.setAttribute("accountId_credit_statistic", id);
-		if (httpSession.getAttribute("customerStatistic") == null)
-			return "redirect:/admin/statistic/transaction-by-customer";
+		
 		return "statistic/detail_credit_account";
 	}
 
 	@GetMapping("/transaction-by-customer/detail-deposit-account/{id}")
 	public String viewDetailDepositAccount(@PathVariable("id") String id, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
+		HttpSession httpSession = req.getSession();
+		httpSession.setAttribute("accountId_deposit_statistic", id);
+		if (httpSession.getAttribute("customerStatistic") == null)
+			return "redirect:/admin/statistic/transaction-by-customer";
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		int page = 1;
 		if (req.getParameter("page") != null) {
@@ -195,11 +210,13 @@ public class StatisticController {
 			String fromDate = req.getParameter("fromDate");
 			map.put("fromDate", fromDate);
 			model.addAttribute("fromDate", fromDate);
+			httpSession.setAttribute("fromDateExportDeposit", fromDate);
 		}
 		if (req.getParameter("toDate") != null) {
 			String toDate = req.getParameter("toDate");
 			map.put("toDate", toDate);
 			model.addAttribute("toDate", toDate);
+			httpSession.setAttribute("toDateExportDeposit", toDate);			
 		}
 		if (req.getParameter("sort") != null) {
 			String sort = req.getParameter("sort");
@@ -209,10 +226,86 @@ public class StatisticController {
 		List<Transaction> transactions = Arrays.asList(rest.postForObject(
 				domainServices + "/rest/api/deposit/statistic-by-deposit-account/" + id, map, Transaction[].class));
 		model.addAttribute("transactions", transactions);
-		HttpSession httpSession = req.getSession();
-		httpSession.setAttribute("accountId_deposit_statistic", id);
-		if (httpSession.getAttribute("customerStatistic") == null)
-			return "redirect:/admin/statistic/transaction-by-customer";
 		return "statistic/detail_deposit_account";
+	}
+
+	@GetMapping("/transaction-by-customer/export/deposit-account")
+	public void exportTransactionInDepositAccount(Model model, HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		HttpSession httpSession = req.getSession();
+		String idAccount = "";
+		Customer customer = new Customer();
+		if (httpSession.getAttribute("customerStatistic") != null)
+			customer = (Customer) httpSession.getAttribute("customerStatistic");
+		if (httpSession.getAttribute("accountId_deposit_statistic") != null)
+			idAccount = httpSession.getAttribute("accountId_deposit_statistic").toString();
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (httpSession.getAttribute("fromDateExportDeposit") != null) {
+			String fromDate = httpSession.getAttribute("fromDateExportDeposit").toString();
+			map.put("fromDate", fromDate);
+		}
+		if (httpSession.getAttribute("toDateExportDeposit") != null) {
+			String toDate = httpSession.getAttribute("toDateExportDeposit").toString();
+			map.put("toDate", toDate);
+		}
+		List<Transaction> transactions = Arrays.asList(rest.postForObject(
+				domainServices + "/rest/api/deposit/export-with-deposit-account/" + idAccount, map, Transaction[].class));
+
+		httpSession.removeAttribute("fromDateExportDeposit");
+		httpSession.removeAttribute("toDateExportDeposit");
+		
+		resp.setContentType("application/octet-stream");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=transactions_" + currentDateTime + ".xlsx";
+		resp.setHeader(headerKey, headerValue);
+
+		ExcelExporter excelExporter = new ExcelExporter(transactions, customer, idAccount, 2);
+		excelExporter.export(resp);
+		
+		
+	}
+	
+	@GetMapping("/transaction-by-customer/export/credit-account")
+	public void exportTransactionInCreditAccount(Model model, HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		HttpSession httpSession = req.getSession();
+		String idAccount = "";
+		Customer customer = new Customer();
+		if (httpSession.getAttribute("customerStatistic") != null)
+			customer = (Customer) httpSession.getAttribute("customerStatistic");
+		if (httpSession.getAttribute("accountId_credit_statistic") != null)
+			idAccount = httpSession.getAttribute("accountId_credit_statistic").toString();
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (httpSession.getAttribute("fromDateExportCredit") != null) {
+			String fromDate = httpSession.getAttribute("fromDateExportCredit").toString();
+			map.put("fromDate", fromDate);
+		}
+		if (httpSession.getAttribute("toDateExportCredit") != null) {
+			String toDate = httpSession.getAttribute("toDateExportCredit").toString();
+			map.put("toDate", toDate);
+		}
+		
+		httpSession.removeAttribute("fromDateExportCredit");
+		httpSession.removeAttribute("toDateExportCredit");
+		
+		List<Transaction> transactions = Arrays.asList(rest.postForObject(
+				domainServices + "/rest/api/credit/export-with-credit-account/" + idAccount, map, Transaction[].class));
+
+		resp.setContentType("application/octet-stream");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=transactions_" + currentDateTime + ".xlsx";
+		resp.setHeader(headerKey, headerValue);
+
+		ExcelExporter excelExporter = new ExcelExporter(transactions, customer, idAccount, 1);
+		excelExporter.export(resp);
+		
 	}
 }

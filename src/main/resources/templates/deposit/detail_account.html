@@ -153,7 +153,6 @@
 										<th>Số tiền gửi</th>
 										<th>Số dư sau giao dịch</th>
 										<th>Nhân viên tạo</th>
-										<th>Nội dung</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -167,7 +166,6 @@
 										<td
 											th:text="${#numbers.formatInteger(transaction.afterBalanceDeposit,0,'POINT') +' ₫'}"></td>
 										<td th:text="${transaction.employee.fullName}"></td>
-										<td th:text="${transaction.note}"></td>
 										<td><a
 											th:href="@{'/admin/transaction/deposit/detail-transaction/' + ${transaction.id}}">Xem
 												chi tiết</a></td>

@@ -144,6 +144,7 @@ var Banking = {
 		var toDate = $('#to-date').val();
 
 		var searchParams = new URLSearchParams(window.location.search);
+		
 		if (fromDate !== '') {
 			searchParams.set('fromDate', fromDate);
 		}

@@ -139,6 +139,10 @@
 											dần</option>
 									</select>
 								</div>
+								
+								<a th:href="@{/admin/statistic/transaction-by-customer/export/credit-account}" class="btn btn-success"
+									style="width: max-content;"><i class="far fa-file-excel"></i>
+									Export Excel</a>
 							</div>
 							<h1 class="my-3"></h1>
 							<table class="table">
@@ -150,6 +154,7 @@
 										<th>Số tiền giao dịch</th>
 										<th>Số nợ sau giao dịch</th>
 										<th>Nhân viên tạo</th>
+										<th style="width: 250px;">Nội dung</th>
 									</tr>
 								</thead>
 								<tbody id="myTable">
@@ -163,6 +168,7 @@
 										<td
 											th:text="${#numbers.formatInteger(transaction.afterBalanceCredit,0,'POINT') +' ₫'}"></td>
 										<td th:text="${transaction.employee.fullName}"></td>
+										<td th:text="${transaction.note}"></td>
 									</tr>
 								</tbody>
 							</table>
