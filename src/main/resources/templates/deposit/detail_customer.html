@@ -108,7 +108,7 @@
 										<td th:text="${depositAccount.interestRate+' %'}"></td>
 										<td th:text="${#numbers.formatInteger(depositAccount.minimumBalance,0,'POINT')+' ₫'}"></td>
 										 <td><a
-											th:href="@{'/admin/transaction/deposit/detail-account/' + ${depositAccount.id}}">Chi tiết giao dịch</a>
+											th:href="@{'/admin/transaction/deposit/detail-account/' + ${depositAccount.id}}">Chi tiết giao dịch</a></td>
 									</tr>
 								</tbody>
 							</table>

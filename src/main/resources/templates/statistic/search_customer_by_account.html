@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- FAVICON -->
+<link rel="apple-touch-icon" sizes="180x180"
+	href="/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="/favicon/favicon-16x16.png">
+<link rel="manifest" href="/favicon/site.webmanifest">
+<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"
+	color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/home.js}"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
+
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+
+		<div class="page-container">
+
+			<div th:insert="includes.html :: header"></div>
+
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+							<div class="search-customer">
+								<form style="display: flex;" id="search-stat-form"
+									action="/admin/statistic/customer-by-account" method="post">
+									<div style="margin-right: 20px;">
+										<input class="form-control" type="text"
+											placeholder="Nhập số tài khoản" th:value="${idAccount}"
+											name="accountId">
+										<div th:if="${status == 'noCustomer'}">
+											<div id="to-error-salary" class="error">Không tìm thấy
+												khách hàng</div>
+										</div>
+									</div>
+									<div style="width: auto; margin-right: 20px;">
+										<button type="submit" class="btn btn-primary"
+											style="width: max-content">
+											<i class="fas fa-search"></i> Tìm
+										</button>
+									</div>
+								</form>
+							</div>
+							<h1 class="my-3"></h1>
+							<table class="table">
+								<thead class="thead-light">
+									<tr>
+										<th>Họ và tên</th>
+										<th>Địa chỉ</th>
+										<th>CMT</th>
+										<th>Email</th>
+										<th>Ngày sinh</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="myTable">
+									<tr th:if="${customer!=null}">
+										<td th:text="${customer.fullName}"></td>
+										<td th:text="${customer.address}"></td>
+										<td th:text="${customer.idCard}"></td>
+										<td th:text="${customer.email}"></td>
+										<td
+											th:text="${#dates.format(customer.dateOfBirth, 'dd/MM/yyyy')}"></td>
+										<td th:if="${type} == 'CREDIT'"><a
+											th:href="@{'/admin/statistic/customer-by-account/detail-credit-account/' + ${idAccount}}">Chi
+												tiết giao dịch</a></td>
+										<td th:if="${type} == 'DEPOSIT'"><a
+											th:href="@{'/admin/statistic/customer-by-account/detail-deposit-account/' + ${idAccount}}">Chi
+												tiết giao dịch</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:insert="includes.html :: footer"></div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$().ready(function() {
+		$('#search-stat-form').validate({
+			rules : {
+				accountId : {
+					required : true,
+					digits : true,
+				}
+
+			},
+			messages : {
+				accountId : {
+					required : "Vui lòng nhập số tài khoản",
+					digits : "Số tài khoản chỉ bao gồm số",
+				}
+			},
+		})
+	})
+</script>
+<style>
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
+}
+</style>
+
+</html>

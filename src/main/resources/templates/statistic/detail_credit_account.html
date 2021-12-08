@@ -63,7 +63,7 @@
 						<div class="form-add">
 							<div class="customer-infor" style="width: 500px">
 								<table class="table">
-									<tbody>
+									<tbody th:if="${credit == null}">
 										<tr>
 											<td>CMT</td>
 											<td
@@ -99,6 +99,45 @@
 											<td
 												style="font-size: 17px; font-weight: 600; color: #495057;"
 												th:text="${session.accountId_credit_statistic}"></td>
+										</tr>
+									</tbody>
+
+									<tbody th:if="${credit != null}">
+										<tr>
+											<td>CMT</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.customerStatistic_.idCard}"></td>
+										</tr>
+										<tr>
+											<td>Họ và tên</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.customerStatistic_.fullName}"></td>
+										</tr>
+										<tr>
+											<td>Ngày sinh</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#dates.format(session.customerStatistic_.dateOfBirth, 'dd/MM/yyyy')}"></td>
+										</tr>
+										<tr>
+											<td>Địa chỉ</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.customerStatistic_.address}"></td>
+										</tr>
+										<tr>
+											<td>Email</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.customerStatistic_.email}"></td>
+										</tr>
+										<tr>
+											<td>Mã số tài khoản</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${session.accountId_credit_statistic_}"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -139,10 +178,19 @@
 											dần</option>
 									</select>
 								</div>
-								
-								<a th:href="@{/admin/statistic/transaction-by-customer/export/credit-account}" class="btn btn-success"
-									style="width: max-content;"><i class="far fa-file-excel"></i>
-									Export Excel</a>
+
+								<div th:if="${credit == null}">
+									<a
+										th:href="@{/admin/statistic/transaction-by-customer/export/credit-account}"
+										class="btn btn-success" style="width: max-content;"><i
+										class="far fa-file-excel"></i> Export Excel</a>
+								</div>
+								<div th:if="${credit != null}">
+									<a
+										th:href="@{/admin/statistic/customer-by-account/export/credit-account}"
+										class="btn btn-success" style="width: max-content;"><i
+										class="far fa-file-excel"></i> Export Excel</a>
+								</div>
 							</div>
 							<h1 class="my-3"></h1>
 							<table class="table">
@@ -172,7 +220,7 @@
 									</tr>
 								</tbody>
 							</table>
-							
+
 							<div class="text-center"
 								style="margin-bottom: -18px; margin-top: 50px;">
 								<ul class="page-numbers">
@@ -220,7 +268,7 @@
 											class="fas fa-angle-right"></i></a></li>
 								</ul>
 							</div>
-							
+
 						</div>
 					</div>
 				</div>
