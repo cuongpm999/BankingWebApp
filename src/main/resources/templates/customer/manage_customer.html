@@ -134,12 +134,7 @@
 											<a href="javascript:void(0);"
 											th:onclick="'Banking.delete(\'/admin/manage/customer/delete/'+ ${customer.id} + '\')'"
 											class="btn btn-danger"><i class="fas fa-eraser"></i>
-												Delete</a> <!-- <a
-											th:href="@{'/admin/manage/customer/delete/' + ${customer.id}}"
-											class="btn btn-danger"
-											th:data-confirm-delete="|Bạn có chắc muốn xóa khách hàng ${customer.fullName}?|"
-											onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
-												Delete </a> --></td>
+												Delete</a></td>
 									</tr>
 								</tbody>
 							</table>
