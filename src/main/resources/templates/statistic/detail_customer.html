@@ -122,7 +122,7 @@
 											th:text="${#numbers.formatInteger(creditAccount.limitBalance,0,'POINT')+' ₫'}"></td>
 										<td><a
 											th:href="@{'/admin/statistic/transaction-by-customer/detail-credit-account/' + ${creditAccount.id}}">Chi
-												tiết giao dịch</a>
+												tiết giao dịch</a></td>
 									</tr>
 								</tbody>
 							</table>
@@ -153,7 +153,7 @@
 											th:text="${#numbers.formatInteger(depositAccount.minimumBalance,0,'POINT')+' ₫'}"></td>
 										<td><a
 											th:href="@{'/admin/statistic/transaction-by-customer/detail-deposit-account/' + ${depositAccount.id}}">Chi
-												tiết giao dịch</a>
+												tiết giao dịch</a></td>
 									</tr>
 								</tbody>
 							</table>

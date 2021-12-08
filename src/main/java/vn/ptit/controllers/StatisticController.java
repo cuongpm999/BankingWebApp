@@ -102,6 +102,7 @@ public class StatisticController {
 		return "statistic/customer_transaction";
 	}
 
+	// Find transaction by customer
 	@GetMapping("/transaction-by-customer")
 	public String transactionByCustomer(Model model, HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -159,7 +160,7 @@ public class StatisticController {
 		httpSession.setAttribute("accountId_credit_statistic", id);
 		if (httpSession.getAttribute("customerStatistic") == null)
 			return "redirect:/admin/statistic/transaction-by-customer";
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		int page = 1;
 		if (req.getParameter("page") != null) {
@@ -187,7 +188,7 @@ public class StatisticController {
 		List<Transaction> transactions = Arrays.asList(rest.postForObject(
 				domainServices + "/rest/api/credit/statistic-by-credit-account/" + id, map, Transaction[].class));
 		model.addAttribute("transactions", transactions);
-		
+
 		return "statistic/detail_credit_account";
 	}
 
@@ -198,7 +199,7 @@ public class StatisticController {
 		httpSession.setAttribute("accountId_deposit_statistic", id);
 		if (httpSession.getAttribute("customerStatistic") == null)
 			return "redirect:/admin/statistic/transaction-by-customer";
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		int page = 1;
 		if (req.getParameter("page") != null) {
@@ -216,7 +217,7 @@ public class StatisticController {
 			String toDate = req.getParameter("toDate");
 			map.put("toDate", toDate);
 			model.addAttribute("toDate", toDate);
-			httpSession.setAttribute("toDateExportDeposit", toDate);			
+			httpSession.setAttribute("toDateExportDeposit", toDate);
 		}
 		if (req.getParameter("sort") != null) {
 			String sort = req.getParameter("sort");
@@ -230,8 +231,8 @@ public class StatisticController {
 	}
 
 	@GetMapping("/transaction-by-customer/export/deposit-account")
-	public void exportTransactionInDepositAccount(Model model, HttpServletRequest req,
-			HttpServletResponse resp) throws IOException {
+	public void exportTransactionInDepositAccount(Model model, HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
 		HttpSession httpSession = req.getSession();
 		String idAccount = "";
 		Customer customer = new Customer();
@@ -239,7 +240,7 @@ public class StatisticController {
 			customer = (Customer) httpSession.getAttribute("customerStatistic");
 		if (httpSession.getAttribute("accountId_deposit_statistic") != null)
 			idAccount = httpSession.getAttribute("accountId_deposit_statistic").toString();
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (httpSession.getAttribute("fromDateExportDeposit") != null) {
 			String fromDate = httpSession.getAttribute("fromDateExportDeposit").toString();
@@ -249,12 +250,13 @@ public class StatisticController {
 			String toDate = httpSession.getAttribute("toDateExportDeposit").toString();
 			map.put("toDate", toDate);
 		}
-		List<Transaction> transactions = Arrays.asList(rest.postForObject(
-				domainServices + "/rest/api/deposit/export-with-deposit-account/" + idAccount, map, Transaction[].class));
+		List<Transaction> transactions = Arrays.asList(
+				rest.postForObject(domainServices + "/rest/api/deposit/export-with-deposit-account/" + idAccount, map,
+						Transaction[].class));
 
 		httpSession.removeAttribute("fromDateExportDeposit");
 		httpSession.removeAttribute("toDateExportDeposit");
-		
+
 		resp.setContentType("application/octet-stream");
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
@@ -265,13 +267,12 @@ public class StatisticController {
 
 		ExcelExporter excelExporter = new ExcelExporter(transactions, customer, idAccount, 2);
 		excelExporter.export(resp);
-		
-		
+
 	}
-	
+
 	@GetMapping("/transaction-by-customer/export/credit-account")
-	public void exportTransactionInCreditAccount(Model model, HttpServletRequest req,
-			HttpServletResponse resp) throws IOException {
+	public void exportTransactionInCreditAccount(Model model, HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
 		HttpSession httpSession = req.getSession();
 		String idAccount = "";
 		Customer customer = new Customer();
@@ -279,7 +280,7 @@ public class StatisticController {
 			customer = (Customer) httpSession.getAttribute("customerStatistic");
 		if (httpSession.getAttribute("accountId_credit_statistic") != null)
 			idAccount = httpSession.getAttribute("accountId_credit_statistic").toString();
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (httpSession.getAttribute("fromDateExportCredit") != null) {
 			String fromDate = httpSession.getAttribute("fromDateExportCredit").toString();
@@ -289,10 +290,10 @@ public class StatisticController {
 			String toDate = httpSession.getAttribute("toDateExportCredit").toString();
 			map.put("toDate", toDate);
 		}
-		
+
 		httpSession.removeAttribute("fromDateExportCredit");
 		httpSession.removeAttribute("toDateExportCredit");
-		
+
 		List<Transaction> transactions = Arrays.asList(rest.postForObject(
 				domainServices + "/rest/api/credit/export-with-credit-account/" + idAccount, map, Transaction[].class));
 
@@ -306,6 +307,209 @@ public class StatisticController {
 
 		ExcelExporter excelExporter = new ExcelExporter(transactions, customer, idAccount, 1);
 		excelExporter.export(resp);
+
+	}
+
+	// Find customer by account
+	@GetMapping("/customer-by-account")
+	public String viewCustomerByAccount(Model model) {
+		return "statistic/search_customer_by_account";
+	}
+
+	@PostMapping("/customer-by-account")
+	public String customerByAccount(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		String idAccount = req.getParameter("accountId");
+
+		Customer customer = rest.getForObject(domainServices + "/rest/api/customer/find-by-account/" + idAccount,
+				Customer.class);
+		if (customer == null) {
+			model.addAttribute("status", "noCustomer");
+			return "statistic/search_customer_by_account";
+		}
 		
+		HttpSession httpSession = req.getSession();
+		httpSession.setAttribute("customerStatistic_", customer);
+		
+		List<CreditAccount> creditAccounts = Arrays.asList(
+				rest.getForObject(domainServices + "/rest/api/credit-account/find-by-customer/" + customer.getId(),
+						CreditAccount[].class));
+		for (CreditAccount creditAccount : creditAccounts) {
+			if (creditAccount.getId().equalsIgnoreCase(idAccount)) {
+				model.addAttribute("customer", customer);
+				model.addAttribute("idAccount", idAccount);
+				model.addAttribute("type", "CREDIT");
+				return "statistic/search_customer_by_account";
+			}
+		}
+		List<DepositAccount> depositAccounts = Arrays.asList(
+				rest.getForObject(domainServices + "/rest/api/deposit-account/find-by-customer/" + customer.getId(),
+						DepositAccount[].class));
+		for (DepositAccount depositAccount : depositAccounts) {
+			if(depositAccount.getId().equalsIgnoreCase(idAccount)){
+				model.addAttribute("customer", customer);
+				model.addAttribute("idAccount", idAccount);
+				model.addAttribute("type", "DEPOSIT");
+				return "statistic/search_customer_by_account";
+			}
+		}
+		return null;
+	}
+	
+	@GetMapping("/customer-by-account/detail-credit-account/{id}")
+	public String viewDetailCreditAccount_(@PathVariable("id") String id, Model model, HttpServletRequest req,
+			HttpServletResponse resp) {
+		HttpSession httpSession = req.getSession();
+		httpSession.setAttribute("accountId_credit_statistic_", id);
+		if (httpSession.getAttribute("customerStatistic_") == null)
+			return "redirect:/admin/statistic/customer-by-account";
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		int page = 1;
+		if (req.getParameter("page") != null) {
+			page = Integer.parseInt(req.getParameter("page"));
+			map.put("page", page);
+			model.addAttribute("page", page);
+		}
+		if (req.getParameter("fromDate") != null) {
+			String fromDate = req.getParameter("fromDate");
+			map.put("fromDate", fromDate);
+			model.addAttribute("fromDate", fromDate);
+			httpSession.setAttribute("fromDateExportCredit_", fromDate);
+		}
+		if (req.getParameter("toDate") != null) {
+			String toDate = req.getParameter("toDate");
+			map.put("toDate", toDate);
+			model.addAttribute("toDate", toDate);
+			httpSession.setAttribute("toDateExportCredit_", toDate);
+		}
+		if (req.getParameter("sort") != null) {
+			String sort = req.getParameter("sort");
+			map.put("sort", sort);
+			model.addAttribute("sort", sort);
+		}
+		List<Transaction> transactions = Arrays.asList(rest.postForObject(
+				domainServices + "/rest/api/credit/statistic-by-credit-account/" + id, map, Transaction[].class));
+		model.addAttribute("transactions", transactions);
+		model.addAttribute("credit", "credit");
+		return "statistic/detail_credit_account";
+	}
+
+	@GetMapping("/customer-by-account/detail-deposit-account/{id}")
+	public String viewDetailDepositAccount_(@PathVariable("id") String id, Model model, HttpServletRequest req,
+			HttpServletResponse resp) {
+		HttpSession httpSession = req.getSession();
+		httpSession.setAttribute("accountId_deposit_statistic_", id);
+		if (httpSession.getAttribute("customerStatistic_") == null)
+			return "redirect:/admin/statistic/customer-by-account";
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		int page = 1;
+		if (req.getParameter("page") != null) {
+			page = Integer.parseInt(req.getParameter("page"));
+			map.put("page", page);
+			model.addAttribute("page", page);
+		}
+		if (req.getParameter("fromDate") != null) {
+			String fromDate = req.getParameter("fromDate");
+			map.put("fromDate", fromDate);
+			model.addAttribute("fromDate", fromDate);
+			httpSession.setAttribute("fromDateExportDeposit_", fromDate);
+		}
+		if (req.getParameter("toDate") != null) {
+			String toDate = req.getParameter("toDate");
+			map.put("toDate", toDate);
+			model.addAttribute("toDate", toDate);
+			httpSession.setAttribute("toDateExportDeposit_", toDate);
+		}
+		if (req.getParameter("sort") != null) {
+			String sort = req.getParameter("sort");
+			map.put("sort", sort);
+			model.addAttribute("sort", sort);
+		}
+		List<Transaction> transactions = Arrays.asList(rest.postForObject(
+				domainServices + "/rest/api/deposit/statistic-by-deposit-account/" + id, map, Transaction[].class));
+		model.addAttribute("transactions", transactions);
+		model.addAttribute("deposit", "deposit");
+		return "statistic/detail_deposit_account";
+	}
+	
+	@GetMapping("/customer-by-account/export/deposit-account")
+	public void exportTransactionInDepositAccount_(Model model, HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		HttpSession httpSession = req.getSession();
+		String idAccount = "";
+		Customer customer = new Customer();
+		if (httpSession.getAttribute("customerStatistic_") != null)
+			customer = (Customer) httpSession.getAttribute("customerStatistic_");
+		if (httpSession.getAttribute("accountId_deposit_statistic_") != null)
+			idAccount = httpSession.getAttribute("accountId_deposit_statistic_").toString();
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (httpSession.getAttribute("fromDateExportDeposit_") != null) {
+			String fromDate = httpSession.getAttribute("fromDateExportDeposit_").toString();
+			map.put("fromDate", fromDate);
+		}
+		if (httpSession.getAttribute("toDateExportDeposit_") != null) {
+			String toDate = httpSession.getAttribute("toDateExportDeposit_").toString();
+			map.put("toDate", toDate);
+		}
+		List<Transaction> transactions = Arrays.asList(
+				rest.postForObject(domainServices + "/rest/api/deposit/export-with-deposit-account/" + idAccount, map,
+						Transaction[].class));
+
+		httpSession.removeAttribute("fromDateExportDeposit_");
+		httpSession.removeAttribute("toDateExportDeposit_");
+
+		resp.setContentType("application/octet-stream");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=transactions_" + currentDateTime + ".xlsx";
+		resp.setHeader(headerKey, headerValue);
+
+		ExcelExporter excelExporter = new ExcelExporter(transactions, customer, idAccount, 2);
+		excelExporter.export(resp);
+
+	}
+
+	@GetMapping("/customer-by-account/export/credit-account")
+	public void exportTransactionInCreditAccount_(Model model, HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		HttpSession httpSession = req.getSession();
+		String idAccount = "";
+		Customer customer = new Customer();
+		if (httpSession.getAttribute("customerStatistic_") != null)
+			customer = (Customer) httpSession.getAttribute("customerStatistic_");
+		if (httpSession.getAttribute("accountId_credit_statistic_") != null)
+			idAccount = httpSession.getAttribute("accountId_credit_statistic_").toString();
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (httpSession.getAttribute("fromDateExportCredit_") != null) {
+			String fromDate = httpSession.getAttribute("fromDateExportCredit_").toString();
+			map.put("fromDate", fromDate);
+		}
+		if (httpSession.getAttribute("toDateExportCredit_") != null) {
+			String toDate = httpSession.getAttribute("toDateExportCredit_").toString();
+			map.put("toDate", toDate);
+		}
+
+		httpSession.removeAttribute("fromDateExportCredit_");
+		httpSession.removeAttribute("toDateExportCredit_");
+
+		List<Transaction> transactions = Arrays.asList(rest.postForObject(
+				domainServices + "/rest/api/credit/export-with-credit-account/" + idAccount, map, Transaction[].class));
+
+		resp.setContentType("application/octet-stream");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=transactions_" + currentDateTime + ".xlsx";
+		resp.setHeader(headerKey, headerValue);
+
+		ExcelExporter excelExporter = new ExcelExporter(transactions, customer, idAccount, 1);
+		excelExporter.export(resp);
+
 	}
 }
