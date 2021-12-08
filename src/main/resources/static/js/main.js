@@ -33,11 +33,11 @@ const items = [
 	},
 	{
 		name: '.vay-ca-nhan',
-		urlImg: 'linear-gradient(90deg,rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("/img/images/vay-ca-nhan.jpg") no-repeat 82% 32%'
+		urlImg: 'linear-gradient(90deg,rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("/img/vay-ca-nhan.jpg") no-repeat 82% 32%'
 	},
 	{
 		name: '.ngoai-hoi_thi-truong-von',
-		urlImg: 'linear-gradient(90deg,rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("/img/images/thi-truong-von.jpg") no-repeat 82% 32%'
+		urlImg: 'linear-gradient(90deg,rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("/img/thi-truong-von.jpg") no-repeat 82% 32%'
 	}
 ]
 
