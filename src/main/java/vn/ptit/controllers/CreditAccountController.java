@@ -84,7 +84,7 @@ public class CreditAccountController {
 			HttpServletResponse resp) {
 		Customer customer = rest.getForObject(domainServices + "/rest/api/customer/find-by-id/" + id, Customer.class);
 		model.addAttribute("customer", customer);
-		req.getSession().setAttribute("customer_", customer);
+		req.getSession().setAttribute("customerCreateCreditAccount", customer);
 
 		List<CreditAccount> creditAccounts = Arrays.asList(rest.getForObject(
 				domainServices + "/rest/api/credit-account/find-by-customer/" + id, CreditAccount[].class));
@@ -97,9 +97,10 @@ public class CreditAccountController {
 	public String viewAddCreditAccount(Model model, HttpServletRequest req, HttpServletResponse resp) {
 		Customer customer = new Customer();
 		HttpSession httpSession = req.getSession();
-		if (httpSession.getAttribute("customer_") != null) {
-			customer = (Customer) httpSession.getAttribute("customer_");
-		}
+		if (httpSession.getAttribute("customerCreateCreditAccount") != null) {
+			customer = (Customer) httpSession.getAttribute("customerCreateCreditAccount");
+		} else
+			return "redirect:/admin/manage/credit-account";
 		boolean flag = rest.getForObject(domainServices + "/rest/api/credit-account/count/" + customer.getId(),
 				Boolean.class);
 		if (!flag)
@@ -124,8 +125,8 @@ public class CreditAccountController {
 		creditAccount.setStatus(true);
 		Customer customer = new Customer();
 		HttpSession httpSession = req.getSession();
-		if (httpSession.getAttribute("customer_") != null) {
-			customer = (Customer) httpSession.getAttribute("customer_");
+		if (httpSession.getAttribute("customerCreateCreditAccount") != null) {
+			customer = (Customer) httpSession.getAttribute("customerCreateCreditAccount");
 		} else
 			return "redirect:/admin/manage/credit-account";
 		Employee employee = rest.getForObject(
@@ -164,8 +165,8 @@ public class CreditAccountController {
 			HttpServletResponse resp) {
 		Customer customer = new Customer();
 		HttpSession httpSession = req.getSession();
-		if (httpSession.getAttribute("customer_") != null) {
-			customer = (Customer) httpSession.getAttribute("customer_");
+		if (httpSession.getAttribute("customerCreateCreditAccount") != null) {
+			customer = (Customer) httpSession.getAttribute("customerCreateCreditAccount");
 		} else
 			return "redirect:/admin/manage/credit-account";
 		rest.delete(domainServices + "/rest/api/credit-account/delete-by-id/" + id);
@@ -177,8 +178,8 @@ public class CreditAccountController {
 			HttpServletRequest req, HttpServletResponse resp) {
 		Customer customer = new Customer();
 		HttpSession httpSession = req.getSession();
-		if (httpSession.getAttribute("customer_") != null) {
-			customer = (Customer) httpSession.getAttribute("customer_");
+		if (httpSession.getAttribute("customerCreateCreditAccount") != null) {
+			customer = (Customer) httpSession.getAttribute("customerCreateCreditAccount");
 		} else
 			return "redirect:/admin/manage/credit-account";
 		creditAccount.setStatus(true);

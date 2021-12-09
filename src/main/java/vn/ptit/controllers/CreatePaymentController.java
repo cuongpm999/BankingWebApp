@@ -156,7 +156,6 @@ public class CreatePaymentController {
 		if (httpSession.getAttribute("creditAccount_Pay") == null) {
 			model.addAttribute("transaction", transaction);
 			model.addAttribute("status", "selectAccount");
-			httpSession.removeAttribute("creditAccount_Pay");
 			return "payment/create_payment";
 		}
 
@@ -189,6 +188,7 @@ public class CreatePaymentController {
 		sendMailService.sendMailPayment(helperTransaction.getTransaction(), (Customer) httpSession.getAttribute("customerOtherPay"));
 
 		httpSession.removeAttribute("creditAccount_Pay");
+		httpSession.removeAttribute("customerOtherPay");
 		return "redirect:/admin/transaction/create-payment/detail-account/" + depositAccount.getId();
 	}
 
