@@ -50,7 +50,7 @@ public class BankAccountTypeController {
 		rest.postForObject(domainService + "/rest/api/bank-account-type/insert", bankAccountType,
 				BankAccountType.class);
 		model.addAttribute("bankAccountType", new BankAccountType());
-		return "bank_account_type/add_bank_account_type";
+		return "redirect:/admin/manage/bank-account-type";
 	}
 
 	@GetMapping("/edit/{bankAccountTypeID}")

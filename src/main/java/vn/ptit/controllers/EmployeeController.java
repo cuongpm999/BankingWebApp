@@ -68,7 +68,7 @@ public class EmployeeController {
 		}
 
 		List<Employee> employees = Arrays
-				.asList(rest.postForObject(domainServices + "/rest/api/employee/find-all",map, Employee[].class));
+				.asList(rest.postForObject(domainServices + "/rest/api/employee/find-all", map, Employee[].class));
 		model.addAttribute("employees", employees);
 		return "employee/manage_employee";
 	}
@@ -83,18 +83,11 @@ public class EmployeeController {
 	public String addEmployee(@ModelAttribute("employee") Employee employee,
 			@RequestParam("dob") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
-		List<Employee> employees = Arrays
-				.asList(rest.getForObject(domainServices + "/rest/api/employee/find-all", Employee[].class));
-		boolean flagUsername = false;
+		Map<String, Object> map = new HashMap<String, Object>();
+		Employee employeeCheck = rest.getForObject(
+				domainServices + "/rest/api/employee/get/" + employee.getAccount().getUsername(), Employee.class);
 
-		for (int i = 0; i < employees.size(); i++) {
-			if (employees.get(i).getAccount().getUsername().equalsIgnoreCase(employee.getAccount().getUsername())) {
-				flagUsername = true;
-				break;
-			}
-		}
-
-		if (flagUsername) {
+		if (employeeCheck != null) {
 			model.addAttribute("status", "faileTenBiTrung");
 			return "employee/add_employee";
 		}
