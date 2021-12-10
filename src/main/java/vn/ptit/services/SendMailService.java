@@ -98,5 +98,22 @@ public class SendMailService {
 
 		javaMailSender.send(mimeMessage);
 	}
+	
+	public void sendMailPaymentDirect(Transaction transaction) throws MessagingException {
+		Context ctx = new Context();
+		ctx.setVariable("transaction", transaction);
+
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+		message.setSubject("THANH TOÁN THÀNH CÔNG");
+		message.setFrom("actbankptit999@gmail.com");
+		message.setTo(transaction.getCustomer().getEmail());
+//		message.addAttachment("logo.png", new ClassPathResource("static/img/logo.png"));
+
+		String htmlContent = templateEngine.process("send_mail/payment_direct.html", ctx);
+		message.setText(htmlContent, true); // true = isHtml
+
+		javaMailSender.send(mimeMessage);
+	}
 
 }

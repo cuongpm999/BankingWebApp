@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="description"
+	content="ban laptop uy tin, chat luong, dich vu tot">
+<meta name="keywords"
+	content="laptop, asus, dell, hp, lenovo, acer, apple, msi, lg">
+<meta name="author" content="CuongPham">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- FAVICON -->
+<link rel="apple-touch-icon" sizes="180x180"
+	href="/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="/favicon/favicon-16x16.png">
+<link rel="manifest" href="/favicon/site.webmanifest">
+<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+<!-- CSS & JAVA_SCRIPT -->
+<!-- CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- JavaScript -->
+<script th:src="@{/js/chart.min.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/home.js}"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/manage.css}">
+
+<!-- ----------------- -->
+
+<title>Banking Project</title>
+</head>
+
+<body>
+
+	<!-- MAIN -->
+	<div id="main">
+		<div th:insert="includes.html :: sidebar"></div>
+
+		<div class="page-container">
+
+			<div th:insert="includes.html :: header"></div>
+
+			<div class="main-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-add">
+							<a th:href="@{'/admin/transaction/create-payment-direct/detail-account/'+ ${session.accountId_payDirect}}"
+								class="btn btn-success"
+								style="font-size: 18px; font-weight: 600;"><i
+								class="far fa-arrow-alt-circle-left"></i> Quay lại</a>
+							<h1 class="my-4"></h1>
+							<div class="transaction-infor">
+								<table class="table table-hover">
+									<tbody>
+										<tr>
+											<td>Ngày thực hiện</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#dates.format(transaction.dateCreate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+										</tr>
+										<tr>
+											<td>Người tạo</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${transaction.employee.fullName}"></td>
+										</tr>
+										<tr>
+											<td>Khách hàng</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${transaction.customer.fullName}"></td>
+										</tr>
+										<tr>
+											<td>Mã số tài khoản tín dụng</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${transaction.creditAccount.id}"></td>
+										</tr>
+										<tr>
+											<td>Số tiền thanh toán</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#numbers.formatInteger(transaction.money,0,'POINT')+' ₫'}"></td>
+										</tr>
+										<tr>
+											<td>Số nợ còn lại của tài khoản tín dụng</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${#numbers.formatInteger(transaction.afterBalanceCredit,0,'POINT')+' ₫'}"></td>
+										</tr>
+										<tr>
+											<td>Ghi chú</td>
+											<td
+												style="font-size: 17px; font-weight: 600; color: #495057;"
+												th:text="${transaction.note}"></td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:insert="includes.html :: footer"></div>
+		</div>
+	</div>
+</body>
+
+</html>
