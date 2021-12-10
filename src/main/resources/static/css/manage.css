@@ -19,7 +19,8 @@
 .scrollbar {
     padding: 10px;
     overflow-y: auto; 
-    height: calc(100vh - 65px)
+    height: calc(100vh - 65px);
+    max-height: calc(100vh - 63px);
 }
 
 .scrollbar1 {
