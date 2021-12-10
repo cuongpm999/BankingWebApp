@@ -180,6 +180,8 @@ public class CreatePaymentDirectController {
 		HttpSession httpSession = req.getSession();
 		if (httpSession.getAttribute("customerPayDirect") == null)
 			return "redirect:/admin/transaction/create-payment-direct";
+		if (httpSession.getAttribute("accountId_payDirect") == null)
+			return "redirect:/admin/transaction/create-payment-direct";
 
 		Transaction transaction = rest.getForObject(
 				domainServices + "/rest/api/create-payment/find-transaction-by-id/" + id, Transaction.class);
