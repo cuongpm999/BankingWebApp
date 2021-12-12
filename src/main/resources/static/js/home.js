@@ -144,7 +144,7 @@ var Banking = {
 		var toDate = $('#to-date').val();
 
 		var searchParams = new URLSearchParams(window.location.search);
-		
+
 		if (fromDate !== '') {
 			searchParams.set('fromDate', fromDate);
 		}
@@ -153,6 +153,31 @@ var Banking = {
 			searchParams.set('toDate', toDate);
 		}
 		else searchParams.delete('toDate');
+		window.location.search = searchParams.toString();
+	},
+
+	calcForSalary() {
+		var month = $('#month-select').val();
+		var year = $('#year-input').val();
+
+		var searchParams = new URLSearchParams(window.location.search);
+		if (month !== '') {
+			searchParams.set('month', month);
+		}
+		else searchParams.delete('month');
+		if (year !== '') {
+			if (!(/^\d{4}$/.test(year))) {
+				$("#error-year").css("display", "inline-block");
+				$("#error-year-null").css("display", "none");
+				return;
+			}
+			searchParams.set('year', year);
+		}
+		else {
+			$("#error-year-null").css("display", "inline-block");
+			$("#error-year").css("display", "none");
+			return;
+		}
 		window.location.search = searchParams.toString();
 	},
 
@@ -179,5 +204,6 @@ var Banking = {
 		else searchParams.delete('toDate');
 		window.location.search = searchParams.toString();
 	},
+
 
 }
