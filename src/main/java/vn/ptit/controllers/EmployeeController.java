@@ -83,6 +83,10 @@ public class EmployeeController {
 	public String addEmployee(@ModelAttribute("employee") Employee employee,
 			@RequestParam("dob") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob, Model model, HttpServletRequest req,
 			HttpServletResponse resp) {
+		String password = req.getParameter("password_");
+		employee.getAccount().setPassword(password);
+		employee.setDateOfBirth(dob);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		Employee employeeCheck = rest.getForObject(
 				domainServices + "/rest/api/employee/get/" + employee.getAccount().getUsername(), Employee.class);
@@ -93,7 +97,6 @@ public class EmployeeController {
 		}
 
 		employee.getAccount().setPassword(passwordEncoder.encode(employee.getAccount().getPassword()));
-		employee.setDateOfBirth(dob);
 		employee.setStatus(true);
 		rest.postForObject(domainServices + "/rest/api/employee/insert", employee, Employee.class);
 		return "redirect:/admin/manage/employee";

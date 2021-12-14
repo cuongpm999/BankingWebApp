@@ -77,8 +77,9 @@
 												placeholder="Họ và tên" />
 										</div>
 										<div class="form-group">
-											<label class="required">Ngày sinh:</label> <input type="date"
-												name="dob" class="form-control" placeholder="Ngày sinh" />
+											<label class="required">Ngày sinh:</label> <input type="date" name="dob"
+												class="form-control" placeholder="Ngày sinh"
+												th:value="${#dates.format(employee.dateOfBirth, 'yyyy-MM-dd')}" />
 										</div>
 										<div class="form-group">
 											<label class="required">Địa chỉ:</label> <input
@@ -113,9 +114,9 @@
 												placeholder="Tên tài khoản" />
 										</div>
 										<div class="form-group">
-											<label class="required">Mật khẩu:</label> <input
-												th:field="*{account.password}" class="form-control"
-												type="password" placeholder="Mật khẩu" />
+											<label class="required">Mật khẩu:</label> <input type="password"
+												th:value="*{account.password}" name="password_"
+												class="form-control" placeholder="Mật khẩu" />
 										</div>
 										<button type="submit" class="btn btn-success">
 											<i class="fas fa-download"></i> Save
@@ -157,7 +158,7 @@
 					digits : true,
 				},
 				'account.username' : "required",
-				'account.password' : {
+				password_ : {
 					required : true,
 					minlength : 6,
 				}
@@ -182,7 +183,7 @@
 					digits : "Thâm niên chỉ bao gồm số"
 				},
 				'account.username' : "Vui lòng đăng kí tên tài khoản",
-				'account.password' : {
+				password_ : {
 					required : "Vui lòng đăng kí mật khẩu",
 					minlength : "Mật khẩu cần tối thiểu 6 kí tự"
 				}
