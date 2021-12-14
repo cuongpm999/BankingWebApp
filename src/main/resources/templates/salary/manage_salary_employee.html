@@ -18,7 +18,8 @@
 <link rel="icon" type="image/png" sizes="16x16"
 	href="/favicon/favicon-16x16.png">
 <link rel="manifest" href="/favicon/site.webmanifest">
-<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"
+	color="#5bbad5">
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
 
@@ -61,43 +62,51 @@
 						<div class="form-add">
 							<div class="search-employee">
 								<div style="display: flex; width: 90%;">
-									<input class="form-control" type="text"
-										style="margin-right: 20px; width: 150%;"
-										placeholder="Tìm theo tên, địa chỉ" id="search-key-employee"
-										th:value="${keyEmployee}">
 									<div style="display: flex; margin-right: 20px;">
 										<label
-											style="margin-top: 6px; margin-right: 10px; font-size: 17px;">From:</label>
-										<div>
-											<input type="date" class="form-control" name="from"
-												th:value="${fromDate}" id="from-date">
-										</div>
+											style="margin-top: 6px; margin-right: 10px; font-size: 17px;">Tháng:</label>
+										<select id="month-select" class="form-control"
+											style="width: max-content">
+											<option value="01" th:selected="${month} == '01'">1</option>
+											<option value="02" th:selected="${month} == '02'">2</option>
+											<option value="03" th:selected="${month} == '03'">3</option>
+											<option value="04" th:selected="${month} == '04'">4</option>
+											<option value="05" th:selected="${month} == '05'">5</option>
+											<option value="06" th:selected="${month} == '06'">6</option>
+											<option value="07" th:selected="${month} == '07'">7</option>
+											<option value="08" th:selected="${month} == '08'">8</option>
+											<option value="09" th:selected="${month} == '09'">9</option>
+											<option value="10" th:selected="${month} == '10'">10</option>
+											<option value="11" th:selected="${month} == '11'">11</option>
+											<option value="12" th:selected="${month} == '12'">12</option>
+										</select>
 									</div>
 									<div style="display: flex; margin-right: 20px;">
 										<label
-											style="margin-top: 6px; margin-right: 10px; font-size: 17px;">To:
-										</label>
+											style="margin-top: 6px; margin-right: 10px; font-size: 17px;">
+											Năm:</label>
 										<div>
-											<input type="date" class="form-control" name="to"
-												th:value="${toDate}" id="to-date">
+											<input type="text" class="form-control" th:value="${year}"
+												style="margin-right: 20px; width: 100px" placeholder="Năm"
+												id="year-input">
+											<div id="error-year" class="error" style="display: none;">Sai
+												định dạng (yyyy)</div>
+											<div id="error-year-null" class="error" style="display: none">Không để trống</div>
 										</div>
+
 									</div>
 									<div style="width: auto; margin-right: 20px;">
-										<button type="button" class="btn btn-primary"
-											style="width: max-content"
-											onclick="Banking.searchForEmployee()">
-											<i class="fas fa-search"></i> Tìm
+										<button type="button" class="btn btn-primary" 
+											style="width: max-content" onclick="Banking.calcForSalary()">
+											<i class="fas fa-search"></i> Xem lương
 										</button>
 									</div>
-									<select id="sort-select"
-										onchange="Banking.addUrlParameter('sort', this.value)"
-										class="form-control">
-										<option value="">Sắp xếp theo tên</option>
-										<option value="a-z" th:selected="${sort} == 'a-z'">A
-											đến Z</option>
-										<option value="z-a" th:selected="${sort} == 'z-a'">Z
-											đến A</option>
-									</select>
+									<div style="width: auto; margin-right: 20px;">
+										<button type="button" class="btn btn-success"
+											style="width: max-content">
+											<i class="fas fa-plus-square"></i> Xuất excel
+										</button>
+									</div>
 								</div>
 							</div>
 							<h1 class="my-3"></h1>
@@ -110,27 +119,29 @@
 										<th>Họ tên</th>
 										<th>Địa chỉ</th>
 										<th>Ngày sinh</th>
-										<th>Tên tài khoản</th>
 										<th>Vị trí</th>
+										<th>Tổng lương</th>
 										<th></th>
 									</tr>
 								</thead>
-								<tbody id="myTable">
-									<tr th:each="employee : ${employees}">
-										<td th:text="${employeeStat.index + 1}"></td>
-										<td th:text="${employee.idCard}"></td>
-										<td th:text="${employee.fullName}"></td>
-										<td th:text="${employee.address}"></td>
+								<tbody id="myTable" th:if="${employeeSalaries != null}">
+									<tr th:each="employeeSalary : ${employeeSalaries}">
+										<td th:text="${employeeSalaryStat.index + 1}"></td>
+										<td th:text="${employeeSalary.idCard}"></td>
+										<td th:text="${employeeSalary.fullName}"></td>
+										<td th:text="${employeeSalary.address}"></td>
 										<td
-											th:text="${#dates.format(employee.dateOfBirth, 'dd/MM/yyyy')}"></td>
-										<td th:text="${employee.account.username}"></td>
-										<td th:text="${employee.position}"></td>
-										<td><a th:href="@{'/admin/manage/salary/' + ${employee.id}}"
-												> Xem danh sách lương</a></td>
+											th:text="${#dates.format(employeeSalary.dateOfBirth, 'dd/MM/yyyy')}"></td>
+										<td th:text="${employeeSalary.position}"></td>
+										<td
+											th:text="${#numbers.formatInteger(employeeSalary.totalSalary,0,'POINT') +' ₫'}"></td>
+										<td><a
+											th:href="@{/admin/manage/salary/detail(empId=${employeeSalary.id},month=${month}, year=${year})}">
+												Xem chi tiết lương </a></td>
 									</tr>
 								</tbody>
 							</table>
-							
+
 							<div class="text-center"
 								style="margin-bottom: -18px; margin-top: 50px;">
 								<ul class="page-numbers">
@@ -190,5 +201,12 @@
 	</div>
 
 </body>
+<style>
+.error {
+	font-weight: 400 !important;
+	color: red;
+	font-size: 15px !important;
+}
+</style>
 
 </html>

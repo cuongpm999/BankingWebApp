@@ -60,7 +60,7 @@
 					<div class="col-md-12">
 						<div class="form-add">
 							<a
-								th:href="@{'/admin/manage/salary/'+ ${session.employeeSalary.id}}"
+								th:href="@{/admin/manage/salary(month=${month}, year=${year})}"
 								class="btn btn-success"
 								style="font-size: 18px; font-weight: 600;"><i
 								class="far fa-arrow-alt-circle-left"></i> Quay lại</a>
@@ -72,25 +72,25 @@
 											<td>Họ và tên</td>
 											<td
 												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${session.employeeSalary.fullName}"></td>
+												th:text="${employee.fullName}"></td>
 										</tr>
 										<tr>
 											<td>Vị trí</td>
 											<td
 												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${session.employeeSalary.position}"></td>
+												th:text="${employee.position}"></td>
 										</tr>
 										<tr>
 											<td>Thâm niên</td>
 											<td
 												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${session.employeeSalary.seniority}"></td>
+												th:text="${employee.seniority}"></td>
 										</tr>
 										<tr>
 											<td>Bậc nghề</td>
 											<td
 												style="font-size: 17px; font-weight: 600; color: #495057;"
-												th:text="${session.employeeSalary.level}"></td>
+												th:text="${employee.level}"></td>
 										</tr>
 										<tr>
 											<td>Lương tháng</td>

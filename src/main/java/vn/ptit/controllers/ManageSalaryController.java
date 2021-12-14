@@ -1,30 +1,25 @@
 package vn.ptit.controllers;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import vn.ptit.models.CreatedBankAccount;
 import vn.ptit.models.Employee;
+import vn.ptit.models.EmployeeSalary;
 import vn.ptit.models.Salary;
 import vn.ptit.models.Transaction;
 
@@ -37,158 +32,82 @@ public class ManageSalaryController {
 
 	@GetMapping
 	public String viewManageSalaryEmployee(Model model, HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> map = new HashMap<String, Object>();
 
+		Date date = new Date();
+		SimpleDateFormat sdf1 = new SimpleDateFormat("MM");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy");
+		String month;
+		String year;
 		int page = 1;
 		if (req.getParameter("page") != null) {
 			page = Integer.parseInt(req.getParameter("page"));
-			map.put("page", page);
 			model.addAttribute("page", page);
 		}
-		if (req.getParameter("keyEmployee") != null) {
-			String keyEmployee = req.getParameter("keyEmployee");
-			map.put("keyEmployee", keyEmployee);
-			model.addAttribute("keyEmployee", keyEmployee);
+		if (req.getParameter("month") != null) {
+			month = req.getParameter("month");
+			model.addAttribute("month", month);
+		} else {
+			month = sdf1.format(date);
+			model.addAttribute("month", month);
 		}
-		if (req.getParameter("fromDate") != null) {
-			String fromDate = req.getParameter("fromDate");
-			map.put("fromDate", fromDate);
-			model.addAttribute("fromDate", fromDate);
+		if (req.getParameter("year") != null) {
+			year = req.getParameter("year");
+			model.addAttribute("year", year);
+		} else {
+			year = sdf2.format(date);
+			model.addAttribute("year", year);
 		}
-		if (req.getParameter("toDate") != null) {
-			String toDate = req.getParameter("toDate");
-			map.put("toDate", toDate);
-			model.addAttribute("toDate", toDate);
+		LocalDate now = LocalDate.now();
+		int currentMonth = now.getMonthValue();
+		int currentYear = now.getYear();
+		if(Integer.parseInt(year) > currentYear) {
+			return "salary/manage_salary_employee";
 		}
-		if (req.getParameter("sort") != null) {
-			String sort = req.getParameter("sort");
-			map.put("sort", sort);
-			model.addAttribute("sort", sort);
+		if(Integer.parseInt(month) > currentMonth) {
+			return "salary/manage_salary_employee";
 		}
-		List<Employee> employees = Arrays
-				.asList(rest.postForObject(domainServices + "/rest/api/employee/find-all",map, Employee[].class));
-		model.addAttribute("employees", employees);
+		if(Integer.parseInt(year) == currentYear && Integer.parseInt(month) == currentMonth) {
+			rest.getForObject(domainServices + "/rest/api/salary/insert/" + month + "-" + year, Boolean.class);
+		}
+		List<EmployeeSalary> employeeSalaries = Arrays.asList(
+				rest.getForObject(domainServices + "/rest/api/salary/find-salary-in-month/" + month + "-" + year + "-" + page,
+						EmployeeSalary[].class));
+		model.addAttribute("employeeSalaries", employeeSalaries);
 		return "salary/manage_salary_employee";
 	}
-	
-	@GetMapping("/{id}")
-	public String viewListSalaryEmployee(@PathVariable("id") int id, Model model, HttpServletRequest req,
-			HttpServletResponse resp) {
-		Employee employee = rest.getForObject(domainServices + "/rest/api/employee/find-by-id/" + id, Employee.class);
-		req.getSession().setAttribute("employeeSalary", employee);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("empId", employee.getId());
-		int page = 1;
-		if(req.getParameter("page")!=null) {
-			page = Integer.parseInt(req.getParameter("page"));
-			map.put("page", page);
-			model.addAttribute("page", page);
-		}
-		if(req.getParameter("fromDate")!=null) {
-			String fromDate = req.getParameter("fromDate");
-			map.put("fromDate", fromDate);
-			model.addAttribute("fromDate", fromDate);
-		}
-		if(req.getParameter("toDate")!=null) {
-			String toDate = req.getParameter("toDate");
-			map.put("toDate", toDate);
-			model.addAttribute("toDate", toDate);
-		}
-		if(req.getParameter("sort")!=null) {
-			String sort = req.getParameter("sort");
-			map.put("sort", sort);
-			model.addAttribute("sort", sort);
-		}
-		List<Salary> salaries = Arrays.asList(
-				rest.postForObject(domainServices + "/rest/api/salary/filter", map, Salary[].class));
-		model.addAttribute("salaries", salaries);
-		return "salary/list_salary_employee";
-	}
-	
-	@GetMapping("/add")
-	public String viewAddSalaryEmployee(Model model, HttpServletRequest req, HttpServletResponse resp) {
-		HttpSession session = req.getSession();
-		if (session.getAttribute("employeeSalary") == null) {
-			return "redirect:/admin/manage/salary";
-		}
-		Salary salary = new Salary();
-		model.addAttribute("salary", salary);
-		return "salary/add_salary_employee";
-	}
 
-	@PostMapping("/add")
-	public String addSalaryEmloyee(@ModelAttribute("salary") Salary salary, Model model,
-			HttpServletRequest req, HttpServletResponse resp) {
-		HttpSession session = req.getSession();
-		if (session.getAttribute("employeeSalary") == null) {
-			return "redirect:/admin/manage/salary";
-		}
-
-		int id = ((Employee) session.getAttribute("employeeSalary")).getId();
-		Boolean flag = rest.postForObject(domainServices + "/rest/api/salary/insert/" + id, salary, Boolean.class);
-		if(!flag) {
-			model.addAttribute("salary", salary);
-			model.addAttribute("status", "failed");
-			return "salary/add_salary_employee";
-		}
-		return "redirect:/admin/manage/salary/" + id;
-	}
-	
-	@GetMapping("/edit/{id}")
-	public String viewEditSalaryEmployee(@PathVariable("id") int salaryId, Model model, HttpServletRequest req,
-			HttpServletResponse resp) {
-		HttpSession session = req.getSession();
-		if (session.getAttribute("employeeSalary") == null) {
-			return "redirect:/admin/manage/salary";
-		}
-		Salary salary = rest.getForObject(domainServices + "/rest/api/salary/find-by-id/" + salaryId, Salary.class);
-		model.addAttribute("salary", salary);
-		return "salary/edit_salary_employee";
-	}
-	
-	@PostMapping("/edit")
-	public String editSalaryEmloyee(@ModelAttribute("salary") Salary salary, Model model,
-			HttpServletRequest req, HttpServletResponse resp) {
-		HttpSession session = req.getSession();
-		if (session.getAttribute("employeeSalary") == null) {
-			return "redirect:/admin/manage/salary";
-		}
-		int id = ((Employee) session.getAttribute("employeeSalary")).getId();
-		Boolean flag = rest.postForObject(domainServices + "/rest/api/salary/update/" + id, salary, Boolean.class);
-		if(!flag) {
-			model.addAttribute("salary", salary);
-			model.addAttribute("status", "failed");
-			return "salary/edit_salary_employee";
-		}
-		return "redirect:/admin/manage/salary/" + id;
-	}
-	
-	
-	@GetMapping("/detail/{id}")
-	public String viewDetailSalary(@PathVariable("id") int salaryId, Model model, HttpServletRequest req,
-			HttpServletResponse resp) {
-		HttpSession session = req.getSession();
-		if (session.getAttribute("employeeSalary") == null) {
-			return "redirect:/admin/manage/salary";
-		}
-		Salary salary = rest.getForObject(domainServices + "/rest/api/salary/find-by-id/" + salaryId, Salary.class);
-		int id = ((Employee) session.getAttribute("employeeSalary")).getId();
+	@GetMapping("/detail")
+	public String viewDetailSalary(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		String empId = (req.getParameter("empId"));
+		String month = req.getParameter("month");
+		model.addAttribute("month", month);
+		String year = req.getParameter("year");
+		model.addAttribute("year", year);
+		List<String> textFind = new ArrayList<String>();
+		textFind.add(empId);
+		textFind.add(month);
+		textFind.add(year);
+		Salary salary = rest.postForObject(domainServices + "/rest/api/salary/find-salary-detail", textFind, Salary.class);
+		Employee employee = rest.getForObject(domainServices + "/rest/api/employee/find-by-id/" + empId,
+				Employee.class);
 		List<String> text = new ArrayList<String>();
-		text.add(String.valueOf(id));
+		text.add(String.valueOf(empId));
 		text.add(salary.getDateSalary());
 		List<Transaction> transactions = Arrays.asList(rest.postForObject(
-				domainServices + "/rest/api/deposit/find-first-transactions-in-month",text, Transaction[].class));
-		double totalMoney = salary.getBasicSalary()+salary.getBonusSalary();
+				domainServices + "/rest/api/deposit/find-first-transactions-in-month", text, Transaction[].class));
+		double totalMoney = salary.getBasicSalary() + salary.getBonusSalary();
 		double moneyDeposit1 = 0;
 		for (Transaction transaction : transactions) {
-			moneyDeposit1 += transaction.getMoney()*0.02;
+			moneyDeposit1 += transaction.getMoney() * 0.02;
 		}
-		if(((Employee) session.getAttribute("employeeSalary")).getPosition().equals("MANAGER")){
-			List<CreatedBankAccount> createdBankAccounts = Arrays.asList(rest.postForObject(
-					domainServices + "/rest/api/credit-account/find-create-bank-account-by-employee", text,CreatedBankAccount[].class));
-			double moneyCreatedCreditAccount = createdBankAccounts.size()*500000;
-			List<Transaction> transactions1 = Arrays.asList(rest.postForObject(
-					domainServices + "/rest/api/deposit/find-first-transactions-deposit-account", text, Transaction[].class));
+		if (employee.getPosition().equals("MANAGER")) {
+			List<CreatedBankAccount> createdBankAccounts = Arrays.asList(
+					rest.postForObject(domainServices + "/rest/api/credit-account/find-create-bank-account-by-employee",
+							text, CreatedBankAccount[].class));
+			double moneyCreatedCreditAccount = createdBankAccounts.size() * 500000;
+			List<Transaction> transactions1 = Arrays.asList(
+					rest.postForObject(domainServices + "/rest/api/deposit/find-first-transactions-deposit-account",
+							text, Transaction[].class));
 			double moneyDeposit2 = 0;
 			for (Transaction transaction : transactions1) {
 				moneyDeposit2 += transaction.getMoney() * 0.02;
@@ -197,9 +116,11 @@ public class ManageSalaryController {
 			model.addAttribute("createdBankAccounts", createdBankAccounts);
 			model.addAttribute("moneyDeposit2", moneyDeposit2);
 		}
+		model.addAttribute("employee", employee);
 		model.addAttribute("moneyDeposit1", moneyDeposit1);
 		model.addAttribute("totalMoney", totalMoney);
 		model.addAttribute("salary", salary);
 		return "salary/detail_salary_employee";
 	}
+
 }

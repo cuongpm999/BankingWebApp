@@ -104,6 +104,11 @@
 											</select>
 										</div>
 										<div class="form-group">
+											<label class="required">Lương cơ bản:</label> <input
+												th:field="*{basicSalary}" class="form-control"
+												placeholder="Lương cơ bản" />
+										</div>
+										<div class="form-group">
 											<div th:if="${status == 'faileTenBiTrung'}">
 												<div class="alert alert-danger">
 													<strong>Failed!</strong> Tên tài khoản đã được sử dụng!
@@ -157,6 +162,14 @@
 					required : true,
 					digits : true,
 				},
+				basicSalary : {
+					required : true,
+					number : true,
+				},
+				email : {
+					required : true,
+					email : true
+				},
 				'account.username' : "required",
 				password_ : {
 					required : true,
@@ -181,6 +194,14 @@
 				seniority : {
 					required : "Vui lòng nhập số năm thâm niên",
 					digits : "Thâm niên chỉ bao gồm số"
+				},
+				basicSalary : {
+					required : "Vui lòng nhập số lương cơ bản",
+					number : "Lương cơ bản chỉ bao gồm số"
+				},
+				email : {
+					required : "Vui lòng nhập Email",
+					email : "Vui lòng nhập đúng Email"
 				},
 				'account.username' : "Vui lòng đăng kí tên tài khoản",
 				password_ : {
