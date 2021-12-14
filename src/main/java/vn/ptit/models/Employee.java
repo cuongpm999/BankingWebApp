@@ -13,16 +13,17 @@ public class Employee {
 	private int level;
 	private int seniority;
 	private String position;
+	private double basicSalary;
 	private Account account;
 	private List<Salary> salaries = new ArrayList<>();
 	private boolean status;
-	
+
 	public Employee() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public Employee(String idCard, String fullName, Date dateOfBirth, String address, int level, int seniority,
-			String position, Account account, List<Salary> salaries) {
+			String position, double basicSalary, Account account, List<Salary> salaries, boolean status) {
 		super();
 		this.idCard = idCard;
 		this.fullName = fullName;
@@ -31,8 +32,10 @@ public class Employee {
 		this.level = level;
 		this.seniority = seniority;
 		this.position = position;
+		this.basicSalary = basicSalary;
 		this.account = account;
 		this.salaries = salaries;
+		this.status = status;
 	}
 
 	public int getId() {
@@ -121,6 +124,14 @@ public class Employee {
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+
+	public double getBasicSalary() {
+		return basicSalary;
+	}
+
+	public void setBasicSalary(double basicSalary) {
+		this.basicSalary = basicSalary;
 	}
 
 }
