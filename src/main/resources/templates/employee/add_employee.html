@@ -18,7 +18,8 @@
 <link rel="icon" type="image/png" sizes="16x16"
 	href="/favicon/favicon-16x16.png">
 <link rel="manifest" href="/favicon/site.webmanifest">
-<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"
+	color="#5bbad5">
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
 
@@ -77,8 +78,8 @@
 												placeholder="Họ và tên" />
 										</div>
 										<div class="form-group">
-											<label class="required">Ngày sinh:</label> <input type="date" name="dob"
-												class="form-control" placeholder="Ngày sinh"
+											<label class="required">Ngày sinh:</label> <input type="date"
+												name="dob" class="form-control" placeholder="Ngày sinh"
 												th:value="${#dates.format(employee.dateOfBirth, 'yyyy-MM-dd')}" />
 										</div>
 										<div class="form-group">
@@ -105,8 +106,9 @@
 										</div>
 										<div class="form-group">
 											<label class="required">Lương cơ bản:</label> <input
-												th:field="*{basicSalary}" class="form-control"
-												placeholder="Lương cơ bản" />
+												name="basicSalary"
+												th:value="${#numbers.formatInteger(employee.basicSalary,0)}"
+												class="form-control" placeholder="Lương cơ bản" />
 										</div>
 										<div class="form-group">
 											<div th:if="${status == 'faileTenBiTrung'}">
@@ -119,9 +121,9 @@
 												placeholder="Tên tài khoản" />
 										</div>
 										<div class="form-group">
-											<label class="required">Mật khẩu:</label> <input type="password"
-												th:value="*{account.password}" name="password_"
-												class="form-control" placeholder="Mật khẩu" />
+											<label class="required">Mật khẩu:</label> <input
+												type="password" th:value="*{account.password}"
+												name="password_" class="form-control" placeholder="Mật khẩu" />
 										</div>
 										<button type="submit" class="btn btn-success">
 											<i class="fas fa-download"></i> Save
@@ -166,10 +168,6 @@
 					required : true,
 					number : true,
 				},
-				email : {
-					required : true,
-					email : true
-				},
 				'account.username' : "required",
 				password_ : {
 					required : true,
@@ -198,10 +196,6 @@
 				basicSalary : {
 					required : "Vui lòng nhập số lương cơ bản",
 					number : "Lương cơ bản chỉ bao gồm số"
-				},
-				email : {
-					required : "Vui lòng nhập Email",
-					email : "Vui lòng nhập đúng Email"
 				},
 				'account.username' : "Vui lòng đăng kí tên tài khoản",
 				password_ : {

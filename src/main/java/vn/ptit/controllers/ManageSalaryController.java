@@ -1,14 +1,19 @@
 package vn.ptit.controllers;
 
+import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,10 +23,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
 import vn.ptit.models.CreatedBankAccount;
+import vn.ptit.models.Customer;
 import vn.ptit.models.Employee;
 import vn.ptit.models.EmployeeSalary;
 import vn.ptit.models.Salary;
 import vn.ptit.models.Transaction;
+import vn.ptit.utils.ExcelExporter;
+import vn.ptit.utils.ExcelSalaryExporter;
 
 @Controller
 @RequestMapping("/admin/manage/salary")
@@ -32,7 +40,6 @@ public class ManageSalaryController {
 
 	@GetMapping
 	public String viewManageSalaryEmployee(Model model, HttpServletRequest req, HttpServletResponse resp) {
-
 		Date date = new Date();
 		SimpleDateFormat sdf1 = new SimpleDateFormat("MM");
 		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy");
@@ -60,19 +67,20 @@ public class ManageSalaryController {
 		LocalDate now = LocalDate.now();
 		int currentMonth = now.getMonthValue();
 		int currentYear = now.getYear();
-		if(Integer.parseInt(year) > currentYear) {
+		if (Integer.parseInt(year) > currentYear) {
 			return "salary/manage_salary_employee";
 		}
-		if(Integer.parseInt(month) > currentMonth) {
+		if (Integer.parseInt(month) > currentMonth) {
 			return "salary/manage_salary_employee";
 		}
-		if(Integer.parseInt(year) == currentYear && Integer.parseInt(month) == currentMonth) {
+		if (Integer.parseInt(year) == currentYear && Integer.parseInt(month) == currentMonth) {
 			rest.getForObject(domainServices + "/rest/api/salary/insert/" + month + "-" + year, Boolean.class);
 		}
-		List<EmployeeSalary> employeeSalaries = Arrays.asList(
-				rest.getForObject(domainServices + "/rest/api/salary/find-salary-in-month/" + month + "-" + year + "-" + page,
-						EmployeeSalary[].class));
+		List<EmployeeSalary> employeeSalaries = Arrays.asList(rest.getForObject(
+				domainServices + "/rest/api/salary/find-salary-in-month/" + month + "-" + year + "-" + page,
+				EmployeeSalary[].class));
 		model.addAttribute("employeeSalaries", employeeSalaries);
+		req.getSession().setAttribute("dateSalaryToExportExcel", month + "/" + year);
 		return "salary/manage_salary_employee";
 	}
 
@@ -83,11 +91,13 @@ public class ManageSalaryController {
 		model.addAttribute("month", month);
 		String year = req.getParameter("year");
 		model.addAttribute("year", year);
+
 		List<String> textFind = new ArrayList<String>();
 		textFind.add(empId);
 		textFind.add(month);
 		textFind.add(year);
-		Salary salary = rest.postForObject(domainServices + "/rest/api/salary/find-salary-detail", textFind, Salary.class);
+		Salary salary = rest.postForObject(domainServices + "/rest/api/salary/find-salary-detail", textFind,
+				Salary.class);
 		Employee employee = rest.getForObject(domainServices + "/rest/api/employee/find-by-id/" + empId,
 				Employee.class);
 		List<String> text = new ArrayList<String>();
@@ -121,6 +131,32 @@ public class ManageSalaryController {
 		model.addAttribute("totalMoney", totalMoney);
 		model.addAttribute("salary", salary);
 		return "salary/detail_salary_employee";
+	}
+
+	@GetMapping("/export-salary")
+	public void exportTransactionInDepositAccount(Model model, HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		HttpSession httpSession = req.getSession();
+		String dateSalary = "";
+		if (httpSession.getAttribute("dateSalaryToExportExcel") != null)
+			dateSalary = httpSession.getAttribute("dateSalaryToExportExcel").toString();
+
+		httpSession.removeAttribute("dateSalaryToExportExcel");
+		List<EmployeeSalary> employeeSalaries = Arrays
+				.asList(rest.getForObject(domainServices + "/rest/api/salary/export-all-salary-in-month/"
+						+ dateSalary.split("\\/")[0] + "-" + dateSalary.split("\\/")[1], EmployeeSalary[].class));
+
+		resp.setContentType("application/octet-stream");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=salary_" + currentDateTime + ".xlsx";
+		resp.setHeader(headerKey, headerValue);
+
+		ExcelSalaryExporter excelSalaryExporter = new ExcelSalaryExporter(employeeSalaries, dateSalary);
+		excelSalaryExporter.export(resp);
+
 	}
 
 }

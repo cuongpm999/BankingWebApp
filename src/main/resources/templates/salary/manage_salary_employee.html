@@ -87,26 +87,26 @@
 											Năm:</label>
 										<div>
 											<input type="text" class="form-control" th:value="${year}"
-												style="margin-right: 20px; width: 100px" placeholder="Năm"
-												id="year-input">
+												style="width: 70px" placeholder="Năm" id="year-input">
 											<div id="error-year" class="error" style="display: none;">Sai
 												định dạng (yyyy)</div>
-											<div id="error-year-null" class="error" style="display: none">Không để trống</div>
+											<div id="error-year-null" class="error" style="display: none">Năm không được để trống</div>
 										</div>
 
 									</div>
 									<div style="width: auto; margin-right: 20px;">
-										<button type="button" class="btn btn-primary" 
+										<button type="button" class="btn btn-primary"
 											style="width: max-content" onclick="Banking.calcForSalary()">
 											<i class="fas fa-search"></i> Xem lương
 										</button>
 									</div>
-									<div style="width: auto; margin-right: 20px;">
-										<button type="button" class="btn btn-success"
-											style="width: max-content">
-											<i class="fas fa-plus-square"></i> Xuất excel
-										</button>
-									</div>
+
+								</div>
+								<div style="width: auto;">
+									<a th:href="@{/admin/manage/salary/export-salary}" class="btn btn-success"
+										style="width: max-content">
+										<i class="far fa-file-excel"></i> Export Excel
+									</a>
 								</div>
 							</div>
 							<h1 class="my-3"></h1>
