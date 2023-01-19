@@ -185,7 +185,7 @@ public class CreatePaymentController {
 			return "payment/create_payment";
 		}
 
-		sendMailService.sendMailPayment(helperTransaction.getTransaction(), (Customer) httpSession.getAttribute("customerOtherPay"));
+//		sendMailService.sendMailPayment(helperTransaction.getTransaction(), (Customer) httpSession.getAttribute("customerOtherPay"));
 
 		httpSession.removeAttribute("creditAccount_Pay");
 		httpSession.removeAttribute("customerOtherPay");

@@ -169,7 +169,7 @@ public class DepositController {
 			model.addAttribute("status", "failed");
 			return "deposit/save_money";
 		}
-		sendMailService.sendMailDeposit(helperTransaction.getTransaction());
+//		sendMailService.sendMailDeposit(helperTransaction.getTransaction());
 		return "redirect:/admin/transaction/deposit/detail-account/" + depositAccount.getId();
 	}
 

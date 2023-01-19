@@ -167,7 +167,7 @@ public class CreditController {
 			model.addAttribute("status", "failed");
 			return "credit/deal";
 		}
-		sendMailService.sendMailDeal(helperTransaction.getTransaction());
+//		sendMailService.sendMailDeal(helperTransaction.getTransaction());
 		return "redirect:/admin/transaction/credit/detail-account/" + creditAccount.getId();
 	}
 

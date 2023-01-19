@@ -169,7 +169,7 @@ public class CreatePaymentDirectController {
 			return "payment_direct/create_payment";
 		}
 
-		sendMailService.sendMailPaymentDirect(helperTransaction.getTransaction());
+//		sendMailService.sendMailPaymentDirect(helperTransaction.getTransaction());
 		
 		return "redirect:/admin/transaction/create-payment-direct/detail-account/" + creditAccount.getId();
 	}

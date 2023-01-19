@@ -142,7 +142,7 @@ public class CreditAccountController {
 		rest.postForObject(domainServices + "/rest/api/credit-account/insert", helperCreateBankAccount,
 				CreditAccount.class);
 
-		sendMailService.sendMailCreateAccount(null, creditAccount, customer);
+//		sendMailService.sendMailCreateAccount(null, creditAccount, customer);
 		return "redirect:/admin/manage/credit-account/detail/" + customer.getId();
 	}
 

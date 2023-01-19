@@ -70,7 +70,7 @@ public class ManageSalaryController {
 		if (Integer.parseInt(year) > currentYear) {
 			return "salary/manage_salary_employee";
 		}
-		if (Integer.parseInt(month) > currentMonth) {
+		if (Integer.parseInt(month) > currentMonth && Integer.parseInt(year) == currentYear) {
 			return "salary/manage_salary_employee";
 		}
 		if (Integer.parseInt(year) == currentYear && Integer.parseInt(month) == currentMonth) {

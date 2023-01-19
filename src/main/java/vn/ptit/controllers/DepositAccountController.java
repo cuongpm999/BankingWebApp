@@ -142,7 +142,7 @@ public class DepositAccountController {
 		rest.postForObject(domainServices + "/rest/api/deposit-account/insert", helperCreateBankAccount,
 				DepositAccount.class);
 
-		sendMailService.sendMailCreateAccount(depositAccount, null, customer);
+//		sendMailService.sendMailCreateAccount(depositAccount, null, customer);
 		return "redirect:/admin/manage/deposit-account/detail/" + customer.getId();
 	}
 
